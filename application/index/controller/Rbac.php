@@ -6,8 +6,9 @@
 
 namespace app\index\controller;
 use think\Controller;
+use think\Db;
 
-class Rbac
+class Rbac extends \think\Controller
 {
 	//节点管理
     public function node()
@@ -21,7 +22,16 @@ class Rbac
     }
 	//节点管理
     public function role()
-    {
-		return view('rbac/role');
+    {		
+		$list = Db::table('think_role')->where('status',1)->paginate(10,200);	
+        $this->assign('list',$list);	
+		return $this->fetch();				
+    }
+	//节点添加
+    public function role_add()
+    {		
+		$list = Db::table('think_role')->where('status',1)->paginate(10,200);	
+        $this->assign('list',$list);	
+		return $this->fetch();				
     }
 }
