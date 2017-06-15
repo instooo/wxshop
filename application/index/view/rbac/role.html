@@ -4,26 +4,125 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>无标题文档</title>
 <link href="__CSS__/style.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="__JS__/jquery.js"></script>
-
+<script type="text/javascript" src="__JS__/jquery.1.8.2.min.js"></script>
+<script type="text/javascript" src="__JS__/layer/layer.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-  $(".click").click(function(){
-  $(".tip").fadeIn(200);
-  });
-  
-  $(".tiptop a").click(function(){
-  $(".tip").fadeOut(200);
-});
+    $(".click").click(function(){
+	  $(".tip").fadeIn(200);
+    });
+    $(".cancel,.tiptop a").click(function(){
+	  $(".tip").fadeOut(100);
+    });
+    $("input[name='add'").click(function(){
+	  doRoleAdd(this);
+    })
+	$(".edit").click(function(){
+	  editRole(this);
+	})
+	$("input[name='edit'").bind('click',function(){
+		alert (1);
+	});
+	//删除角色
+	$('.del').click(function () {
+		var id = $(this).attr('data-id');		
+		if (id == '') return false;
+		layer.confirm('确定要删除该角色？', {
+			btn: ['确定','取消']
+		}, function(){
+			doDeleRole(id);
+		});
+	});
 
-  $(".sure").click(function(){
-  $(".tip").fadeOut(100);
-});
-
-  $(".cancel").click(function(){
-  $(".tip").fadeOut(100);
-});
-
+	//增加角色
+	function doRoleAdd(_this) {	
+		var name = $("input[name='rolename']").val();
+		var status = $("input[name='status']").val();		
+		if (name == '' || status == '') {
+			layer.msg('数据不能为空', {icon:5,time:1000});
+			return false;
+		}
+		$.ajax({
+			type:'post',
+			dataType:'json',
+			data:{name:name,status:status},
+			url:'/index//rbac/role_add',
+			error:function () {
+				layer.msg('未知错误', {icon:5,time:1000});
+			},
+			success:function (data) {
+				if (data.code == 1) {
+					layer.msg('添加成功', {icon:6,time:1000}, function () {location.reload()});
+				}else {
+					layer.msg(data.msg, {icon:5,time:1000});
+				}
+			}
+		});
+	}
+	 //编辑角色
+    function editRole(_this) {
+		$(_this).addClass('do_edit_btn').html('提交');
+		var id = $(_this).attr('data-id');
+		if (id == '') return false;
+		$(".tiptop span").html("编辑角色");
+		$("input[name='rolename']").val("haha");
+		$(".sure").attr("name","edit")
+		
+		$(".tip").fadeIn(200);
+    }
+	
+	function doEditRole(_this) {
+        var _tr = $(_this).parents('tr');
+        var id = _tr.attr('data-id');
+        if (id == '') return false;
+        var name = _tr.find('.input_name').val();
+        var status = _tr.find('.input_status').val();
+        if (name == '' || status == '') {
+            layer.msg('数据不能为空', {icon:5,time:1000});
+            return false;
+        }
+        $.ajax({
+            type:'post',
+            dataType:'json',
+            data:{id:id,name:name,status:status},
+            url:'/Permission/roleEdit',
+            error:function () {
+                layer.msg('未知错误', {icon:5,time:1000});
+            },
+            success:function (data) {
+                if (data.code == 1) {
+                    layer.msg('修改成功', {icon:6,time:1000}, function () {
+                        $(_this).removeClass('do_edit_btn').html('编辑');
+                        _tr.find('.name').html(name).attr('data', name);
+                        _tr.find('.status').html((status==1)?'是':'否').attr('data', status);
+                    });
+                }else {
+                    layer.msg(data.msg, {icon:5,time:1000});
+                }
+            }
+        });
+    }
+	
+	
+    //删除角色
+    function doDeleRole(id) {
+        $.ajax({
+            type:'post',
+            dataType:'json',
+            data:{id:id},
+            url:'/index/rbac/role_del',
+            error:function () {
+                layer.msg('未知错误', {icon:5,time:1000});
+            },
+            success:function (data) {
+                if (data.code == 1) {
+                    layer.msg('删除成功', {icon:6,time:1000}, function () {location.reload()});
+                }else {
+                    layer.msg(data.msg, {icon:5,time:1000});
+                }
+            }
+        });
+    }
 });
 </script>
 
@@ -78,7 +177,7 @@ $(document).ready(function(){
         <td>{$user.name}</td>
         <td>{$user.status}</td>
         <td>{$user.remark}</td>
-        <td><a href="#" class="tablelink">修改</a>     <a href="#" class="tablelink"> 删除</a></td>
+        <td><a data-id="{$user.id}" class="edit">修改</a>     <a data-id="{$user.id}" class="del"> 删除</a></td>
         </tr> 
 		{/volist}	    
         </tbody>
@@ -94,15 +193,14 @@ $(document).ready(function(){
     	<div class="tiptop"><span>添加角色</span><a></a></div>
 		<div class="tabson">  
 			<ul class="forminfo">
-				<li><label>角色名称<b>*</b></label><input name="" type="text" class="dfinput" value="请填写角色名称" /></li>
+				<li><label>角色名称<b>*</b></label><input name="rolename" type="text" class="dfinput" placeholder="请填写角色名称" /></li>
 				<li><label>状态</label><cite><input name="status" type="radio" value="1" checked="checked" />是&nbsp;&nbsp;&nbsp;&nbsp;<input name="status" type="radio" value="0" />否</cite></li> 
 			</ul>
 		</div>   
         <div class="tipbtn">
-        <input name="" type="button"  class="sure" value="确定" />&nbsp;
-        <input name="" type="button"  class="cancel" value="取消" />
-        </div>
-    
+        <input name="add" type="button"  class="sure" value="确定" />&nbsp;
+        <input name="cancel" type="button"  class="cancel" value="取消" />
+        </div>    
     </div>
     
     
