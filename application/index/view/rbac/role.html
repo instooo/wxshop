@@ -211,7 +211,375 @@ $(document).ready(function(){
     <script type="text/javascript">
 	$('.tablelist tbody tr:odd').addClass('odd');
 	</script>
-
+<div class="slide-panel-container" id="slidePanelContainer" style="z-index: 93; width: 780px; display: block; right: 0px;">
+  <div class="slid-panel-header clearfix">
+    <span class="panel-title">新建合同</span>
+    <span class="form-close-icon">X</span></div>
+  <div class="slide-panel-inner clearfix" id="slidePanelInner" style="width: 780px;">
+    <div class="form-wrap">
+      <div class="form-header"></div>
+      <div class="form-body">
+        <div class="form-section">
+          <div class="base-info-title field-area-title">
+            <div class="con show">合同信息
+              <p class="mark">(
+                <span class="red">*</span>为必填项)</p></div>
+          </div>
+          <div class="base-info field-info show">
+            <div class="newclient-item-info">
+              <span class="lable-container">
+                <span class="input-label" title="合同号">合同号</span>
+                <span class="normal manda-image">*</span></span>
+              <span class="input-container">
+                <input type="text" maxlength="80" name="subject" placeholder="合同号"></span>
+              <span class="error-warn"></span>
+            </div>
+            <div class="newclient-item-info">
+              <span class="lable-container">
+                <span class="input-label">客户名称</span>
+                <span class="normal manda-image">*</span></span>
+              <span class="input-container">
+                <div class="autocom-container">
+                  <div class="autocom-inputarea">
+                    <input class="autocom-text" type="text" placeholder="客户名称" name="customName">
+                    <span class="autocom-icon" style="display: block;"></span>
+                  </div>
+                  <div class="autocom-pulldown" style="display: none;">
+                    <div class="autocom-pulldown-header none">
+                      <input type="checkbox" class="checkAll-toggle">
+                      <label>全选</label>/
+                      <label>反选</label>
+                      <span class="confirm-btn">确认</span></div>
+                    <ul class="autocom-list"></ul>
+                    <div class="autocom-pulldown-foot none"></div>
+                  </div>
+                </div>
+              </span>
+              <span class="error-warn"></span>
+            </div>
+            <div class="newclient-item-info">
+              <span class="lable-container">
+                <span class="input-label">商机</span>
+                <span class="normal"></span>
+              </span>
+              <span class="input-container">
+                <div class="autocom-container">
+                  <div class="autocom-inputarea">
+                    <input class="autocom-text" type="text" placeholder="商机" name="oppoName">
+                    <span class="autocom-icon" style="display: block;"></span>
+                  </div>
+                  <div class="autocom-pulldown" style="display: none;">
+                    <div class="autocom-pulldown-header none">
+                      <input type="checkbox" class="checkAll-toggle">
+                      <label>全选</label>/
+                      <label>反选</label>
+                      <span class="confirm-btn">确认</span></div>
+                    <ul class="autocom-list"></ul>
+                    <div class="autocom-pulldown-foot none"></div>
+                  </div>
+                </div>
+              </span>
+              <span class="error-warn"></span>
+            </div>
+            <div class="newclient-item-info">
+              <span class="lable-container">
+                <span class="input-label" title="总金额(元)">总金额(元)</span>
+                <span class="normal manda-image">*</span></span>
+              <span class="input-container">
+                <input type="text" maxlength="15" name="total" placeholder="总金额(元)"></span>
+              <span class="error-warn"></span>
+            </div>
+            <div class="newclient-item-info">
+              <span class="lable-container">
+                <span class="input-label">开始日期</span>
+                <span class="normal manda-image">*</span></span>
+              <span class="input-container">
+                <input id="2072" type="text" name="begindate" placeholder="开始日期"></span>
+              <span class="error-warn"></span>
+            </div>
+            <div class="newclient-item-info">
+              <span class="lable-container">
+                <span class="input-label">结束日期</span>
+                <span class="normal manda-image">*</span></span>
+              <span class="input-container">
+                <input id="2073" type="text" name="enddate" placeholder="结束日期"></span>
+              <span class="error-warn"></span>
+            </div>
+            <div class="newclient-item-info" mappingname="deptId">
+              <span class="lable-container">
+                <span class="input-label">所属部门</span>
+                <span class="normal manda-image">*</span></span>
+              <span class="input-container">
+                <div class="pulldown-container">
+                  <div class="pulldown-input">
+                    <span class="pulldown-text" name="deptId">总经办</span>
+                    <span class="pulldown-icon" name="deptId"></span>
+                  </div>
+                  <div class="pulldown-search-wrapper">
+                    <div class="search-section">
+                      <span class="search-content">
+                        <input type="text" value="" class="search" placeholder="搜索"></span>
+                      <span class="icon-search" title="搜索"></span>
+                    </div>
+                  </div>
+                  <div class="pulldown-list ps-container" style="display: none; height: 0px; overflow: hidden; border-top: 0px;" data-ps-id="9f1d3f60-91f6-296f-624f-ce5878fee561">
+                    <div id="" class="row-content  opts" title="请选择" style="height: 25px; line-height: 25px;">请选择</div>
+                    <div id="-1" class="row-content  opts" title="全公司" style="height: 25px; line-height: 25px;">全公司</div>
+                    <div id="100002547573" class="row-content  opts" title="总经办" style="height: 25px; line-height: 25px;">总经办</div>
+                    <div id="100002547595" class="row-content  opts" title="业务部" style="height: 25px; line-height: 25px;">业务部</div>
+                    <div id="100002548362" class="row-content  opts" title="工商部" style="height: 25px; line-height: 25px;">工商部</div>
+                    <div id="100002547596" class="row-content  opts" title="客户部" style="height: 25px; line-height: 25px;">客户部</div>
+                    <div id="100005043596" class="row-content  opts" title="会计组" style="height: 25px; line-height: 25px;">会计组</div>
+                    <div id="100005043597" class="row-content  opts" title="税务组" style="height: 25px; line-height: 25px;">税务组</div>
+                    <div class="searchNoResult none">没有数据</div>
+                    <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px;">
+                      <div class="ps-scrollbar-x" style="left: 0px; width: 0px;"></div>
+                    </div>
+                    <div class="ps-scrollbar-y-rail" style="top: 0px; right: 0px;">
+                      <div class="ps-scrollbar-y" style="top: 0px; height: 0px;"></div>
+                    </div>
+                  </div>
+                </div>
+              </span>
+              <span class="error-warn"></span>
+            </div>
+            <div class="newclient-item-info" mappingname="type">
+              <span class="lable-container">
+                <span class="input-label">合同类型</span>
+                <span class="normal manda-image">*</span></span>
+              <span class="input-container">
+                <div class="pulldown-container">
+                  <div class="pulldown-input">
+                    <span class="pulldown-text pulldown-default-show" name="type">合同类型</span>
+                    <span class="pulldown-icon" name="type"></span>
+                  </div>
+                  <div class="pulldown-search-wrapper">
+                    <div class="search-section">
+                      <span class="search-content">
+                        <input type="text" value="" class="search" placeholder="搜索"></span>
+                      <span class="icon-search" title="搜索"></span>
+                    </div>
+                  </div>
+                  <div class="pulldown-list ps-container" style="display: none; height: 0px; overflow: hidden; border-top: 0px;" data-ps-id="d6b063dd-6c92-df80-3a9b-c45c7bdbfbb2">
+                    <div id="" class="row-content  opts" title="请选择" style="height: 25px; line-height: 25px;">请选择</div>
+                    <div id="101287566027" class="row-content  opts" title="工商注册" style="height: 25px; line-height: 25px;">工商注册</div>
+                    <div id="101287566028" class="row-content  opts" title="代理记账" style="height: 25px; line-height: 25px;">代理记账</div>
+                    <div id="101287572541" class="row-content  opts" title="工商变更" style="height: 25px; line-height: 25px;">工商变更</div>
+                    <div id="101287573534" class="row-content  opts" title="注销" style="height: 25px; line-height: 25px;">注销</div>
+                    <div id="101287573535" class="row-content  opts" title="商标申请" style="height: 25px; line-height: 25px;">商标申请</div>
+                    <div id="101287573536" class="row-content  opts" title="银行开户" style="height: 25px; line-height: 25px;">银行开户</div>
+                    <div id="101287573537" class="row-content  opts" title="办理许可证" style="height: 25px; line-height: 25px;">办理许可证</div>
+                    <div id="101287572542" class="row-content  opts" title="其他业务" style="height: 25px; line-height: 25px;">其他业务</div>
+                    <div id="101287572544" class="row-content  opts" title="公司转让" style="height: 25px; line-height: 25px;">公司转让</div>
+                    <div class="searchNoResult none">没有数据</div>
+                    <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px;">
+                      <div class="ps-scrollbar-x" style="left: 0px; width: 0px;"></div>
+                    </div>
+                    <div class="ps-scrollbar-y-rail" style="top: 0px; right: 0px;">
+                      <div class="ps-scrollbar-y" style="top: 0px; height: 0px;"></div>
+                    </div>
+                  </div>
+                </div>
+              </span>
+              <span class="error-warn"></span>
+            </div>
+            <div class="newclient-item-info" mappingname="paytype">
+              <span class="lable-container">
+                <span class="input-label">付款方式</span>
+                <span class="normal manda-image">*</span></span>
+              <span class="input-container">
+                <div class="pulldown-container">
+                  <div class="pulldown-input">
+                    <span class="pulldown-text pulldown-default-show" name="paytype">付款方式</span>
+                    <span class="pulldown-icon" name="paytype"></span>
+                  </div>
+                  <div class="pulldown-search-wrapper">
+                    <div class="search-section">
+                      <span class="search-content">
+                        <input type="text" value="" class="search" placeholder="搜索"></span>
+                      <span class="icon-search" title="搜索"></span>
+                    </div>
+                  </div>
+                  <div class="pulldown-list ps-container" style="display: none; height: 0px; overflow: hidden; border-top: 0px;" data-ps-id="3484995a-c67d-dfae-5d40-ee58d972c67f">
+                    <div id="" class="row-content  opts" title="请选择" style="height: 25px; line-height: 25px;">请选择</div>
+                    <div id="285" class="row-content  opts" title="季结" style="height: 25px; line-height: 25px;">季结</div>
+                    <div id="28" class="row-content  opts" title="月结" style="height: 25px; line-height: 25px;">月结</div>
+                    <div id="101287567072" class="row-content  opts" title="年结" style="height: 25px; line-height: 25px;">年结</div>
+                    <div id="101287567073" class="row-content  opts" title="办完付款" style="height: 25px; line-height: 25px;">办完付款</div>
+                    <div class="searchNoResult none">没有数据</div>
+                    <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px;">
+                      <div class="ps-scrollbar-x" style="left: 0px; width: 0px;"></div>
+                    </div>
+                    <div class="ps-scrollbar-y-rail" style="top: 0px; right: 0px;">
+                      <div class="ps-scrollbar-y" style="top: 0px; height: 0px;"></div>
+                    </div>
+                  </div>
+                </div>
+              </span>
+              <span class="error-warn"></span>
+            </div>
+            <div class="newclient-item-info">
+              <span class="lable-container">
+                <span class="input-label">签约日期</span>
+                <span class="normal manda-image">*</span></span>
+              <span class="input-container">
+                <input id="2085" type="text" name="signdate" placeholder="签约日期"></span>
+              <span class="error-warn"></span>
+            </div>
+          </div>
+          <div class="product-info-title field-area-title">
+            <a class="showOtherMsg none" href="javascript:;">添加产品信息&gt;&gt;</a>
+            <p class="con" style="display: block;">产品信息</p></div>
+          <div class="product-info field-info">
+            <div class="productInfo">
+              <div class="top-container">
+                <span class="action-add action-btn crm-button-grey">添加产品</span>
+                <span class="action-del action-btn crm-button-grey">移除</span></div>
+              <div class="middle-container grid-container SlickGrid_220449 ui-widget" style="height: 120px; overflow: hidden; outline: 0px; position: relative;">
+                <div tabindex="0" hidefocus="" style="position:fixed;width:0;height:0;top:0;left:0;outline:0;"></div>
+                <div class="slick-header ui-state-default" style="overflow:hidden;position:relative;">
+                  <div class="slick-header-columns ui-sortable" unselectable="on" style="width: 1700px;">
+                    <div class="ui-state-default slick-header-column" id="SlickGrid_220449_checkbox_selector" title="全选/反选" style="width: 31px;">
+                      <span class="slick-column-name">
+                        <input type="checkbox"></span>
+                    </div>
+                    <div class="ui-state-default slick-header-column" id="SlickGrid_220449120100" title="" style="width: 301px;">
+                      <span class="slick-column-name">产品名称</span></div>
+                    <div class="ui-state-default slick-header-column" id="SlickGrid_220449120101" title="" style="width: 71px;">
+                      <span class="slick-column-name">参考价 (元)</span></div>
+                    <div class="ui-state-default slick-header-column" id="SlickGrid_220449120102" title="" style="width: 61px;">
+                      <span class="slick-column-name">单价 (元)</span></div>
+                    <div class="ui-state-default slick-header-column" id="SlickGrid_220449120103" title="" style="width: 91px;">
+                      <span class="slick-column-name">数量</span></div>
+                    <div class="ui-state-default slick-header-column" id="SlickGrid_220449120104" title="" style="width: 73px;">
+                      <span class="slick-column-name">小计 (元)</span></div>
+                  </div>
+                </div>
+                <div class="slick-headerrow ui-state-default" style="overflow: hidden; position: relative; display: none;">
+                  <div class="slick-headerrow-columns" style="width: 682px;"></div>
+                  <div style="display: block; height: 1px; position: absolute; top: 0px; left: 0px; width: 682px;"></div>
+                </div>
+                <div class="slick-top-panel-scroller ui-state-default" style="overflow: hidden; position: relative; display: none;">
+                  <div class="slick-top-panel" style="width:10000px"></div>
+                </div>
+                <div class="slick-viewport" style="width: 100%; overflow: auto; outline: 0px; position: relative; height: 76px;">
+                  <div class="grid-canvas" style="height: 59px; width: 682px;"></div>
+                </div>
+                <div tabindex="0" hidefocus="" style="position:fixed;width:0;height:0;top:0;left:0;outline:0;"></div>
+                <div class="not-data" style="position:absolute; top:50%; width:100%; text-align:center">暂无数据</div></div>
+              <div class="foot-container">
+                <span class="foot-info">折扣率:
+                  <input type="text" class="discount-digit product-discount" value="100.00">%</span>
+                <span class="foot-info">产品总价:
+                  <span class="total-count" count-normal="0.00">0.00</span>元</span></div>
+            </div>
+          </div>
+          <div class="other-info-title field-area-title">
+            <a href="javascript:;" class="showOtherMsg ">添加其它信息&gt;</a>
+            <p class="con ">其它信息</p></div>
+          <div class="other-info field-info">
+            <div class="newclient-item-info">
+              <span class="lable-container">
+                <span class="input-label" title="合同正文">合同正文</span>
+                <span class="normal"></span>
+              </span>
+              <span class="input-container">
+                <textarea placeholder="合同正文" name="contract" maxlength="500"></textarea>
+              </span>
+              <span class="error-warn"></span>
+            </div>
+            <div class="newclient-item-info">
+              <span class="lable-container">
+                <span class="input-label" title="合同编号">合同编号</span>
+                <span class="normal"></span>
+              </span>
+              <span class="input-container">
+                <input type="text" maxlength="80" name="contractno" placeholder="合同编号"></span>
+              <span class="error-warn"></span>
+            </div>
+            <div class="newclient-item-info">
+              <span class="lable-container">
+                <span class="input-label">市场活动</span>
+                <span class="normal"></span>
+              </span>
+              <span class="input-container">
+                <div class="autocom-container">
+                  <div class="autocom-inputarea">
+                    <input class="autocom-text" type="text" placeholder="市场活动" name="activityId">
+                    <span class="autocom-icon" style="display: block;"></span>
+                  </div>
+                  <div class="autocom-pulldown" style="display: none;">
+                    <div class="autocom-pulldown-header none">
+                      <input type="checkbox" class="checkAll-toggle">
+                      <label>全选</label>/
+                      <label>反选</label>
+                      <span class="confirm-btn">确认</span></div>
+                    <ul class="autocom-list"></ul>
+                    <div class="autocom-pulldown-foot none"></div>
+                  </div>
+                </div>
+              </span>
+              <span class="error-warn"></span>
+            </div>
+            <div class="newclient-item-info">
+              <span class="lable-container">
+                <span class="input-label" title="客户方签约人">客户方签约人</span>
+                <span class="normal"></span>
+              </span>
+              <span class="input-container">
+                <input type="text" maxlength="80" name="othercontractor" placeholder="客户方签约人"></span>
+              <span class="error-warn"></span>
+            </div>
+            <div class="newclient-item-info">
+              <span class="lable-container">
+                <span class="input-label" title="我方签约人">我方签约人</span>
+                <span class="normal"></span>
+              </span>
+              <span class="input-container">
+                <input type="text" maxlength="80" name="ourcontractor" placeholder="我方签约人"></span>
+              <span class="error-warn"></span>
+            </div>
+            <div class="newclient-item-info">
+              <span class="lable-container">
+                <span class="input-label" title="备注">备注</span>
+                <span class="normal"></span>
+              </span>
+              <span class="input-container">
+                <textarea placeholder="备注" name="fdescribe" maxlength="255"></textarea>
+              </span>
+              <span class="error-warn"></span>
+            </div>
+            <div class="newclient-item-info">
+              <span class="lable-container">
+                <span class="input-label">附件</span>
+                <span class="normal"></span>
+              </span>
+              <span class="input-container">
+                <div class="field_content" id="file_qiniu" style="position: relative;">
+                  <span>
+                    <a href="javascript:;" class="file-upload-btn crm-button-grey" id="file-upload-btn" style="position: relative; z-index: 0;">上传附件</a></span>
+                  <div class="doc-upload" style="display: none; "></div>
+                  <ul class="doc-upload-area" id="docUploadArea"></ul>
+                  <div id="p1bit7n77c1mbaf51gdh1rin16d70_html5_container" class="plupload html5" style="position: absolute; background: transparent; width: 0px; height: 0px; overflow: hidden; z-index: -1; opacity: 0; top: 0px; left: 0px;">
+                    <input id="p1bit7n77c1mbaf51gdh1rin16d70_html5" style="font-size: 999px; position: absolute; width: 100%; height: 100%;" type="file" accept=""></div>
+                </div>
+              </span>
+              <span class="error-warn"></span>
+            </div>
+          </div>
+          <div class="custom-info-title field-area-title"></div>
+          <div class="custom-info field-info"></div>
+          <div class="button-info" style="text-align: center;">
+            <div class="btn-inner">
+              <button type="button" class="form-btn crm-button-yellow">保存</button>
+              <button type="button" class="form-btn crm-button-yellow">保存并提交审批</button>
+              <button type="button" class="form-btn crm-button-grey">取消</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 </body>
 
 </html>
