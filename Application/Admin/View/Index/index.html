@@ -1,118 +1,101 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>7477网页游戏平台-系统后台管理</title>
-    <link href="__CSS__/global.css" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="__CSS__/manager-common.css">
-    <link href="__CSS__/home.css" rel="stylesheet" type="text/css" />
-    <script type="text/javascript" src="__JS__/jQuery.1.8.2.min.js"></script>
-
-
-</head>
-<body id="thrColEls">
-<div class="Style2009">
-    
-    <include file="Public/top" />
-
-    <div id="MainContentDIV">
-        <link rel="stylesheet" type="text/css" href="__CSS__/managerMenu.css">
-        <include file="Public/left_menu" />
-        <div id="ManagerRight" style="margin: 0 20px 20px; padding-top:20px;">
-           
-            <!--第一层账户信息 开始-->
-            <div class="manager-top cl">
-                <!--账号信息 开始-->
-                <div class="mt-left">
-                    <div class="mt-info">
-                        <div class="mt-info-title">
-                            <a href="javascript:void(0);" style="color:#ff8041"><{$_SESSION.user}></a>
-                            ，欢迎您！
-                            <label>
-                                您的级别是：
-                                <span>推广会员</span>
-                                &nbsp;&nbsp;
-                                <span id="zhmsgother"></span>
-
-                            </label>
-                            <label>
-                                <a href="javascript:void(0);">
-                                    您的用户ID是：
-                                    <span class="font18"><{$userinfo.id}></span>
-                                </a>
-                                <a class="id-help" href="javascript:void(0);">
-                                    <div class="id-help-tip">
-                                        <i></i>
-                                        <p>用户id是您的账号id</p>
+<include file="Public/header" />
+<body>
+<div id="root">
+    <div class="screen-xl">
+        <div class="ant-layout ant-layout-has-sider">
+			<include file="Public/left_menu" />
+            <div class="ant-layout">
+				<include file="Public/top" />
+                <div class="ant-layout-content" style="margin: 24px 24px 0px; height: 100%;">
+                    <div style="margin: -24px -24px 0px;">
+                        <div class="pageHeader___Pze-l">
+                            <div class="breadcrumb___3MKYT ant-breadcrumb">
+                                <span>
+                                    <span class="ant-breadcrumb-link">
+                                        <a href="#/">
+                                            首页
+                                        </a>
+                                    </span>
+                                    <span class="ant-breadcrumb-separator">
+                                        /
+                                    </span>
+                                </span>
+                                <span>
+                                    <span class="ant-breadcrumb-link">
+                                        <span to="/dashboard/workplace">
+                                            工作台
+                                        </span>
+                                    </span>
+                                    <span class="ant-breadcrumb-separator">
+                                        /
+                                    </span>
+                                </span>
+                            </div>
+                            <div class="detail___1rfGA">
+                                <div class="main___3Slzs">
+                                    <div class="row___3eawN">
                                     </div>
-                                </a>
-                            </label>
-                        </div>
-                       
-                        <div class="pt-20">
-
-                            <a class="mt-info-login" href="javascript:void(0);">
-                                最近登录：
-                                <span class="j_logtime"><{$userinfo.last_login_time|date='Y-m-d H:i:s','###'}></span>
-                            </a>
-                            <span class="mt-info-login">
-							  登录ip:
-							  <span class="j_logip"><{$userinfo.last_login_ip}></span>
-							  <span class="j_ipmsg"><{$userinfo.location}></span>
-							</span>
-
+                                    <div class="row___3eawN">
+                                        <div class="content___BnbuS">
+                                            <div class="pageHeaderContent___1WBMY">
+                                                <div class="avatar___3yyKI">
+                                                    <span class="ant-avatar ant-avatar-lg ant-avatar-circle ant-avatar-image">
+                                                        <img src="https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png"
+                                                        />
+                                                    </span>
+                                                </div>
+                                                <div class="content___3h7ql">
+                                                    <div class="contentTitle___4Mmy4">
+                                                        早安，曲丽丽，祝你开心每一天！
+                                                    </div>
+                                                    <div>
+                                                        交互专家 | 蚂蚁金服－某某某事业群－某某平台部－某某技术部－UED
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="extraContent___3mck4">
+                                            <div class="extraContent___1Im9T">
+                                                <div class="statItem___axqF9">
+                                                    <p>
+                                                        项目数
+                                                    </p>
+                                                    <p>
+                                                        56
+                                                    </p>
+                                                </div>
+                                                <div class="statItem___axqF9">
+                                                    <p>
+                                                        团队内排名
+                                                    </p>
+                                                    <p>
+                                                        8
+                                                        <span>
+                                                            / 24
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                                <div class="statItem___axqF9">
+                                                    <p>
+                                                        项目访问
+                                                    </p>
+                                                    <p>
+                                                        2,223
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    
                 </div>
-                <!--账号信息 结束-->
-            </div>
-            <!--第一层账户信息 结束-->
-			<div class="manager-domain">
-				<div class="md-title" style="padding-top:12px;">
-					<span>快捷入口</span>
-				</div>
+                <include file="Public/footer" />
 			</div>
-            <!--第二层常用链接 开始-->
-            <div class="manager-link" id="J_managerLink">
-                <ul class="ml-list cl">
-                    <li>
-                        <a class="item" href="/realtime/register">
-                            <i class="item-icon tel"></i>
-                            <span>实时注册</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="item" href="/realtime/recharge">
-                            <i class="item-icon record"></i>
-                            <span>实时充值</span>
-                        </a>
-                    </li>
-                    <li class="last-li">
-                        <a class="item" href="/realtime/pay_list">
-                            <i class="item-icon tousu"></i>
-                            <span>充值查询</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-			
-			<div class="product-detail-desc mt-15">
-				<div class="title mb-5">
-				<span>提示：</span>
-				</div>
-				<p class="pt-5">快捷入口是常用功能入口，后期可根据实际情况进行添加。</p>
-			</div>
-            
-
+        </div>
     </div>
 </div>
-<!-- 管理中心页面  使用的简单版本页脚 -->
-<!-- 页脚部分 开始-->
-<include file="Public/footer" />
-<!-- 页脚部分 结束 -->
-
-<script type="text/javascript" src="__JS__/common.js"></script>
-
 </body>
+
 </html>

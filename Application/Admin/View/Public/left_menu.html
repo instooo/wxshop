@@ -1,26 +1,209 @@
-<div class="manage_left_menu">
-    <a class="leftmenu_top" href="/index.php">
-        <i class="icon_manage iconposition"></i>
-        管理中心
-    </a>
-    <div class="leftmenu_main">
-        <volist name="tree" id="vo">
-            <div class="leftmenulist ">
-                <h1 data-id="ymjy">
-                    <i class="icon_manage lmenu-ymjy"></i>
-                    <{$vo.title}>
-                    <i class="expand-icon "></i>
-                </h1>
-                <if condition="is_array($vo['child'])">
-                    <ul>
-                        <volist name="vo.child" id="v1">
-                            <if condition="$v1['ismenu'] eq 1">
-                                <li class="domainzk"><a href="<{$v1.name}>"><{$v1.title}></a></li>
-                            </if>
-                        </volist>
+<div class="sider___g53Yu ant-layout-sider" style="flex: 0 0 256px; max-width: 256px; min-width: 256px; width: 256px;">
+                <div class="ant-layout-sider-children">
+                    <div class="logo___2J9hf">
+                        <a href="#">
+                            <img alt="logo" src="http://admin.dongguan-group.com/Public/Admin/images/bg/logo.jpg"/>
+                            <h1>
+                               商城管理后台
+                            </h1>
+                        </a>
+                    </div>
+                    <ul class="ant-menu ant-menu-dark ant-menu-root ant-menu-inline" style="padding: 16px 0px; width: 100%;">
+                        <li class="ant-menu-submenu ant-menu-submenu-inline ant-menu-submenu-open ant-menu-submenu-selected">
+                            <div class="ant-menu-submenu-title" style="padding-left: 24px;">
+                                <span>
+                                    <i class="anticon anticon-dashboard">
+                                    </i>
+                                    <span>
+                                        dashboard
+                                    </span>
+                                </span>
+                                <i class="ant-menu-submenu-arrow">
+                                </i>
+                            </div>
+                            <ul class="ant-menu ant-menu-sub ant-menu-inline">
+                                <li class="ant-menu-item ant-menu-item-selected" style="padding-left: 48px;">
+                                    <a href="#/dashboard/analysis">
+                                        <span>
+                                            分析页
+                                        </span>
+                                    </a>
+                                </li>
+                                <li class="ant-menu-item" style="padding-left: 48px;">
+                                    <a href="#/dashboard/monitor">
+                                        <span>
+                                            监控页
+                                        </span>
+                                    </a>
+                                </li>
+                                <li class="ant-menu-item" style="padding-left: 48px;">
+                                    <a href="#/dashboard/workplace">
+                                        <span>
+                                            工作台
+                                        </span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="ant-menu-submenu ant-menu-submenu-inline">
+                            <div class="ant-menu-submenu-title" aria-expanded="false" aria-owns="form$Menu"
+                            aria-haspopup="true" style="padding-left: 24px;">
+                                <span>
+                                    <i class="anticon anticon-form">
+                                    </i>
+                                    <span>
+                                        表单页
+                                    </span>
+                                </span>
+                                <i class="ant-menu-submenu-arrow">
+                                </i>
+                            </div>
+                            <ul class="ant-menu  ant-menu-sub ant-menu-inline ant-menu-hidden">
+                                <li class="ant-menu-item ant-menu-item-selected"  style="padding-left: 48px;">
+                                    <a href="#/form/basic-form">
+                                        <span>
+                                            基础表单
+                                        </span>
+                                    </a>
+                                </li>
+                                <li class="ant-menu-item" style="padding-left: 48px;">
+                                    <a href="#/form/step-form">
+                                        <span>
+                                            分步表单
+                                        </span>
+                                    </a>
+                                </li>
+                                <li class="ant-menu-item" style="padding-left: 48px;">
+                                    <a href="#/form/advanced-form">
+                                        <span>
+                                            高级表单
+                                        </span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="ant-menu-submenu ant-menu-submenu-inline">
+                            <div class="ant-menu-submenu-title" style="padding-left: 24px;">
+                                <span>
+                                    <i class="anticon anticon-table">
+                                    </i>
+                                    <span>
+                                        列表页
+                                    </span>
+                                </span>
+                                <i class="ant-menu-submenu-arrow">
+                                </i>
+                            </div>
+                            <ul class="ant-menu  ant-menu-sub ant-menu-inline ant-menu-hidden" style="">
+                                <li class="ant-menu-item ant-menu-item-selected" style="padding-left: 48px;">
+                                    <a href="#/list/table-list">
+                                        <span>
+                                            查询表格
+                                        </span>
+                                    </a>
+                                </li>
+                                <li class="ant-menu-item" style="padding-left: 48px;">
+                                    <a href="#/list/basic-list">
+                                        <span>
+                                            标准列表
+                                        </span>
+                                    </a>
+                                </li>
+                                <li class="ant-menu-item" style="padding-left: 48px;">
+                                    <a href="#/list/card-list">
+                                        <span>
+                                            卡片列表
+                                        </span>
+                                    </a>
+                                </li>
+                                <li class="ant-menu-submenu ant-menu-submenu-inline">
+                                    <div class="ant-menu-submenu-title" title="搜索列表" style="padding-left: 48px;">
+                                        搜索列表
+                                        <i class="ant-menu-submenu-arrow">
+                                        </i>
+                                    </div>
+                                    <ul class="ant-menu  ant-menu-sub ant-menu-inline ant-menu-hidden"  style="">
+                                        <li class="ant-menu-item" style="padding-left: 72px;">
+                                            <a href="#/list/search/articles">
+                                                <span>
+                                                    搜索列表（文章）
+                                                </span>
+                                            </a>
+                                        </li>
+                                        <li class="ant-menu-item ant-menu-item-selected" style="padding-left: 72px;">
+                                            <a href="#/list/search/projects">
+                                                <span>
+                                                    搜索列表（项目）
+                                                </span>
+                                            </a>
+                                        </li>
+                                        <li class="ant-menu-item" style="padding-left: 72px;">
+                                            <a href="#/list/search/applications">
+                                                <span>
+                                                    搜索列表（应用）
+                                                </span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="ant-menu-submenu ant-menu-submenu-inline ant-menu-submenu-active">
+                            <div class="ant-menu-submenu-title" style="padding-left: 24px;">
+                                <span>
+                                    <i class="anticon anticon-profile">
+                                    </i>
+                                    <span>
+                                        详情页
+                                    </span>
+                                </span>
+                                <i class="ant-menu-submenu-arrow">
+                                </i>
+                            </div>
+                        </li>
+                        <li class="ant-menu-submenu ant-menu-submenu-inline">
+                            <div class="ant-menu-submenu-title" style="padding-left: 24px;">
+                                <span>
+                                    <i class="anticon anticon-check-circle-o">
+                                    </i>
+                                    <span>
+                                        结果页
+                                    </span>
+                                </span>
+                                <i class="ant-menu-submenu-arrow">
+                                </i>
+                            </div>
+                            <ul class="ant-menu  ant-menu-sub ant-menu-inline ant-menu-hidden" style="">
+                                <li class="ant-menu-item"  style="padding-left: 48px;">
+                                    <a href="#/result/success">
+                                        <span>
+                                            成功
+                                        </span>
+                                    </a>
+                                </li>
+                                <li class="ant-menu-item ant-menu-item-selected" style="padding-left: 48px;">
+                                    <a href="#/result/fail">
+                                        <span>
+                                            失败
+                                        </span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="ant-menu-submenu ant-menu-submenu-inline">
+                            <div class="ant-menu-submenu-title" style="padding-left: 24px;">
+                                <span>
+                                    <i class="anticon anticon-warning">
+                                    </i>
+                                    <span>
+                                        异常页
+                                    </span>
+                                </span>
+                                <i class="ant-menu-submenu-arrow">
+                                </i>
+                            </div>
+                        </li>
                     </ul>
-                </if>
+                </div>
             </div>
-        </volist>
-    </div>
-</div>
+            

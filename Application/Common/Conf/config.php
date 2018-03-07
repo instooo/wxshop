@@ -4,8 +4,8 @@ $db = require ('dbconfig.php');
 $config = array(
 		'TMPL_L_DELIM' => '<{',									//修改左右定界符
 		'TMPL_R_DELIM' => '}>',	
-		'MODULE_ALLOW_LIST'    => array('Admin,Api,Third'),
-		'DEFAULT_MODULE' => 'Third',
+		'MODULE_ALLOW_LIST'    => array('Admin,Api'),
+		'DEFAULT_MODULE' => 'Admin',
 		
 		/* Cookie设置 */
 		'COOKIE_EXPIRE'         =>  0,       // Cookie有效期
@@ -17,10 +17,7 @@ $config = array(
 		'IS_NEW'				    =>  true,
 		'APP_SUB_DOMAIN_DEPLOY'=>1, // 开启子域名配置
 		'APP_SUB_DOMAIN_RULES'    =>    array(   
-			'h5.mcv.7477.me'  => 'Admin',
-			'tg.7477.me'   => 'Api',
-			'thirdh5.mcv.7477.me'   => 'Third',
-			'waph5.mcv.7477.me'   => 'Third_wap',
+			'admin.wxshop.me'  => 'Admin',			
 		),
 
 );

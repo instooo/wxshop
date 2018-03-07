@@ -1,60 +1,25 @@
-
-</div>
-<!-- 管理中心页面  使用的简单版本页脚 -->
-<!-- 页脚部分 开始-->
-<div id="footer2016">
-    <!-- 页脚底部部分 -->
-    <div class="footer-bottom">
-        <p>
-
-            <a href="http://www.miitbeian.gov.cn/" rel="nofollow" target="_blank"> Copyright © 2015  深圳游禧科技有限公司旗下7477.com游戏平台 版权所有</a>
-            &nbsp;&nbsp;粤ICP备14083534号
-            <br />
-
-        </p>
-        <p>媒体及商务合作：43173784（QQ）&emsp;&emsp;400电话：400-886-7477</p>
-        
-    </div>
-</div>
-<!-- 页脚部分 结束 -->
-<script type="text/javascript" src="__JS__/common.js"></script>
-<script>
-    $(function () {
-        var url_tag = "<?php echo strtolower(CONTROLLER_NAME.'/'.ACTION_NAME); ?>";
-        $('.leftmenu_main a').each(function () {
-            var _href = $(this).attr('href').toLowerCase();
-            if (_href.indexOf(url_tag) > 0) {
-                $(this).css('color','#4597EA');
-                $(this).parents('.leftmenulist').find('h1').trigger('click');return false;
-            }
-        });
-		$(".manager-tab li").each(function(){		
-            var _href = $(this).find('a').attr('href').toLowerCase();
-            if (_href.indexOf(url_tag) > 0) {
-                $(this).addClass("liactive");
-                $(this).siblings("li").removeClass('liactive');return false;
-            }
-		});
-
-		// 渠道关联
-        $('#channeltype').change(function () {
-            $.ajax({
-                type:'get',
-                dataType:'json',
-                data:{type:$(this).val()},
-                url:'/index.php/Public/getChannelByType',
-                success:function (response) {
-                    if (response.code == 1) {
-                        var _html = '<option value="">请选择一级栏目</option>';
-                        for (var i in response.data) {
-                            _html += '<option value="'+response.data[i].id+'">'+response.data[i].name+'</option>';
-                        }
-                        $('#sub_channel').html(_html);
-                    }
-                }
-            });
-        });
-    });
-</script>
-</body>
-</html>
+				<div class="ant-layout-footer" style="padding: 0px;">
+                    <div class="globalFooter___3uaww">
+                        <div class="links___lgymZ">
+                            <a target="_blank" href="http://pro.ant.design">
+                                Pro 首页
+                            </a>
+                            <a target="_blank" href="#">
+                                <i class="anticon anticon-github">
+                                </i>
+                            </a>
+                            <a target="_blank" href="http://ant.design">
+                                Ant Design
+                            </a>
+                        </div>
+                        <div class="copyright___3hV2q">
+                            <div>
+                                Copyright
+                                <i class="anticon anticon-copyright">
+                                </i>
+                                2018 蚂蚁金服体验技术部出品
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            

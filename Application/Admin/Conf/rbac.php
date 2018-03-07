@@ -1,8 +1,8 @@
 <?php
 /**
  * RBAC配置
- * Created by qinfan qf19910623@gmail.com.
- * Date: 2016/11/2
+ * Created by dengxiaolong 710190573@qq.com.
+ * Date: 2018/03/07
  */
 
 return array(
