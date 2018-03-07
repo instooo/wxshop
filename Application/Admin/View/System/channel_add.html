@@ -1,0 +1,112 @@
+<include file="Public/header" />
+<div id="SiteMapPath">
+    <ul>
+        <li>
+            <a href="/">首页</a>
+        </li>
+        <li>
+            <a href="/System/channel_list">渠道管理</a>
+        </li>
+        <li>增加渠道</li>
+    </ul>
+</div>
+<div id="MainContentDIV">
+    <link rel="stylesheet" type="text/css" href="__CSS__/managerMenu.css">
+    <include file="Public/left_menu" />
+
+    <div id="ManagerRight" class="ManagerRightShow">
+            <div id="count_body" style="margin-top: 20px;">
+                <table class="huitable">
+                    <colgroup>
+                        <col width="10%">
+                        <col>
+                    </colgroup>
+                    <tbody>
+                    <tr><td>上级渠道：</td><td>
+                        <select class="alert_input add_input_pid" name="pid" id="select_sub">
+                        <if condition="$admin">
+                            <option value="0">一级渠道</option>
+                        </if>
+                            <volist name="channel_list" id="vo">
+                                <option value="<{$vo.id}>"><{$vo.name}></option>
+                            </volist>
+                        </select>
+                        <span id="select_tips" style="display: none"></span>
+                    </td></tr>
+                    <tr><td>渠道类型：</td><td>
+                        <select class="alert_input add_input_tid" name="tid">
+                            <volist name="channel_type_list" id="vo">
+                                <option value="<{$vo.tid}>"><{$vo.name}></option>
+                            </volist>
+                        </select>
+                    </td></tr>
+                    <tr><td>渠道名称：</td><td><input type="text" class="manager-input s-input" name="name"  style="width: 300px"></td></tr>
+                    <tr><td>渠道名称简写：</td><td><input type="text" class="manager-input s-input" name="short_name" style="width: 300px"></td></tr>
+                    <tr><td>渠道描述：</td><td><input type="text" class="manager-input s-input" name="description" style="width: 300px"></td></tr>
+					<tr><td>渠道状态：</td><td><input type="radio" name="status" value='1' checked>开启<input type="radio" name="status" value='0'>关闭</td></tr>
+                    <tr>
+                        <td colspan="2">
+                            <input type="button" name="addbtn" id="addbtn" value="增加" class="manager-btn s-btn search-btn">
+                            <span id="tips" style="display: none"></span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+    </div>
+</div>
+<script>
+    $('#addbtn').click(function () {
+        var select_sub =  $('#select_sub').val();
+        if(select_sub<0){
+            $('#select_tips').css('color', 'red').html('您还未选择一级渠道').show();
+            return false;
+        }
+        $('#tips').hide();
+        var pid = $("select[name='pid']").val();		
+        var tid = $("select[name='tid']").val();
+		var name = $("input[name='name']").val();
+		var short_name = $("input[name='short_name']").val();
+		var description = $("input[name='description']").val();
+		var status = $("input[name='status']:checked").val();      		
+        if (pid == '') {
+            $('#tips').css('color', 'red').html('顶级栏目不能为空').show();
+            return false;
+        }
+        if (tid == '') {
+            $('#tips').css('color', 'red').html('渠道类型不能为空').show();
+            return false;
+        }
+        if (name == '') {
+            $('#tips').css('color', 'red').html('广告名称不能为空').show();
+            return false;
+        }
+        if (short_name == '') {
+            $('#tips').css('color', 'red').html('广告标识不能为空').show();
+            return false;
+        }
+        if (description == '') {
+            $('#tips').css('color', 'red').html('广告描述不能为空').show();
+            return false;
+        }
+        $.ajax({
+            type:'post',
+            dataType:'json',
+            data:{pid:pid,tid:tid,name:name,description:description,short_name:short_name,status:status},
+            url:'/System/channel_add',
+            error:function () {
+                layer.msg('未知错误', {icon:5,time:1000});
+            },
+            success:function (data) {
+                if (data.code == 1) {
+                    layer.msg('增加成功', {icon:6,time:1000}, function () {
+                        window.location.href="/System/channel_list";
+                    });
+                }else {
+                    layer.msg(data.msg, {icon:5,time:1000});
+                }
+            }
+        });
+    });
+</script>
+<include file="Public/footer" />

@@ -1,0 +1,65 @@
+<script>
+	function QuickSelect(){
+        var select = $('#quick_select').val();
+        var options = $('#sec_channel').find("option"); // select下所有的option
+        for (var i=0;i<options.length;i++){
+            if (options.eq(i).text()==select){
+                options.eq(i).attr("selected",true);
+            }
+        }
+    }
+	$(document).ready(function(){
+		var sec_data = null;
+		get_typeahead(sec_data);
+		getSecChannel();
+	})
+	function get_typeahead(sec_data){
+		$.fn.typeahead.Constructor.prototype.blur = function() {
+		  var that = this;
+		  setTimeout(function () { that.hide() }, 250);
+		};
+		$('#product_search').typeahead({
+			source:sec_data,
+			items: 10,//最多显示个数
+			highlighter: function (item) {
+				return item;
+			},
+			updater: function (item) {
+				return item;
+			}
+		});	
+	}
+    //获取二级渠道列表
+    function getSecChannel(_this) {
+        var sub_channel;
+	    if(!_this){
+            sub_channel = $('#sub_channel_val').val();
+        }else{
+            sub_channel = $(_this).val();
+        }
+        var sec_channel_val = $("#sec_channel_val").val();
+        $.ajax({
+            type:'post',
+            dataType:'json',
+            data:{sub_channel:sub_channel},
+            url:'/Common/getSecChannel',
+            success:function (data) {
+                if (data.code == 1) {
+                    var seclist = data.seclist;
+                    var _ht = '<option value="">请选择二级栏目</option>';
+                    for (var i in seclist) {
+                        if(sec_channel_val == seclist[i]['id']){
+                            _ht += '<option value="'+seclist[i]['id']+'" selected>'+seclist[i]['short_name']+'</option>';
+                        }else{
+                            _ht += '<option value="'+seclist[i]['id']+'">'+seclist[i]['short_name']+'</option>';
+                        }
+                    }
+                    $('#product_search').html(_ht);
+                }else{
+                    var _ht = '<option value="">请选择二级栏目</option>';
+                    $('#product_search').html(_ht);
+                }
+            }
+        });
+    }
+</script>

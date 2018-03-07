@@ -1,0 +1,284 @@
+<include file="Public/header" />
+<link href="__CSS__/node.css" rel="stylesheet" type="text/css" />
+<div id="SiteMapPath">
+    <ul>
+        <li>
+            <a href="/">首页</a>
+        </li>
+        <li>
+            <a href="/channel/real_reg">权限管理</a>
+        </li>
+        <li>节点列表</li>
+    </ul>
+</div>
+<div id="MainContentDIV">
+    <link rel="stylesheet" type="text/css" href="__CSS__/managerMenu.css">
+    <include file="Public/left_menu" />
+
+    <div id="ManagerRight" class="ManagerRightShow">
+        <div id="count_body" style="margin-top: 20px;">
+            <table class="huitable node_table" id="list-table">
+                <thead>
+                <tr><th>节点名称</th><th>访问链接</th><th>排序</th><th>是否显示</th><th>操作</th></tr>
+                </thead>
+                <tbody>
+                <tr data-id="0">
+                    <td>CPS系统</td>
+                    <td>/</td>
+                    <td>0</td>
+                    <td>否</td>
+                    <td class="handle">
+                        <a class="btn_add" href="javascript:void(0);">添加子节点</a>
+                    </td>
+                </tr>
+                <volist name="node_tree" id="vo">
+                    <tr class="cnode_0 cnode_<{$vo.id}>" data-id="<{$vo.id}>" data-level="<{$vo.level}>">
+                        <td>
+                            <img class="fold_tag unfold" src="__IMAGE__/icon/menu_minus.gif" style="margin-left: 50px">
+                            <a class="title" data="<{$vo.title}>"><{$vo.title}></a>
+                        </td>
+                        <td class="name" data="<{$vo.name}>"><{$vo.name}></td>
+                        <td class="sort" data="<{$vo.sort}>"><{$vo.sort}></td>
+                        <td class="ismenu" data="<{$vo.ismenu}>"><if condition="$vo['ismenu'] eq 1">是<else/>否</if></td>
+                        <td>
+                            <a class="btn_edit" href="javascript:void(0);">编辑</a>
+                            &nbsp;|&nbsp;
+                            <a class="btn_add" href="javascript:void(0);">添加子节点</a>
+                            &nbsp;|&nbsp;
+                            <a class="btn_dele" href="javascript:void(0);">删除</a>
+                        </td>
+                    </tr>
+                    <if condition="is_array($vo['child'])">
+                        <volist name="vo.child" id="v1">
+                            <tr class="cnode_0 cnode_<{$vo.id}> cnode_<{$v1.id}>" data-id="<{$v1.id}>" data-level="<{$v1.level}>">
+                                <td>
+                                    <img class="fold_tag unfold" src="__IMAGE__/icon/menu_minus.gif" style="margin-left: 75px">
+                                    <a class="title" data="<{$v1.title}>"><{$v1.title}></a>
+                                </td>
+                                <td class="name" data="<{$v1.name}>"><{$v1.name}></td>
+                                <td class="sort" data="<{$v1.sort}>"><{$v1.sort}></td>
+                                <td class="ismenu" data="<{$v1.ismenu}>"><if condition="$v1['ismenu'] eq 1">是<else/>否</if></td>
+                                <td>
+                                    <a class="btn_edit" href="javascript:void(0);">编辑</a>
+                                    &nbsp;|&nbsp;
+                                    <a class="btn_add" href="javascript:void(0);">添加子节点</a>
+                                    &nbsp;|&nbsp;
+                                    <a class="btn_dele" href="javascript:void(0);">删除</a>
+                                </td>
+                            </tr>
+                            <if condition="is_array($v1['child'])">
+                                <volist name="v1.child" id="v2">
+                                    <tr class="cnode_0 cnode_<{$vo.id}> cnode_<{$v1.id}>" data-id="<{$v2.id}>" data-level="<{$v2.level}>">
+                                        <td>
+                                            <img class="fold_tag unfold" src="__IMAGE__/icon/menu_minus.gif" style="margin-left: 100px">
+                                            <a class="title" data="<{$v2.title}>"><{$v2.title}></a>
+                                        </td>
+                                        <td class="name" data="<{$v2.name}>"><{$v2.name}></td>
+                                        <td class="sort" data="<{$v2.sort}>"><{$v2.sort}></td>
+                                        <td class="ismenu" data="<{$v2.ismenu}>"><if condition="$v2['ismenu'] eq 1">是<else/>否</if></td>
+                                        <td>
+                                            <a class="btn_edit" href="javascript:void(0);">编辑</a>
+                                            &nbsp;|&nbsp;
+                                            <a class="btn_add" href="javascript:void(0);">添加子节点</a>
+                                            &nbsp;|&nbsp;
+                                            <a class="btn_dele" href="javascript:void(0);">删除</a>
+                                        </td>
+                                    </tr>
+                                </volist>
+                            </if>
+                        </volist>
+                    </if>
+                </volist>
+                </tbody>
+            </table>
+        </div>
+        <div class="product-detail-desc mt-15">
+            <div class="title mb-5">
+                <span>节点列表说明：</span>
+            </div>
+            <p class="pt-5"><span  style="font-weight:bold;">节点列表说明：</span>节点列表，对于当前账号显示节点的详细信息，节点列表会展示节点名称，访问链接，是否开启等信息。</p>
+            <p class="pt-5"><span style="font-weight:bold;">使用者说明：</span>使用者可以根据通过点击编辑字样对节点进行修改或点击添加子节点字样添加子节点。</p>
+        </div>
+    </div>
+</div>
+
+<div id="add_alert_tmp" style="display: none">
+    <div class="form_content" style="padding: 20px;">
+        <input type="hidden" class="add_input_id" value="" />
+        <table width="100%">
+            <tr><td>节点名称</td><td><input type="text" class="alert_input add_input_title" /></td></tr>
+            <tr><td>访问链接</td><td><input type="text" class="alert_input add_input_name" /></td></tr>
+            <tr><td>排序</td><td><input type="text" class="alert_input add_input_sort" value="0" /></td></tr>
+            <tr><td>是否显示</td><td><select class="alert_input add_input_ismenu"><option value="0">否</option><option value="1">是</option></select></td></tr>
+            <tr><td></td><td><a class="subBtn">提交</a></td></tr>
+        </table>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.node_table tr').hover(function () {
+            $(this).css('background-color', '#f5faff');
+        },function () {
+            $(this).css('background-color', '#FFFFFF');
+        });
+        //节点展开收起
+        $('.node_table .fold_tag').click(function () {
+            var _this_tr = $(this).parents('tr');
+            var data_id = _this_tr.attr('data-id');
+            if ($(this).hasClass('unfold')) {
+                $(this).removeClass('unfold').addClass('fold').attr('src', '__IMAGE__/icon/menu_plus.gif');
+                _this_tr.siblings('.cnode_'+data_id).hide();
+            }else {
+                $(this).removeClass('fold').addClass('unfold').attr('src', '__IMAGE__/icon/menu_minus.gif');
+                _this_tr.siblings('.cnode_'+data_id).show();
+            }
+        });
+        //编辑节点输入框
+        $('.node_table .btn_edit').click(function () {
+            editNode(this);
+        });
+        //添加子节点
+        $('.node_table .btn_add').click(function () {
+            var _this_tr = $(this).parents('tr');
+            $('#add_alert_tmp .add_input_id').attr('value', _this_tr.attr('data-id'));
+            var _form_id = 'add_form_' + Math.ceil(Math.random()*1000);
+            var _html = '<div id="'+_form_id+'" class="add_node_div">' + $('#add_alert_tmp').html() + '</div>';
+            layer.open({
+                type: 1,
+                title: '添加节点',
+                skin: 'layui-layer', //加上边框
+                area: ['420px', '300px'], //宽高
+                content: _html
+            });
+            $('#'+_form_id+' .subBtn').click(function () {
+                doAddNode(this);
+            });
+        });
+        //删除节点
+        $('.node_table .btn_dele').click(function () {
+            var _this = this;
+            layer.confirm('确定要删除该节点？', {
+                btn: ['确定','取消']
+            }, function(){
+                doDeleNode(_this);
+            });
+        });
+    });
+
+
+    //编辑节点方法
+    function editNode(_this) {
+        if ($(_this).hasClass('do_edit_btn')) {
+            doEditNode(_this);
+        }else {
+            var _this_tr = $(_this).parents('tr');
+            var id = _this_tr.attr('data-id');
+            var title = _this_tr.find('.title').attr('data');
+            var name = _this_tr.find('.name').attr('data');
+            var sort = _this_tr.find('.sort').attr('data');
+            var ismenu = _this_tr.find('.ismenu').attr('data');
+
+            _this_tr.find('.title').html('<input type="text" class="edit_input input_title" value="'+title+'" />');
+            _this_tr.find('.name').html('<input type="text" class="edit_input input_name" value="'+name+'" />');
+            _this_tr.find('.sort').html('<input type="text" class="edit_input input_sort" value="'+sort+'" />');
+            _this_tr.find('.ismenu').html('<select class="edit_input input_ismenu"><option value="1">是</option><option value="0">否</option></select>');
+
+            _this_tr.find('.input_ismenu option[value="'+ismenu+'"]').attr('selected', true);
+            $(_this).addClass('do_edit_btn').html('提交');
+        }
+    }
+    function doEditNode(_this) {
+        var _this_tr = $(_this).parents('tr');
+        var id = _this_tr.attr('data-id');
+        if (id == '') return false;
+        var title = _this_tr.find('.input_title').val();
+        var name = _this_tr.find('.input_name').val();
+        var sort = _this_tr.find('.input_sort').val();
+        var ismenu = _this_tr.find('.input_ismenu').val();
+        if (title == '' || name == '' || sort == '') {
+            layer.msg('数据不能为空', {icon:5,time:1000});
+            return false;
+        }
+        $.ajax({
+            type:'post',
+            dataType:'json',
+            data:{id:id,title:title,name:name,sort:sort,ismenu:ismenu},
+            url:'/Permission/updateNode',
+            error:function () {
+                layer.msg('未知错误', {icon:5,time:1000});
+            },
+            success:function (data) {
+                if (data.code == 1) {
+                    layer.msg('修改成功', {icon:6,time:1000}, function () {
+                        $(_this).removeClass('do_edit_btn').html('编辑');
+                        _this_tr.find('.title').html(title).attr('data', title);
+                        _this_tr.find('.name').html(name).attr('data', name);
+                        _this_tr.find('.sort').html(sort).attr('data', sort);
+                        _this_tr.find('.ismenu').html((ismenu==1)?'是':'否').attr('data', ismenu);
+                    });
+                }else {
+                    layer.msg(data.msg, {icon:5,time:1000});
+                }
+            }
+        });
+    }
+
+    //增加节点
+    function doAddNode(_this) {
+        var form_content = $(_this).parents('.form_content');
+        var pid = form_content.find('.add_input_id').val();
+        if (pid == '') return false;
+        var title = form_content.find('.add_input_title').val();
+        var name = form_content.find('.add_input_name').val();
+        var sort = form_content.find('.add_input_sort').val();
+        var ismenu = form_content.find('.add_input_ismenu').val();
+        if (title == '' || name == '' || sort == '' || ismenu == '') {
+            layer.msg('数据不能为空', {icon:5,time:1000});
+            return false;
+        }
+        $.ajax({
+            type:'post',
+            dataType:'json',
+            data:{pid:pid,title:title,name:name,sort:sort,ismenu:ismenu},
+            url:'/Permission/addNode',
+            error:function () {
+                layer.msg('未知错误', {icon:5,time:1000});
+            },
+            success:function (data) {
+                if (data.code == 1) {
+                    layer.msg('添加成功', {icon:6,time:1000}, function () {location.reload();});
+                }else {
+                    layer.msg(data.msg, {icon:5,time:1000});
+                }
+            }
+        });
+    }
+
+    //删除节点
+    function doDeleNode(_this) {
+        var _this_tr = $(_this).parents('tr');
+        var id = _this_tr.attr('data-id');
+        if (id == '') return false;
+        $.ajax({
+            type:'post',
+            dataType:'json',
+            data:{id:id},
+            url:'/Permission/deleteNode',
+            error:function () {
+                layer.msg('未知错误', {icon:5,time:1000});
+            },
+            success:function (data) {
+                if (data.code == 1) {
+                    layer.msg('删除成功', {icon:6,time:1000}, function () {
+                        _this_tr.siblings('.cnode_'+id).remove();
+                        _this_tr.remove();
+                    });
+                }else {
+                    layer.msg(data.msg, {icon:5,time:1000});
+                }
+            }
+        });
+    }
+</script>
+<include file="Public/footer" />

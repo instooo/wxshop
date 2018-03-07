@@ -1,0 +1,26 @@
+<div class="manage_left_menu">
+    <a class="leftmenu_top" href="/index.php">
+        <i class="icon_manage iconposition"></i>
+        管理中心
+    </a>
+    <div class="leftmenu_main">
+        <volist name="tree" id="vo">
+            <div class="leftmenulist ">
+                <h1 data-id="ymjy">
+                    <i class="icon_manage lmenu-ymjy"></i>
+                    <{$vo.title}>
+                    <i class="expand-icon "></i>
+                </h1>
+                <if condition="is_array($vo['child'])">
+                    <ul>
+                        <volist name="vo.child" id="v1">
+                            <if condition="$v1['ismenu'] eq 1">
+                                <li class="domainzk"><a href="<{$v1.name}>"><{$v1.title}></a></li>
+                            </if>
+                        </volist>
+                    </ul>
+                </if>
+            </div>
+        </volist>
+    </div>
+</div>

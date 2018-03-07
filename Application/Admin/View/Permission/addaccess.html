@@ -1,0 +1,83 @@
+<input type="hidden" id="roleid" value="<{$roleinfo.id}>" />
+<table class="node_table" width="100%">
+    <tr>
+        <td><span style="margin-left: 20px"><input type="checkbox" class="select_all" />全选</span></td>
+    </tr>
+    <volist name="nodetree" id="vo">
+        <tr class="pnode_<{$vo.id}> cnode2_<{$vo.id}> cnode3_<{$vo.id}>" data-id="<{$vo.id}>" rid="<{$vo.id}>">
+            <td><span style="margin-left: <{$vo['level']*40+40}>px"><input type="checkbox" level="1" class="node_check check-level1" value="<{$vo.id}>" <if condition="$vo['hv'] eq 1">checked</if> /><{$vo.title}></span></td>
+        </tr>
+        <if condition="is_array($vo['child'])">
+            <volist name="vo.child" id="v1">
+                <tr class="pnode_<{$vo.id}> pnode_<{$v1.id}> cnode3_<{$vo.id}>" data-id="<{$v1.id}>" rid="<{$vo.id}>">
+                    <td><span style="margin-left: <{$v1['level']*40+40}>px"><input type="checkbox" level="2" class="node_check check-level2" value="<{$v1.id}>" <if condition="$v1['hv'] eq 1">checked</if> /><{$v1.title}></span></td>
+                </tr>
+                <if condition="is_array($v1['child'])">
+                    <tr class="pnode_<{$vo.id}> pnode_<{$v1.id}>" data-id="<{$v2.id}>" rid="<{$vo.id}>">
+                        <td>
+                            <volist name="v1.child" id="v2">
+                                <if condition="$key eq 0">
+                                    <span style="margin-left: <{$v2['level']*40+40}>px"><input type="checkbox" level="3" class="node_check check-level3" <if condition="$v2['hv'] eq 1">checked</if> /><{$v2.title}></span>
+                                    <else />
+                                    <span style="margin-left: 20px"><input type="checkbox" level="3" class="node_check check-level3" value="<{$v2.id}>" <if condition="$v2['hv'] eq 1">checked</if> /><{$v2.title}></span>
+                                </if>
+                            </volist>
+                        </td>
+                    </tr>
+                </if>
+            </volist>
+        </if>
+    </volist>
+    <tr><td align="center"><a class="btn_sub save_btn" href="javascript:void(0);" style="margin-top: 20px;">保存</a></td></tr>
+    <tr><td>&nbsp;</td></tr>
+</table>
+
+<script>
+    $(function () {
+        $('.node_table .node_check').click(function () {
+            var this_tr = $(this).parents('tr');
+            var this_id = $(this).val();
+            var rid = this_tr.attr('rid');
+            var level = $(this).attr('level');
+            var isChecked = $(this).prop("checked");
+            $('.pnode_'+this_id).find('.node_check').prop('checked', isChecked);
+            if (isChecked) {
+                this_tr.prevAll('.cnode'+level+'_'+rid).find('.node_check').prop('checked', isChecked);
+            }
+        });
+        $('.select_all').click(function () {
+            $('.node_table .node_check').prop('checked', $(this).prop("checked"));
+        });
+        $('.save_btn').click(function () {
+            var roleid = $('#roleid').val();
+            if (roleid == '') {
+                layer.msg('参数错误', {icon:5,time:1000});
+                return false;
+            }
+            var nodeid_str = '';
+            $('.node_table .node_check').each(function () {
+                if ($(this).prop("checked")) {
+                    nodeid_str += (nodeid_str=='')?$(this).val():','+$(this).val();
+                }
+            });
+            $.ajax({
+                type:'post',
+                dataType:'json',
+                data:{roleid:roleid,nodeid_str:nodeid_str},
+                url:'/Permission/saveAccess',
+                error:function () {
+                    layer.msg('未知错误', {icon:5,time:1000});
+                },
+                success:function (data) {
+                    if (data.code == 1) {
+                        layer.msg('保存成功', {icon:6,time:1000}, function () {
+                            $('.layui-layer-close').trigger('click');
+                        });
+                    }else {
+                        layer.msg(data.msg, {icon:5,time:1000});
+                    }
+                }
+            });
+        });
+    });
+</script>

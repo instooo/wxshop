@@ -1,0 +1,31 @@
+<div id="header2016">
+  <style>
+    .nav-user {
+      cursor: default;
+      margin-left: 20px;
+      width: 310px;
+      height: 72px;
+      line-height: 72px;
+      float: left;
+      display: inline-block;
+    }
+  </style>
+<h1 class="hide">7477游禧科技</h1>
+<!-- 导航菜单栏-->
+<div class="header-nav">
+  <div class="wide1190 cl header-nav-content">
+    <a class="logo" href="/" style="background-image:url(__IMAGE__/bg/logo.jpg);"></a>
+    <if condition="$_SESSION['user']"><a class="nav-user">你好(<{$_SESSION.user}>)</a></if>
+    <ul class="main-nav-wrapper cl" id="J_mainNavWrapper">
+      <li>
+        <a href="http://www.7477.com" target="_blank" class="nav-menu current" id="J_mainMenu_sy">平台首页</a>
+      </li>
+      <li>
+        <a href="http://bbs.7477.com/" target="_blank" class="nav-menu" id="J_mainMenu_ymzc">论坛</a>       
+      </li>
+      <if condition="$_SESSION['user']"><li><a href="/public/loginout" class="nav-menu">退出</a></li></if>
+  
+</ul>
+</div>
+</div>
+</div>

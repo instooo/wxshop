@@ -1,0 +1,24 @@
+<IfModule mod_rewrite.c>
+
+
+RewriteEngine on
+
+
+RewriteCond %{REQUEST_FILENAME} !-d
+
+
+RewriteCond %{REQUEST_FILENAME} !-f
+
+
+RewriteRule ^(.*)$ index.php/$1 [QSA,PT,L]
+
+
+RewriteRule ^/?article/post_(\d+)\.html?$ articles?aid=$1 [L]
+
+RewriteCond %{http_host} ^7477.com [NC]
+
+RewriteRule ^(.*)$ http://www.7477.com/$1 [L,R=301]
+
+</IfModule>
+
+
