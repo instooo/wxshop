@@ -18,8 +18,15 @@ function is_iphone(){
 		var bIsAndroid = sUserAgent.match(/android/i) == "android";    
 		var bIsCE = sUserAgent.match(/windows ce/i) == "windows ce";    
 		var bIsWM = sUserAgent.match(/windows mobile/i) == "windows mobile";    
-		if (bIsIpad || bIsIphoneOs || bIsMidp || bIsUc7 || bIsUc || bIsAndroid || bIsCE || bIsWM ){			
+		if (bIsIpad || bIsIphoneOs || bIsMidp || bIsUc7 || bIsUc || bIsAndroid || bIsCE || bIsWM ){	
+			fangda();
 			$(".ant-layout-sider").hide();
+			/*去掉手机滑动默认行为*/
+			$('body').css({				
+				"overflow-y": "hidden",
+				"height": "100%",
+				"position": "fixed"
+			});
 			$(".trigger___3Dsd1").unbind("click",caidan_a);
 			$(".trigger___3Dsd1").bind("click",caidan_b);			
 		}else{				
@@ -28,7 +35,7 @@ function is_iphone(){
 			$(".trigger___3Dsd1").unbind("click",caidan_b);
 			$(".trigger___3Dsd1").bind("click",caidan_a);
 		}   
-	
+		$(".drawer-bg").remove();
 }
 function caidan_b(){
 	$(".ant-layout-sider").toggle();
@@ -38,6 +45,17 @@ function caidan_b(){
 function caidan_a(){
 	var wid=$(".ant-layout-sider").width();
 	if(wid>250){
+		shuoxiao();			
+	}else{
+		fangda();
+	}		
+	$(".ant-menu-root").toggleClass("ant-menu-inline-collapsed");
+	$(".ant-menu-root").toggleClass("ant-menu-vertical");
+	$(".ant-menu-root").toggleClass("ant-menu-inline");
+	$(".ant-menu-submenu").toggleClass("ant-menu-submenu-inline");
+	$(".ant-menu-submenu").toggleClass("ant-menu-submenu-vertical");
+}
+function shuoxiao(){
 		$(".ant-menu-submenu-selected .ant-menu-sub").addClass("ant-menu-hidden");
 		$(".ant-layout-sider").css({
 			"flex": "0 0 80px",
@@ -46,31 +64,27 @@ function caidan_a(){
 			"width": "80px"			
 		});		
 		$(".ant-menu-submenu-title").unbind("click",menu_tab);
-		$('.ant-menu-submenu-title').bind({'mouseenter':min_menu_tab,'mouseleave':min_menu_tab_leave,});	
-	}else{
-		$(".ant-menu-submenu-selected .ant-menu-sub").removeClass("ant-menu-hidden");
-		$(".ant-layout-sider").css({
-			"flex": "0 0 256px",
-			"max-width":"256px", 
-			"min-width":"256px",
-			"width": "256px"			
-		});	
-		$('.ant-menu-submenu-title').bind('click',menu_tab);
-		$('.ant-menu-submenu-title').unbind({'mouseenter':min_menu_tab,'mouseleave':min_menu_tab_leave,});	
-	}		
-	$(".ant-menu-root").toggleClass("ant-menu-inline-collapsed");
-	$(".ant-menu-root").toggleClass("ant-menu-vertical");
-	$(".ant-menu-root").toggleClass("ant-menu-inline");
-	$(".ant-menu-submenu").toggleClass("ant-menu-submenu-inline");
-	$(".ant-menu-submenu").toggleClass("ant-menu-submenu-vertical");
+		$(".ant-menu-submenu-title").unbind({'mouseenter':min_menu_tab,'mouseleave':min_menu_tab_leave,});
+		$('.ant-menu-submenu-title').bind({'mouseenter':min_menu_tab,'mouseleave':min_menu_tab_leave});	
 }
-
+function fangda(){
+	$(".ant-menu-submenu-selected .ant-menu-sub").removeClass("ant-menu-hidden");
+	$(".ant-layout-sider").css({
+		"flex": "0 0 256px",
+		"max-width":"256px", 
+		"min-width":"256px",
+		"width": "256px"			
+	});		
+	$('.ant-menu-submenu-title').unbind({'mouseenter':min_menu_tab,'mouseleave':min_menu_tab_leave});	
+	$('.ant-menu-submenu-title').unbind('click',menu_tab);	
+	$('.ant-menu-submenu-title').bind('click',menu_tab);		
+}
 //菜单的展开和收缩
-function menu_tab(){
+function menu_tab(){	
 	$(this).parent().siblings().find(".ant-menu-sub").addClass("ant-menu-hidden");
-	$(this).parent().siblings().removeClass("ant-menu-submenu-selected");
+	$(this).parent().siblings().removeClass("ant-menu-submenu-selected");	
 	$(this).siblings("ul").toggleClass("ant-menu-hidden");
-	$(this).parent().toggleClass("ant-menu-submenu-selected");
+	$(this).parent().toggleClass("ant-menu-submenu-selected");	
 }
 //菜单缩小后的操作
 function min_menu_tab(){
