@@ -21,12 +21,6 @@ function is_iphone(){
 		if (bIsIpad || bIsIphoneOs || bIsMidp || bIsUc7 || bIsUc || bIsAndroid || bIsCE || bIsWM ){	
 			fangda();
 			$(".ant-layout-sider").hide();
-			/*去掉手机滑动默认行为*/
-			$('body').css({				
-				"overflow-y": "hidden",
-				"height": "100%",
-				"position": "fixed"
-			});
 			$(".trigger___3Dsd1").unbind("click",caidan_a);
 			$(".trigger___3Dsd1").bind("click",caidan_b);			
 		}else{				
