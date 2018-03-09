@@ -359,159 +359,165 @@ class PermissionController extends CommonController {
     public function memberList() {
         $model	=D('UserView');
         $count = $model->count();
-        $page = new \Think\Page($count, 20);
-        $list = $model->order('create_time desc')->limit($page->firstRow.','.$page->listRows)->select();
+        $page = new \Think\Page($count, 1);
+        $list = $model->order('create_time desc')->limit($page->firstRow.','.$page->listRows)->select();		
         $this->assign('list', $list);
-        $this->assign('pagebar', $page->show());
-
-        //角色列表
-        $this->assign('rolelist',M('role')->where("status=1")->order('create_time desc')->select());
+		$page -> setConfig('prev','<');
+		$page -> setConfig('next','>');		
+        $this->assign('pagebar', $page->show());        
         $this->display();
     }
     /**
      * 添加管理员
      * */
     public function memberAdd() {
-        $ret = array('code'=>-1,'msg'=>'');
-        do{
-            if (!IS_POST) {
-                $ret['code'] = -1;
-                $ret['msg'] = '非法请求';
-                break;
-            }
-            $data = array();
-            $data['username'] = I('post.username', '', 'htmlspecialchars');
-            $data['password'] = I('post.password', '', 'htmlspecialchars');
-            $data['nickname'] = I('post.nickname', '', 'htmlspecialchars');
-            $data['status'] = I('post.status', 1, 'intval');
-            $role = I('post.role', '', 'intval');
-            if (!is_numeric($role) || !$data['username'] || !$data['password'] || !$data['nickname']) {
-                $ret['code'] = -2;
-                $ret['msg'] = '参数错误';
-                break;
-            }
-            if (!preg_match('/^[a-zA-Z0-9]{6,20}$/',$data['password'])) {
-                $ret['code'] = -3;
-                $ret['msg'] = '用户名应该为6到20位字母和数字';
-                break;
-            }
-            $l = M('user','mygame_','DB_CONFIG_ZHU')->where(array('username'=>$data['username']))->find();
-            if ($l) {
-                $ret['code'] = -4;
-                $ret['msg'] = '帐号重复';
-                break;
-            }
-            $time = time();
-            $data['password'] = md5($data['password']);
-            $data['email'] = $data['username'].'@7477.com';
-            $data['realname'] = $data['username'];
-            $data['create_time'] = $time;
-            $data['update_time'] = $time;
-            $data['last_login_time'] = $time;
-            $data['bind_account'] = '';
-            $data['remark'] = '';
-            $data['info'] = '';
-            $rs = M('user','mygame_','DB_CONFIG_ZHU')->add($data);
-            if (!$rs) {
-                $ret['code'] = -5;
-                $ret['msg'] = '添加失败';
-                break;
-            }
+		if (!IS_POST) {
+			//角色列表
+			$this->assign('rolelist',M('role')->where("status=1")->order('create_time desc')->select());
+            $this->display();
+        }else{
+			$ret = array('code'=>-1,'msg'=>'');
+			do{            
+				$data = array();
+				$data['username'] = I('post.username', '', 'htmlspecialchars');
+				$data['password'] = I('post.password', '', 'htmlspecialchars');
+				$data['nickname'] = I('post.nickname', '', 'htmlspecialchars');
+				$data['status'] = I('post.status', 1, 'intval');
+				$role = I('post.role', '', 'intval');
+				if (!is_numeric($role) || !$data['username'] || !$data['password'] || !$data['nickname']) {
+					$ret['code'] = -2;
+					$ret['msg'] = '参数错误';
+					break;
+				}
+				if (!preg_match('/^[a-zA-Z0-9]{6,20}$/',$data['password'])) {
+					$ret['code'] = -3;
+					$ret['msg'] = '密码应该为6到20位字母和数字';
+					break;
+				}
+				$l = M('user')->where(array('username'=>$data['username']))->find();
+				if ($l) {
+					$ret['code'] = -4;
+					$ret['msg'] = '帐号重复';
+					break;
+				}
+				$time = time();
+				$data['password'] = md5($data['password']);
+				$data['email'] = $data['username'].'@7477.com';
+				$data['realname'] = $data['username'];
+				$data['create_time'] = $time;
+				$data['update_time'] = $time;
+				$data['last_login_time'] = $time;
+				$data['bind_account'] = '';
+				$data['remark'] = '';
+				$data['info'] = '';
+				$rs = M('user')->add($data);
+				if (!$rs) {
+					$ret['code'] = -5;
+					$ret['msg'] = '添加失败';
+					break;
+				}
 
-            //添加角色
-            if ($role) {
-                $roledata = array();
-                $roledata['role_id'] = $role;
-                $roledata['user_id'] = $rs;
-                $rr = M('role_user','mygame_','DB_CONFIG_ZHU')->add($roledata);
-                if (!$rr) {
-                    $ret['code'] = -6;
-                    $ret['msg'] = '添加角色失败';
-                    break;
-                }
-            }
-            $ret['code'] = 1;
-            $ret['msg'] = '添加成功';
-            break;
-        }while(0);
-        exit(json_encode($ret));
+				//添加角色
+				if ($role) {
+					$roledata = array();
+					$roledata['role_id'] = $role;
+					$roledata['user_id'] = $rs;
+					$rr = M('role_user')->add($roledata);
+					if (!$rr) {
+						$ret['code'] = -6;
+						$ret['msg'] = '添加角色失败';
+						break;
+					}
+				}
+				$ret['code'] = 1;
+				$ret['msg'] = '添加成功';
+				break;
+			}while(0);
+			exit(json_encode($ret));	
+		}        
     }
 
     /**
      * 修改管理员
      * */
     public function memberEdit() {
-        $ret = array('code'=>-1,'msg'=>'');
-        do{
-            if (!IS_POST) {
-                $ret['code'] = -1;
-                $ret['msg'] = '非法请求';
-                break;
-            }
-            $id = I('post.id', '', 'htmlspecialchars');
-            $password = I('post.password', '', 'htmlspecialchars');
-            $nickname = I('post.nickname', '', 'htmlspecialchars');
-            $role = I('post.role');
-            $status = I('post.status');
-            if (!is_numeric($id)) {
-                $ret['code'] = -2;
-                $ret['msg'] = '参数错误';
-                break;
-            }
-            if ($password && !preg_match('/^[a-zA-Z0-9]{6,20}$/',$password)) {
-                $ret['code'] = -3;
-                $ret['msg'] = '密码应该为6到20位字母和数字';
-                break;
-            }
-            //更新帐号信息
-            $data = array();
-            if ($password) $data['password'] = md5($password);
-            if ($nickname) $data['nickname'] = $nickname;
-            if (is_numeric($status)) $data['status'] = $status;
-            if ($data) {
-                $res = M('user','mygame_','DB_CONFIG_ZHU')->where(array('id'=>$id))->save($data);
-                if (false === $res) {
-                    $ret['code'] = -4;
-                    $ret['msg'] = '帐号修改失败';
-                    break;
-                }
-            }
-
-            //更新角色信息
-            if ($role) {
-                $roleinfo = M('role','mygame_','DB_CONFIG_ZHU')->where(array('user_id'=>$id))->find();
-                if ($roleinfo) {
-                    $rdata = array();
-                    $rdata['role_id'] = $role;
-                    $role_rs = M('role_user','mygame_','DB_CONFIG_ZHU')->where(array('user_id'=>$id))->save($rdata);
-                    if (false === $role_rs) {
-                        $ret['code'] = -5;
-                        $ret['msg'] = '角色修改失败';
-                        break;
-                    }
-                }else {
-                    $rdata = array();
-                    $rdata['role_id'] = $role;
-                    $rdata['user_id'] = $id;
-                    $role_rs = M('role_user','mygame_','DB_CONFIG_ZHU')->add($rdata);
-                    if (false === $role_rs) {
-                        $ret['code'] = -6;
-                        $ret['msg'] = '角色修改失败';
-                        break;
-                    }
-                }
-            }
-            $ret['code'] = 1;
-            $ret['msg'] = '更新成功';
-            break;
-        }while(0);
-        exit(json_encode($ret));
+		if (!IS_POST) {			
+			$id = I('get.id', '', 'htmlspecialchars');			
+			$res = M('user a')
+				->join("wxshop_role_user b on a.id=b.user_id ")
+				->where(array('id'=>$id))
+				->find();		
+			$this->assign('info',$res);	
+			$this->assign('rolelist',M('role')->where("status=1")->order('create_time desc')->select());
+            $this->display();
+        }else{
+			$ret = array('code'=>-1,'msg'=>'');
+			do{   				
+				$id = I('post.id', '', 'htmlspecialchars');
+				$password = I('post.password', '', 'htmlspecialchars');
+				$nickname = I('post.nickname', '', 'htmlspecialchars');
+				$role = I('post.role');
+				$status = I('post.status');
+				if (!is_numeric($id)) {
+					$ret['code'] = -2;
+					$ret['msg'] = '参数错误';
+					break;
+				}
+				if ($password && !preg_match('/^[a-zA-Z0-9]{6,20}$/',$password)) {
+					$ret['code'] = -3;
+					$ret['msg'] = '密码应该为6到20位字母和数字';
+					break;
+				}
+				//更新帐号信息
+				$data = array();
+				if ($password) $data['password'] = md5($password);
+				if ($nickname) $data['nickname'] = $nickname;
+				if (is_numeric($status)) $data['status'] = $status;
+				if ($data) {
+					$res = M('user')->where(array('id'=>$id))->save($data);
+					if (false === $res) {
+						$ret['code'] = -4;
+						$ret['msg'] = '帐号修改失败';
+						break;
+					}
+				}
+				//更新角色信息
+				if ($role) {
+					$roleinfo = M('role_user')->where(array('user_id'=>$id))->find();
+					if ($roleinfo) {
+						$rdata = array();
+						$rdata['role_id'] = $role;
+						$role_rs = M('role_user')->where(array('user_id'=>$id))->save($rdata);
+						if (false === $role_rs) {
+							$ret['code'] = -5;
+							$ret['msg'] = '角色修改失败';
+							break;
+						}
+					}else {
+						$rdata = array();
+						$rdata['role_id'] = $role;
+						$rdata['user_id'] = $id;
+						$role_rs = M('role_user')->add($rdata);
+						if (false === $role_rs) {
+							$ret['code'] = -6;
+							$ret['msg'] = '角色修改失败';
+							break;
+						}
+					}
+				}
+				$ret['code'] = 1;
+				$ret['msg'] = '更新成功';
+				break;
+			}while(0);
+			exit(json_encode($ret));	
+		}
+       
     }
 
     /**
      * 删除管理员
      */
-    public function memberDelete() {
+    public function memberDelete() {		
         $ret = array('code'=>-1,'msg'=>'');
         do{
             if (!IS_POST) {
@@ -525,7 +531,7 @@ class PermissionController extends CommonController {
                 $ret['msg'] = '参数错误';
                 break;
             }
-            $info = M('user','mygame_','DB_CONFIG_ZHU')->where(array('id'=>$id))->find();
+            $info = M('user')->where(array('id'=>$id))->find();
             if (!$info) {
                 $ret['code'] = -3;
                 $ret['msg'] = '帐号不存在';
@@ -537,17 +543,12 @@ class PermissionController extends CommonController {
                 break;
             }
             //删除帐号
-            $res = M('user','mygame_','DB_CONFIG_ZHU')->where(array('id'=>$id))->delete();
+            $res = M('user')->where(array('id'=>$id))->delete();
             if (!$res) {
                 $ret['code'] = -5;
                 $ret['msg'] = '帐号删除失败';
                 break;
             }
-            //删除角色列表
-            $rr = M('role_user','mygame_','DB_CONFIG_ZHU')->where(array('user_id'=>$id))->delete();
-            //删除channel
-            M('user_channel','mygame_','DB_CONFIG_ZHU')->where(array('user_id'=>$id))->delete();
-
             $ret['code'] = 1;
             $ret['msg'] = '删除成功';
             break;
