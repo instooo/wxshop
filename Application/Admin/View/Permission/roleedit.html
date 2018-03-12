@@ -1,0 +1,85 @@
+<html>
+<head>
+<title></title>
+</head>
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/layui/css/layui.css" />
+<script type="text/javascript" src="__PUBLIC__/layui/layui.js"></script>
+<script type="text/javascript" src="__JS__/jquery-3.3.1.min.js"></script>
+<style>
+.textright{
+text-align:left;
+width:40px;
+}
+</style> 
+<body>
+<form class="layui-form" style="padding:20px;" onSubmit = "return false;">
+<div class="ant-form-item "> 
+	<input type="hidden" name="id" value="<{$info.id}>">
+	<div class="layui-form-item">
+		<label class="layui-form-label textright">名称</label>
+		<div class="layui-input-block" style="margin-left:70px;">
+			<input type="text" name="title" lay-verify="required" lay-verType="tips" placeholder="请输入姓名" autocomplete="off" class="layui-input" value="<{$info.name}>">
+		</div>
+	</div>		
+	<div class="layui-form-item">
+		<label class="layui-form-label textright">状态</label>
+		<div class="layui-input-block" style="margin-left:70px;">
+			<select name="status" lay-verify="required">
+				<option value="1" <if condition="$info['status'] eq 1">selected</if>>开启</option>				
+				<option value="0" <if condition="$info['status'] eq 0">selected</if>>关闭</option>										
+			</select>
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<div>
+			<button class="layui-btn" lay-filter="demo1" style="width:100%;background-color: #1890ff;border-color: #1890ff;">立即提交</button>
+		</div>
+	</div>
+</div>
+</form>
+<script>
+//一般直接写在一个js文件中
+layui.use(['layer', 'form'], function(){
+  var layer = layui.layer
+  ,form = layui.form;
+});
+$(function(){
+	$('.layui-btn').click(function (e) {
+		doEditRole(this);	
+	});
+})
+
+//增加用户
+function doEditRole(_this) {
+	var id = $("input[name='id']").val();		
+	var name = $("input[name='title']").val();	
+	var status = $("select[name='status']").val();
+	if (name == '') {		
+		layer.msg('数据不能为空', {icon:5,time:1000});
+		return false;
+		
+	}
+	$.ajax({
+		type:'post',
+		dataType:'json',
+		data:{id:id,name:name,status:status},
+		url:'/Permission/roleedit',
+		error:function () {
+			layer.msg('未知错误', {icon:5,time:1000});
+		},
+		success:function (data) {
+			if (data.code == 1) {
+				layer.msg('修改成功', {icon:6,time:1000},function(){
+					var index = parent.layer.getFrameIndex(window.name);
+					parent.layer.close(index);
+					window.parent.location.reload();
+				});
+			}else {
+				layer.msg(data.msg, {icon:5,time:1000});
+			}
+		}
+	});
+}
+</script> 
+</body>
+<html>

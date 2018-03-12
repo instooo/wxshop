@@ -151,11 +151,11 @@ class PermissionController extends CommonController {
      * */
     public function roleList() {
         $count = M('role')->count();
-        $Page = new \Think\Page($count,20);
+        $Page = new \Think\Page($count,2);
         $show = $Page->show();
         $list=M('role')->order('create_time')->limit($Page->firstRow.','.$Page->listRows)->select();
         $this->assign('list',$list);
-        $this->assign('page',$show);
+        $this->assign('pagebar',$show);		
         $this->display();
     }
 
@@ -163,76 +163,86 @@ class PermissionController extends CommonController {
      * 增加角色
      * */
     public function roleAdd() {
-        $ret = array('code'=>-1,'msg'=>'');
-        do{
-            if (!IS_POST) {
-                $ret['code'] = -1;
-                $ret['msg'] = '非法请求';
-                break;
-            }
-            $data = array();
-            $data['name'] = I('post.name', '', 'htmlspecialchars');
-            $data['status'] = I('post.status', 0, 'intval');
-            if (!$data['name']) {
-                $ret['code'] = -2;
-                $ret['msg'] = '参数不全';
-                break;
-            }
+		 if (!IS_POST) {
+			$this->display();
+		}else{
+			$ret = array('code'=>-1,'msg'=>'');
+			do{
+				if (!IS_POST) {
+					$ret['code'] = -1;
+					$ret['msg'] = '非法请求';
+					break;
+				}
+				$data = array();
+				$data['name'] = I('post.name', '', 'htmlspecialchars');
+				$data['status'] = I('post.status', 0, 'intval');
+				if (!$data['name']) {
+					$ret['code'] = -2;
+					$ret['msg'] = '参数不全';
+					break;
+				}
 
-            $l = M('role','mygame_','DB_CONFIG_ZHU')->where(array('name'=>$data['name']))->find();
-            if ($l) {
-                $ret['code'] = -3;
-                $ret['msg'] = '角色已存在';
-                break;
-            }
-            $time = time();
-            $data['create_time'] = $time;
-            $data['update_time'] = $time;
-            $rs = M('role','mygame_','DB_CONFIG_ZHU')->add($data);
-            if (!$rs) {
-                $ret['code'] = -4;
-                $ret['msg'] = '添加失败';
-                break;
-            }
-            $ret['code'] = 1;
-            $ret['msg'] = '添加成功';
-            break;
-        }while(0);
-        exit(json_encode($ret));
+				$l = M('role')->where(array('name'=>$data['name']))->find();
+				if ($l) {
+					$ret['code'] = -3;
+					$ret['msg'] = '角色已存在';
+					break;
+				}
+				$time = time();
+				$data['create_time'] = $time;
+				$data['update_time'] = $time;
+				$rs = M('role')->add($data);
+				if (!$rs) {
+					$ret['code'] = -4;
+					$ret['msg'] = '添加失败';
+					break;
+				}
+				$ret['code'] = 1;
+				$ret['msg'] = '添加成功';
+				break;
+			}while(0);
+			exit(json_encode($ret));
+		}
+        
     }
     /**
      * 编辑角色
      * */
     public function roleEdit() {
-        $ret = array('code'=>-1,'msg'=>'');
-        do{
-            if (!IS_POST) {
-                $ret['code'] = -1;
-                $ret['msg'] = '非法请求';
-                break;
-            }
-            $id = I('post.id');
-            $data = array();
-            $data['name'] = I('post.name', '', 'htmlspecialchars');
-            $data['status'] = I('post.status', 0, 'intval');
-            if (!$data['name'] || !is_numeric($id) || !is_numeric($data['status'])) {
-                $ret['code'] = -2;
-                $ret['msg'] = '参数错误';
-                break;
-            }
-            $time = time();
-            $data['update_time'] = $time;
-            $rs = M('role','mygame_','DB_CONFIG_ZHU')->where(array('id'=>$id))->save($data);
-            if (!$rs) {
-                $ret['code'] = -3;
-                $ret['msg'] = '修改失败';
-                break;
-            }
-            $ret['code'] = 1;
-            $ret['msg'] = '修改成功';
-            break;
-        }while(0);
-        exit(json_encode($ret));
+		if (!IS_POST) {
+			$id = I('get.id', '', 'htmlspecialchars');			
+			$res = M('role a')
+				//->join("wxshop_role_user b on a.id=b.user_id ")
+				->where(array('id'=>$id))
+				->find();		
+			$this->assign('info',$res);	
+			$this->display();
+		}else{
+			$ret = array('code'=>-1,'msg'=>'');
+			do{           
+				$id = I('post.id');
+				$data = array();
+				$data['name'] = I('post.name', '', 'htmlspecialchars');
+				$data['status'] = I('post.status', 0, 'intval');
+				if (!$data['name'] || !is_numeric($id) || !is_numeric($data['status'])) {
+					$ret['code'] = -2;
+					$ret['msg'] = '参数错误';
+					break;
+				}
+				$time = time();
+				$data['update_time'] = $time;
+				$rs = M('role')->where(array('id'=>$id))->save($data);
+				if (!$rs) {
+					$ret['code'] = -3;
+					$ret['msg'] = '修改失败';
+					break;
+				}
+				$ret['code'] = 1;
+				$ret['msg'] = '修改成功';
+				break;
+			}while(0);
+			exit(json_encode($ret));	
+		}        
     }
     /**
      * 删除角色
@@ -251,7 +261,7 @@ class PermissionController extends CommonController {
                 $ret['msg'] = '参数错误';
                 break;
             }
-            $rs = M('role','mygame_','DB_CONFIG_ZHU')->where(array('id'=>$id))->delete();
+            $rs = M('role')->where(array('id'=>$id))->delete();
             if (!$rs) {
                 $ret['code'] = -3;
                 $ret['msg'] = '删除失败';
