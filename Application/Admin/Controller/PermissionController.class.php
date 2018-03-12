@@ -90,17 +90,17 @@ class PermissionController extends CommonController {
 			$id = I('get.id', '', 'htmlspecialchars');			
 			$res = M('node a')				
 				->where(array('id'=>$id))
-				->find();
-			print_r($res);
-			$this->assign('info',$res);				
+				->find();			
+			$this->assign('info',$res);	
+			$nowcon = explode('/',$res['name']);
 			//查找所有的控制器
-			$con = getController('Admin');				
-			for ($i=0; $i <count($con) ; $i++) { 
-				$act[$con[$i]]= getAction($con[$i]);
-			}	
-			$this->assign('pid',$pid);	
-			$this->assign('act',$act);	
+			$con = getController('Admin');			
+
+			$this->assign('nowcon',$nowcon[1]);
+			$this->assign('nowact',$nowcon[2]);			
+			$this->assign('pid',$pid);
 			$this->assign('con',$con);
+			$this->assign('act',getAction($nowcon[1]));
 			$this->display("nodeedit");
         }else{
 			$ret = array('code'=>-1,'msg'=>'');

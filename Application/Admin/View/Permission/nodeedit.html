@@ -21,7 +21,7 @@ width:40px;
 			<select name="con" lay-verify="required"  lay-filter="con">
 				<option value="">请选择控制器</option>
 				<volist name="con" id="vo">
-				<option value="<{$vo}>"><{$vo}></option>				
+				<option value="<{$vo}>" <if condition="$nowcon eq $vo">selected</if>><{$vo}></option>				
 				</volist>				
 			</select>
 		</div>
@@ -30,7 +30,10 @@ width:40px;
 		<label class="layui-form-label textright" style="width:60px;">方法</label>
 		<div class="layui-input-block" style="margin-left:90px;">
 			<select name="act" lay-verify="required">
-				<option value="">请选择方法</option>										
+				<volist name="act" id="vo">
+				<option value="<{$vo}>" <if condition="$nowact eq $vo">selected</if>><{$vo}></option>				
+				</volist>		
+				<option value="<{$nowact}>"><{$nowact}></option>										
 			</select>
 		</div>
 	</div>
