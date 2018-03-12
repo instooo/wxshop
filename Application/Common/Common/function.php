@@ -16,6 +16,7 @@ if (!function_exists('array_column')) {
         return $res;
     }
 }
+
 function sendCurl($url, $params, $method = 'GET', $header = array(), $multi = false) {
     $opts = array(
         CURLOPT_TIMEOUT        => 30,
@@ -50,3 +51,47 @@ function sendCurl($url, $params, $method = 'GET', $header = array(), $multi = fa
     if($error) return false;
     return  $data;
 }
+
+	//获取所有控制器名称
+	function getController($module){
+		if(empty($module)) return null;
+		$module_path = APP_PATH . $module . '/Controller/'; //控制器路径			
+		if(!is_dir($module_path)) return null;			
+		$module_path .= '/*.class.php';
+		$ary_files = glob($module_path);
+		foreach ($ary_files as $file) {
+			if (is_dir($file)) {
+				continue;
+			}else {
+				$files[] = basename($file, C('DEFAULT_C_LAYER').'.class.php');
+			}
+		}
+		$i = array('Com','Qq','Shop','Payment','abc');
+		foreach ($files as $func){
+			if(!in_array($func, $i)){
+				$arrr[] = $func;
+			}
+		}			
+		return $arrr;
+	}
+	//获取所有方法名称
+	function getAction($controller){		
+		if(empty($controller)) return null;		
+		$con = A($controller);
+		$functions = get_class_methods($con);
+		//排除部分方法
+		$inherents_functions = array(
+		'_initialize','__construct','getActionName','getMethod',
+		'isAjax','display','show','fetch','buildHtml','assign','__set','get',
+		'__get','__isset','__call','error','success','ajaxReturn','redirect',
+		'__destruct', '_empty','verify','validateUser','createSn','getpage',
+		'json','xml','xmlTo','theme'
+		);
+		foreach ($functions as $func){
+			if(!in_array($func, $inherents_functions)){
+				$customer_functions[] = $func;
+			}
+		}
+		return $customer_functions;
+	}
+

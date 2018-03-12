@@ -43,5 +43,13 @@ class CommonController extends Controller {
     public function _initialize(){
 
     }  
+	public function getMethod(){
+		$arr = getAction($_POST['controller']);		
+		$html = "";
+		foreach($arr as $val){
+			$html.="<option value=''></option><option value=".$val.">".$val."</option>";
+		}
+		exit(json_encode($html));
+	}
 }
                                 

@@ -3,17 +3,17 @@ namespace Admin\Model;
 use Think\Model;
 class NodeModel extends Model{
 	public $dataTreeData=array();
+	
 	public function getNodeList(){
-		$where=array();
-		$where['status']=1;
-		$data	=	$this->field('id,name,title,pid,level,ismenu,sort,(pid*level*sort) as sortby')->where($where)->order('sortby asc,sort asc')->select();
+		$where=array();		
+		$data	=	$this->field('id,name,title,zhu_module,access_name,pid,level,ismenu,sort,(pid*level*sort) as sortby')->where($where)->order('sortby asc,sort asc')->select();
 		return $data;
 	}
 	
 	public function getNodeTree($uid=false){
 		if($uid)
 			$datalist	=	$this->getNodeListByUid($uid);
-			else
+		else
 			$datalist	=	$this->getNodeList();
 		$tree=$this->getChildNode(0,$datalist);
 		return $tree;

@@ -13,94 +13,129 @@ class PermissionController extends CommonController {
     public function _initialize() {
         parent::_initialize();
     }
-
+	
     //节点列表
-    public function nodeList() {
-        $node_tree = D('Node')->getNodeTree();
+    public function nodeList() {		
+        $node_tree = D('Node')->getNodeTree();		
         $this->assign('node_tree',$node_tree);
         $this->display();
     }
-
+	
     /**
      * 增加节点
      * */
     public function addNode() {
-        $ret = array('code'=>-1,'msg'=>'');
-        do{
-            if (!IS_POST) {
-                $ret['code'] = -1;
-                $ret['msg'] = '非法请求';
-                break;
-            }
-            $data = array();
-            $data['pid']		=	I('post.pid');
-            $data['name']	=	I('post.name');
-            $data['title']	=	I('post.title');
-            $data['sort']	=	I('post.sort',0,'intval');
-            $data['ismenu']		=	I('post.ismenu',1,'intval');
-            $data['status']		=	1;
-            if (!is_numeric($data['pid']) || !$data['name'] || !$data['title']) {
-                $ret['code'] = -2;
-                $ret['msg'] = '参数不全';
-                break;
-            }
-            //查询父菜单
-            $model = M('node','mygame_','DB_CONFIG_ZHU');
-            $pinfo = $model->where('id='.$data['pid'])->find();
-            $data['level'] = $pinfo?$pinfo['level']+1:0;
-            if ($data['level'] >= 3) {
-                $ret['code'] = -3;
-                $ret['msg'] = '最多只支持3级菜单';
-                break;
-            }
-            $res = $model->add($data);
-            if (!$res) {
-                $ret['code'] = -4;
-                $ret['msg'] = '添加失败';
-                break;
-            }
-            $ret['code'] = 1;
-            $ret['msg'] = '添加成功';
-            break;
-        }while(0);
-        exit(json_encode($ret));
+		if (!IS_POST) {
+			$pid = $_GET['pid']?$_GET['pid']:0;			
+			//查找所有的控制器
+			$con = getController('Admin');				
+			for ($i=0; $i <count($con) ; $i++) { 
+				$act[$con[$i]]= getAction($con[$i]);
+			}	
+			$this->assign('pid',$pid);	
+			$this->assign('act',$act);	
+			$this->assign('con',$con);
+			$this->display("nodeadd");
+        }else{
+			$ret = array('code'=>-1,'msg'=>'');
+			do{            
+				$data = array();
+				$data['pid']		=	I('post.pid');
+				$data['name']	=	I('post.name');
+				$data['title']	=	I('post.title');
+				$data['zhu_module']	=	I('post.zhu_module');
+				$data['access_name']	=	I('post.access_name');
+				$data['sort']	=	I('post.sort',0,'intval');
+				$data['ismenu']		=	I('post.ismenu',1,'intval');
+				$data['status']		=	1;					
+				if (!is_numeric($data['pid']) || !$data['name'] || !$data['title'] || !$data['zhu_module'] || !$data['access_name']) {
+					$ret['code'] = -2;
+					$ret['msg'] = '参数不全';
+					break;
+				}
+				//查询父菜单
+				$model = M('node');
+				$pinfo = $model->where('id='.$data['pid'])->find();
+				$data['level'] = $pinfo?$pinfo['level']+1:0;
+				if ($data['level'] >= 3) {
+					$ret['code'] = -3;
+					$ret['msg'] = '最多只支持3级菜单';
+					break;
+				}
+				$pinfoaa = $model->where('name="'.$data['name'].'"')->find();
+				if($pinfoaa){
+					$ret['code'] = -6;
+					$ret['msg'] = '已经存在菜单节点了';
+					break;
+				}
+				$res = $model->add($data);
+				if (!$res) {
+					$ret['code'] = -4;
+					$ret['msg'] = '添加失败';
+					break;
+				}
+				$ret['code'] = 1;
+				$ret['msg'] = '添加成功';
+				break;
+			}while(0);
+			exit(json_encode($ret));	
+		}        
     }
 
     /**
      * 编辑节点
      * */
     public function updateNode() {
-        $ret = array('code'=>-1,'msg'=>'');
-        do{
-            if (!IS_POST) {
-                $ret['code'] = -1;
-                $ret['msg'] = '非法请求';
-                break;
-            }
-            $id = I('post.id');
-            $data = array();
-            $data['title'] = I('post.title');
-            $data['name'] = I('post.name');
-            $data['sort'] = I('post.sort');
-            $data['ismenu'] = I('post.ismenu');
-            if (empty($id) || empty($data['title']) || empty($data['name']) || !is_numeric($data['sort']) || !is_numeric($data['ismenu'])) {
-                $ret['code'] = -2;
-                $ret['msg'] = '参数不全';
-                break;
-            }
-            $map = array();
-            $map['id'] = $id;
-            $res = M('node','mygame_','DB_CONFIG_ZHU')->where($map)->save($data);
-            if (false === $res) {
-                $ret['code'] = -4;
-                $ret['msg'] = '修改失败';
-                break;
-            }
-            $ret['code'] = 1;
-            $ret['msg'] = '修改成功';
-            break;
-        }while(0);
-        exit(json_encode($ret));
+		if (!IS_POST) {			
+			$id = I('get.id', '', 'htmlspecialchars');			
+			$res = M('node a')				
+				->where(array('id'=>$id))
+				->find();
+			print_r($res);
+			$this->assign('info',$res);				
+			//查找所有的控制器
+			$con = getController('Admin');				
+			for ($i=0; $i <count($con) ; $i++) { 
+				$act[$con[$i]]= getAction($con[$i]);
+			}	
+			$this->assign('pid',$pid);	
+			$this->assign('act',$act);	
+			$this->assign('con',$con);
+			$this->display("nodeedit");
+        }else{
+			$ret = array('code'=>-1,'msg'=>'');
+			do{
+				if (!IS_POST) {
+					$ret['code'] = -1;
+					$ret['msg'] = '非法请求';
+					break;
+				}
+				$id = I('post.id');
+				$data = array();
+				$data['title'] = I('post.title');
+				$data['name'] = I('post.name');
+				$data['sort'] = I('post.sort');
+				$data['ismenu'] = I('post.ismenu');
+				if (empty($id) || empty($data['title']) || empty($data['name']) || !is_numeric($data['sort']) || !is_numeric($data['ismenu'])) {
+					$ret['code'] = -2;
+					$ret['msg'] = '参数不全';
+					break;
+				}
+				$map = array();
+				$map['id'] = $id;
+				$res = M('node','mygame_','DB_CONFIG_ZHU')->where($map)->save($data);
+				if (false === $res) {
+					$ret['code'] = -4;
+					$ret['msg'] = '修改失败';
+					break;
+				}
+				$ret['code'] = 1;
+				$ret['msg'] = '修改成功';
+				break;
+			}while(0);
+			exit(json_encode($ret));	
+		}
+        
     }
 
     /**
