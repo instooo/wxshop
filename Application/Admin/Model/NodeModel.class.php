@@ -9,6 +9,21 @@ class NodeModel extends Model{
 		$data	=	$this->field('id,name,title,zhu_module,access_name,pid,level,ismenu,sort,(pid*level*sort) as sortby')->where($where)->order('sortby asc,sort asc')->select();
 		return $data;
 	}
+	public function getModulelist(){
+		$where=array();		
+		$data	=	$this->field('zhu_module,access_name')->where($where)->group('zhu_module')->select();
+		return $data;
+	}
+	public function getNodeTreeMap($arr){
+		foreach($arr as $key=>$val){
+			if($val){
+				$where[$key]=$val;
+			}
+		}			
+		$datalist	= $this->field('id,name,title,zhu_module,access_name,pid,level,ismenu,sort,(pid*level*sort) as sortby')->where($where)->order('sortby asc,sort asc')->select();		
+		$tree=$this->getChildNode(0,$datalist);
+		return $tree;
+	}
 	
 	public function getNodeTree($uid=false){
 		if($uid)

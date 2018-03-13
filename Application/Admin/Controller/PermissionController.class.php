@@ -15,9 +15,20 @@ class PermissionController extends CommonController {
     }
 	
     //节点列表
-    public function nodeList() {		
-        $node_tree = D('Node')->getNodeTree();		
+    public function nodeList() {	
+		$arr['access_name'] = I('get.access_name','','htmlspecialchars');
+		$arr['zhu_module'] = I('get.zhu_module','','htmlspecialchars');
+		if($arr['zhu_module'] || $arr['access_name']){
+			 $node_tree = D('Node')->getNodeTreeMap($arr);			
+		}else{
+			 $node_tree = D('Node')->getNodeTree();	
+		}
+       
+		//查找相关主模块
+		$zhumodule_list = D('Node')->getModulelist();
+		$this->assign('req',$arr);		
         $this->assign('node_tree',$node_tree);
+		$this->assign('zhumodule_list',$zhumodule_list);
         $this->display();
     }
 	
@@ -98,6 +109,7 @@ class PermissionController extends CommonController {
 
 			$this->assign('nowcon',$nowcon[1]);
 			$this->assign('nowact',$nowcon[2]);			
+			$this->assign('id',$id);
 			$this->assign('pid',$pid);
 			$this->assign('con',$con);
 			$this->assign('act',getAction($nowcon[1]));
@@ -105,25 +117,31 @@ class PermissionController extends CommonController {
         }else{
 			$ret = array('code'=>-1,'msg'=>'');
 			do{
-				if (!IS_POST) {
-					$ret['code'] = -1;
-					$ret['msg'] = '非法请求';
-					break;
-				}
 				$id = I('post.id');
 				$data = array();
 				$data['title'] = I('post.title');
 				$data['name'] = I('post.name');
+				$data['zhu_module']	=	I('post.zhu_module');
+				$data['access_name']	=	I('post.access_name');
 				$data['sort'] = I('post.sort');
 				$data['ismenu'] = I('post.ismenu');
-				if (empty($id) || empty($data['title']) || empty($data['name']) || !is_numeric($data['sort']) || !is_numeric($data['ismenu'])) {
+				if (empty($id) || empty($data['title']) || empty($data['name']) || !is_numeric($data['sort']) || !is_numeric($data['ismenu']) || empty($data['zhu_module']) || empty($data['access_name']) ) {
 					$ret['code'] = -2;
 					$ret['msg'] = '参数不全';
 					break;
 				}
+				//过滤相同控制器名的节点
+				$mapda['id'] = array('neq',$id);
+				$mapda['name']=$data['name'];
+				$flag = M('node')->where($mapda)->find();
+				if($flag){
+					$ret['code'] = -2;
+					$ret['msg'] = '节点已经存在';
+					break;
+				}
 				$map = array();
 				$map['id'] = $id;
-				$res = M('node','mygame_','DB_CONFIG_ZHU')->where($map)->save($data);
+				$res = M('node')->where($map)->save($data);
 				if (false === $res) {
 					$ret['code'] = -4;
 					$ret['msg'] = '修改失败';
@@ -154,8 +172,15 @@ class PermissionController extends CommonController {
                 $ret['code'] = -2;
                 $ret['msg'] = '非法参数';
                 break;
+            }			
+			 //查看节点是否有子节点
+            $res1 = M('node')->where(array('pid'=>$id))->find();
+			if ($res1) {
+                $ret['code'] = -3;
+                $ret['msg'] = '请先删除子节点';
+                break;
             }
-            $l = M('node','mygame_','DB_CONFIG_ZHU')->where(array('id'=>$id))->find();
+            $l = M('node')->where(array('id'=>$id))->find();
             if (!$l) {
                 $ret['code'] = -3;
                 $ret['msg'] = '节点不存在';
@@ -166,9 +191,7 @@ class PermissionController extends CommonController {
                 $ret['msg'] = '节点不允许删除';
                 break;
             }
-            $res = M('node','mygame_','DB_CONFIG_ZHU')->where(array('id'=>$id))->delete();
-            //删除子节点
-            $res1 = M('node','mygame_','DB_CONFIG_ZHU')->where(array('pid'=>$id))->delete();
+            $res = M('node')->where(array('id'=>$id))->delete();           
             if (!$res) {
                 $ret['code'] = -5;
                 $ret['msg'] = '删除失败';

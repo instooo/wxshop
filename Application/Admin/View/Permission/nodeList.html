@@ -40,26 +40,17 @@ layui.use(['layer', 'form'], function(){
             <div class="ant-card-body"> 
                         <div class="tableListForm___1316u">
                    <form class="layui-form">
-					
-
                                 <div class="ant-row">
-									<div class="ant-col-sm-24 ant-col-md-6" >
-										<div class="layui-form-item">
-											<label class="layui-form-label" style="width:auto;">权限名称</label>
-											<div class="layui-input-block" style="margin-left:90px;!important">
-												<input type="text" name="title" required  lay-verify="required" placeholder="请输入姓名" autocomplete="off" class="layui-input">
-											</div>
-										</div>
-								    </div>
+									
 								  <div class="ant-col-sm-24 ant-col-md-5" >
 									  <div class="layui-form-item">
 										<label class="layui-form-label">主模块</label>
 										<div class="layui-input-block" style="margin-left:80px;!important">
-										  <select name="city" lay-verify="required">
+										  <select name="zhu_module">
 											<option value=""></option>
-											<option value="0">权限管理</option>
-											<option value="1">订单管理</option>	
-											<option value="2">系统管理</option>	
+											<volist name="zhumodule_list" id="vo">
+											<option value="<{$vo.zhu_module}>" <if condition="$vo['zhu_module'] eq $req['zhu_module']">selected</if>><{$vo.zhu_module}></option>
+											</volist>
 										  </select>
 										</div>
 									  </div>
@@ -76,13 +67,13 @@ layui.use(['layer', 'form'], function(){
                                 </div>
                             </form>
                         </div>  
-<!--<div  class="ant-alert ant-alert-info">
+<div  class="ant-alert ant-alert-info">
 	<i class="anticon anticon-info-circle ant-alert-icon"></i>
 	<span class="ant-alert-message">
-		<div>角色管理页面</div>
+		<div>节点管理是对系统中的功能的入库，这里是权限管理的关键地方，此部分请不要随意修改！</div>
 	</span>
 	<span class="ant-alert-description"></span>
-</div>--> 
+</div>
 				<div class="standardTable___348Kf">                           
 					<table id="table" class="node_table">					 
 					  <thead>
@@ -92,7 +83,7 @@ layui.use(['layer', 'form'], function(){
 					<volist name="node_tree" id="vo">
                     <tr class="cnode_0 cnode_<{$vo.id}>" data-id="<{$vo.id}>" data-level="<{$vo.level}>" data-name="<{$vo.title}>">
                         <td>
-                            <img class="fold_tag unfold" src="__IMAGE__/menu_minus.gif">
+                            <img class="fold_tag fold" src="__IMAGE__/menu_minus.gif">
                             <a class="title" data="<{$vo.title}>"><{$vo.title}></a>
                         </td>
 						<td class="zhu_module" data="<{$vo.zhu_module}>"><{$vo.zhu_module}></td>
@@ -110,12 +101,12 @@ layui.use(['layer', 'form'], function(){
                     </tr>
                     <if condition="is_array($vo['child'])">
                         <volist name="vo.child" id="v1">
-                            <tr class="cnode_0 cnode_<{$vo.id}> cnode_<{$v1.id}>" data-id="<{$v1.id}>" data-level="<{$v1.level}>" data-name="<{$v1.title}>">
+                            <tr class="cnode_0 cnode_<{$vo.id}> cnode_<{$v1.id}>" data-id="<{$v1.id}>" data-level="<{$v1.level}>" data-name="<{$v1.title}>" style="display:none">
                                 <td>
                                     <img class="fold_tag unfold" src="__IMAGE__/menu_minus.gif" style="margin-left: 10px">
 									 <a class="title" data="<{$v1.title}>"><{$v1.title}></a>
 								</td>
-								<td class="zhu_module" data="<{$vo.zhu_module}>"><{$vo.zhu_module}></td>
+								<td class="zhu_module" data="<{$vo.zhu_module}>"><{$v1.zhu_module}></td>
 								<td class="access_name" data="<{$v1.access_name}>"><{$v1.access_name}></td>
                                 <td class="name" data="<{$v1.name}>"><{$v1.name}></td>
                                 <td class="sort" data="<{$v1.sort}>"><{$v1.sort}></td>
@@ -130,11 +121,13 @@ layui.use(['layer', 'form'], function(){
                             </tr>
                             <if condition="is_array($v1['child'])">
                                 <volist name="v1.child" id="v2">
-                                    <tr class="cnode_0 cnode_<{$vo.id}> cnode_<{$v1.id}>" data-id="<{$v2.id}>" data-level="<{$v2.level}>" data-name="<{$v2.title}>">
+                                    <tr class="cnode_0 cnode_<{$vo.id}> cnode_<{$v1.id}>" data-id="<{$v2.id}>" data-level="<{$v2.level}>" data-name="<{$v2.title}>" style="display:none">
                                         <td>
                                             <img class="fold_tag unfold" src="__IMAGE__/menu_minus.gif" style="margin-left: 20px">
                                             <a class="title" data="<{$v2.title}>"><{$v2.title}></a>
                                         </td>
+										<td class="zhu_module" data="<{$v2.zhu_module}>"><{$v2.zhu_module}></td>
+										<td class="access_name" data="<{$v2.access_name}>"><{$v2.access_name}></td>
                                         <td class="name" data="<{$v2.name}>"><{$v2.name}></td>
                                         <td class="sort" data="<{$v2.sort}>"><{$v2.sort}></td>
                                         <td class="ismenu" data="<{$v2.ismenu}>"><if condition="$v2['ismenu'] eq 1">是<else/>否</if></td>
@@ -174,7 +167,7 @@ layui.use(['layer', 'form'], function(){
         $('.btn_dele').click(function () {
             var id = $(this).parents('tr').attr('data-id');
             if (id == '') return false;
-            layer.confirm('确定要删除该用户吗？', {
+            layer.confirm('确定要删除该节点吗？', {
                 btn: ['确定','取消']
             }, function(){
                 doDeleMember(id);
@@ -226,7 +219,7 @@ layui.use(['layer', 'form'], function(){
             type:'post',
             dataType:'json',
             data:{id:id},
-            url:'/Permission/roledelete',
+            url:'/Permission/deleteNode',
             error:function () {
                 layer.msg('未知错误', {icon:5,time:1000});
             },
