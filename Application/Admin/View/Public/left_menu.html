@@ -37,13 +37,6 @@
 				var html=$(this).parents('.ant-menu-submenu').html();				
                 $(this).parents('.ant-menu-submenu').find('.ant-menu-submenu-title').trigger('click');return false;
             }
-        });
-		$(".manager-tab li").each(function(){		
-            var _href = $(this).find('a').attr('href').toLowerCase();
-            if (_href.indexOf(url_tag) > 0) {
-                $(this).addClass("liactive");
-                $(this).siblings("li").removeClass('liactive');return false;
-            }
-		});
+        });		
     });
 </script>

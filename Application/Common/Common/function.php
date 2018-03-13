@@ -66,7 +66,7 @@ function sendCurl($url, $params, $method = 'GET', $header = array(), $multi = fa
 				$files[] = basename($file, C('DEFAULT_C_LAYER').'.class.php');
 			}
 		}
-		$i = array('Com','Qq','Shop','Payment','abc');
+		$i = array('Index','Public','Common');
 		foreach ($files as $func){
 			if(!in_array($func, $i)){
 				$arrr[] = $func;
