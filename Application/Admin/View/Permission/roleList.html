@@ -156,6 +156,19 @@ layui.use(['layer', 'form'], function(){
                 content: "/Permission/roleedit/id/"+id
             });           
         });
+		//分配权限
+        $('.btn_pri').click(function () {
+            var roleid = $(this).parents('tr').attr('data-id');
+            if (roleid == '') return false;
+			layer.open({
+				type: 2,
+				title: '权限分配',
+				shadeClose: true,
+				maxmin: true, //开启最大化最小化按钮
+				area: ['80%', '80%'],
+				content: "/Permission/addAccess/roleid/"+roleid
+			});            
+        });
 	});
 	
 	 //删除用户

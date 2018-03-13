@@ -1,0 +1,100 @@
+<html>
+    
+    <head>
+        <title>设置权限</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<link rel="stylesheet" type="text/css" href="__PUBLIC__/layui/css/layui.css" />
+		<script type="text/javascript" src="__PUBLIC__/layui/layui.js"></script>		
+		<script type="text/javascript" src="__JS__/jquery-3.3.1.min.js"></script>
+		
+			
+    <body>
+        <div>
+            <!-- start 查询条件 -->
+            <div class="widget-box">
+                <div class="widget-content ">
+                    <!-- end 查询条件-->
+                    <!-- start 查询列表 -->
+                    <table class="layui-table" style="text-align:center;">
+						<input type="hidden" id="roleid" value="<{$roleid}>">
+                        <thead>
+                            <tr>
+                                <th style="padding-left:1rem; text-align:center;"><span><input type="checkbox" id="title-table-checkbox" ></span></th>
+                                <th >主模块</th>
+                                <th style="text-align:center;">相关权限</th>
+                                <th>
+								<input class="baisc_button" style="height:30px" value="提交" type="button" onclick="commitEdit();">
+								</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+							<volist name="nodetree" id="vo">
+                            <tr>
+                                <td style="padding:0px;"> <span><input name="ids" class="checkall" type="checkbox" value="<{$vo.access_name}>"  <if condition="$vo['hv'] eq 1">checked</if>></span></td>
+                                <td class="bluebg" style="padding:0px;"><{$vo.access_name}></td>
+                                <td>	
+							<volist name="vo.child" id="v1">
+							<div style="float:left;margin:0 0 0 10px;">
+							<span><input type="checkbox" class="er_check" name="moduleid" value="<{$v1.access_name}>"  <if condition="$v1['hv'] eq 1">checked</if>></span><{$v1.access_name}>
+							</div>
+							</volist>
+								</td><td></td>
+                            </tr>
+							</volist>
+						</tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+		<script>
+		//一般直接写在一个js文件中
+		layui.use(['layer', 'form'], function(){
+		  var layer = layui.layer
+		  ,form = layui.form;
+		});
+		$("#title-table-checkbox").change(function() {
+			if ($(this).prop("checked")) {
+				$(".checkall").prop("checked", true);
+				$(".er_check").prop("checked", true);
+			} else {
+				$(".checkall").prop("checked", false);
+				$(".er_check").prop("checked", false);
+			}
+		});
+		$(".checkall").change(function() {
+			if ($(this).prop("checked")) {				
+				$(this).parents('tr').find(".er_check").prop("checked", true);
+			} else {
+				$("#title-table-checkbox").prop("checked", false);
+				$(this).parents('tr').find(".er_check").prop("checked", false);
+			}
+		});	
+		function commitEdit(){
+			var roleid = $("#roleid").val();
+			var moduleid = new Array();
+			$("input[name='moduleid']:checked").each(function() {
+				moduleid[moduleid.length] = this.value;
+			});
+			$.ajax({
+				type:'post',
+				dataType:'json',
+				data:{roleid:roleid,moduleid:moduleid},
+				url:'/Permission/saveAccess',
+				error:function () {
+					layer.msg('未知错误', {icon:5,time:1000});
+				},
+				success:function (data) {
+					layer.msg('修改成功', {icon:6,time:1000},function(){
+					var index = parent.layer.getFrameIndex(window.name);
+					parent.layer.close(index);
+					window.parent.location.reload();
+				});
+				}
+			});
+		}
+		</script>
+		
+		
+    </body>
+</html>

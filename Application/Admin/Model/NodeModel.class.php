@@ -9,11 +9,63 @@ class NodeModel extends Model{
 		$data	=	$this->field('id,name,title,zhu_module,access_name,pid,level,ismenu,sort,(pid*level*sort) as sortby')->where($where)->order('sortby asc,sort asc')->select();
 		return $data;
 	}
+	
+	
+	
 	public function getModulelist(){
 		$where=array();		
-		$data	=	$this->field('zhu_module,access_name')->where($where)->group('zhu_module')->select();
+		$data	=	$this->field('zhu_module,access_name,level')->where($where)->group('zhu_module,access_name')->select();
 		return $data;
 	}
+	
+	
+	public function getModulelistTree(){
+		$where=array();		
+		$data	=	$this->getModulelist();		
+		//根据level获取树形		
+		$tree=$this->getLevelNode(0,0,$data);		
+		return $tree;
+	}
+	
+	public function getModulelistByRoleId($roleid){
+		$where=array();	
+		$where['access.role_id']=$roleid;		
+		$data	=	$this
+					->join(C('DB_PREFIX').'access as access on access.node_id = id','LEFT')
+					->field('wxshop_node.zhu_module,wxshop_node.access_name,wxshop_node.level')
+					->where($where)
+					->group('wxshop_node.zhu_module,wxshop_node.access_name')
+					->select();			
+		//根据level获取树形
+		return $data;
+	}
+	
+	public function getModulelistByRoleIdTree($roleid){
+		$where=array();	
+		$where['access.role_id']=$roleid;		
+		$data	=	$this->getModulelistByRoleId($roleid);					
+		//根据level获取树形		
+		$tree=$this->getLevelNode(0,0,$data);		
+		return $tree;
+	}
+	
+	
+	//根据level获取树形
+	public function getLevelNode($access_name,$level=0,$datalist){
+		$arr=array();
+		foreach($datalist as $val){			
+			if($level==$val['level'] && $access_name == $val['zhu_module']){					
+				$temp=$level+1;
+				$val['child']=$this->getLevelNode($val['access_name'],$temp,$datalist);
+				if(empty($val['child'])){
+					unset($val['child']);
+				}
+				$arr[]=$val;				
+			}
+		}	
+		return $arr;
+	}
+	
 	public function getNodeTreeMap($arr){
 		foreach($arr as $key=>$val){
 			if($val){

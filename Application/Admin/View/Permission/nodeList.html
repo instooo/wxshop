@@ -49,7 +49,7 @@ layui.use(['layer', 'form'], function(){
 										  <select name="zhu_module">
 											<option value=""></option>
 											<volist name="zhumodule_list" id="vo">
-											<option value="<{$vo.zhu_module}>" <if condition="$vo['zhu_module'] eq $req['zhu_module']">selected</if>><{$vo.zhu_module}></option>
+											<option value="<{$key}>" <if condition="$key eq $req['zhu_module']">selected</if>><{$key}></option>
 											</volist>
 										  </select>
 										</div>
@@ -235,5 +235,4 @@ layui.use(['layer', 'form'], function(){
 	
 </script> 
 </body>
-
 </html>

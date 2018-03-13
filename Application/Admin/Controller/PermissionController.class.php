@@ -336,38 +336,35 @@ class PermissionController extends CommonController {
      * 角色分配权限
      * */
     public function addAccess() {
-        $ret = array('code'=>-1,'msg'=>'');
-        $roleid = intval($_POST['roleid']);
-        if (!$roleid) {
-            //$this->error('参数错误');
-            $ret['code'] = -2;
-            $ret['msg'] = '参数错误';
-            exit(json_encode($ret));
-        }
-        $roleinfo = M('role','mygame_','DB_CONFIG_ZHU')->where('id='.$roleid)->find();
-        if (!$roleinfo) {
-            //$this->error('角色不存在');
-            $ret['code'] = -2;
-            $ret['msg'] = '角色不存在';
-            exit(json_encode($ret));
-        }
-
-        $nodelist	=	D("node")->getNodeList();
-        $nodeUser	=	D("node")->getNodeListByRoleId($roleid);
-        foreach ($nodelist as &$v){
-            if(in_array($v, $nodeUser)){
-                $v['hv']	= 1;
-            }else
-                $v['hv']	= 0;
-        }
-        $nodetree	=	D("node")->getChildNode(0,$nodelist);
-        $this->assign('roleinfo',$roleinfo);
-        $this->assign('nodetree',$nodetree);
-        //$this->display();
-        $ret['code'] = 1;
-        $ret['msg'] = 'success';
-        $ret['html'] = $this->fetch();
-        exit(json_encode($ret));
+		if (!IS_POST) {			
+			$roleid = intval($_GET['roleid']);
+			if (!$roleid) {				
+				$ret['code'] = -2;
+				$ret['msg'] = '参数错误';				
+			}
+			$roleinfo = M('role')->where('id='.$roleid)->find();
+			if (!$roleinfo) {            
+				$ret['code'] = -2;
+				$ret['msg'] = '角色不存在';				
+			}
+			//按主模块获取权限
+			$nodelist	=	D("node")->getModulelist();				
+			$nodeUser	=	D("node")->getModulelistByRoleId($roleid);			
+			foreach ($nodelist as &$v){
+				if(in_array($v, $nodeUser)){
+					$v['hv']	= 1;
+				}else{
+					$v['hv']	= 0;
+				}					
+			}
+			$nodetree	=	D("node")->getLevelNode(0,0,$nodelist);
+			$this->assign('roleinfo',$roleinfo);
+			$this->assign('nodetree',$nodetree);
+			$this->assign('roleid',$roleid);
+			$this->display('accessadd');
+		}else{
+			
+		}
     }
 
     /**
@@ -380,18 +377,23 @@ class PermissionController extends CommonController {
                 $ret['code'] = -1;
                 $ret['msg'] = '非法请求';
                 break;
-            }
+            }			
             $roleid = I('post.roleid');
             if (!is_numeric($roleid)) {
                 $ret['code'] = -2;
                 $ret['msg'] = '参数错误';
                 break;
             }
-            $nodeid_str = I('post.nodeid_str');
-            $nodeArr = explode(',', $nodeid_str);
-
+            $moduleid_str = I('post.moduleid'); 
+			//找找所有的节点ID
+			$map['access_name']=array('in',$moduleid_str);
+			$nodeArr = M('node')->where($map)->select();
+			$pidarr = array_column($nodeArr,'zhu_module');
+			$moduleid_str = array_merge($moduleid_str,$pidarr);
+			$map['access_name']=array('in',$moduleid_str);
+			$nodeArr = M('node')->where($map)->select();			
             //删除原有权限
-            $model = M('access','mygame_','DB_CONFIG_ZHU');
+            $model = M('access');
             $acc_log = $model->where('role_id='.$roleid)->find();
             if ($acc_log) {
                 $del_rs = $model->where('role_id='.$roleid)->delete();
@@ -406,9 +408,10 @@ class PermissionController extends CommonController {
             foreach ($nodeArr as $val) {
                 $temp = array();
                 $temp['role_id'] = $roleid;
-                $temp['node_id'] = $val;
-                $temp['level'] = 0;
-                $temp['pid'] = 0;
+                $temp['node_id'] = $val['id'];
+                $temp['level'] = $val['level'];
+                $temp['pid'] = $val['pid'];
+				$temp['module'] = $val['access_name'];
                 $data[] = $temp;
             }
             $rs = $model->addAll($data);
