@@ -89,9 +89,8 @@ class NodeModel extends Model{
 	//用户所有用的权限
 	public function getNodeListByUid($uid){
 		$sql	=	"
-		select node.id,node.name,node.title,node.pid,node.level,node.ismenu,node.sort,(node.pid*node.level*node.sort) as sortby from mygame_node as node left join mygame_access as access on access.node_id	= node.id left join mygame_role_user as ru on ru.role_id = access.role_id left join mygame_user as user	on 	
-		 user.id = ru.user_id 	where user.id	=	$uid ORDER BY sort ASC";
-		$rs	=	M('')->query($sql);
+		select node.id,node.name,node.title,node.pid,node.level,node.ismenu,node.sort,(node.pid*node.level*node.sort) as sortby from wxshop_node as node left join wxshop_access as access on access.node_id = node.id left join wxshop_role_user as ru on ru.role_id = access.role_id left join wxshop_user as user on user.id = ru.user_id 	where user.id	=	$uid ORDER BY sort ASC";
+		$rs	=	M('')->query($sql);		
 		return $rs;
 	}
 	

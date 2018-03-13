@@ -7,116 +7,43 @@
                         </a>
                     </div>
                     <ul class="ant-menu ant-menu-dark ant-menu-root ant-menu-inline" style="padding: 16px 0px; width: 100%;">
+						<volist name="tree" id="vo">
                         <li class="ant-menu-submenu ant-menu-submenu-inline">
                             <div class="ant-menu-submenu-title" style="padding-left: 24px;">
-                                <span><i class="anticon anticon-dashboard"></i><span>dashboard</span></span>
+                                <span><i class="anticon anticon-dashboard"></i><span><{$vo.title}></span></span>
                                 <i class="ant-menu-submenu-arrow"></i>
-                            </div>
+                            </div>							
                             <ul class="ant-menu ant-menu-sub ant-menu-inline ant-menu-hidden" data_tag="tag0">
-                                <li class="ant-menu-item ant-menu-item-selected" style="padding-left: 48px;">
-                                    <a href="#"><span>分析页</span></a>
-                                </li>
-                                <li class="ant-menu-item" style="padding-left: 48px;">
-                                    <a href="#"><span>监控页</span></a>
-                                </li>
-                                <li class="ant-menu-item" style="padding-left: 48px;">
-									<a href="#"><span>工作台</span></a>                                   
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="ant-menu-submenu ant-menu-submenu-inline">
-                            <div class="ant-menu-submenu-title" style="padding-left: 24px;">
-                                <span>
-									<i class="anticon anticon-form"></i>
-                                    <span>权限管理</span>
-                                </span>
-                                <i class="ant-menu-submenu-arrow"></i>
-                            </div>
-                            <ul class="ant-menu  ant-menu-sub ant-menu-inline ant-menu-hidden" data_tag="tag1">
-                                <li class="ant-menu-item" style="padding-left: 48px;">
-                                    <a href="/Permission/memberList/"><span>用户管理</span></a>
-                                </li>
-                                <li class="ant-menu-item" style="padding-left: 48px;">
-                                    <a href="/Permission/roleList/"><span>角色管理</span></a>									
-                                </li>
-                                <li class="ant-menu-item" style="padding-left: 48px;">
-									<a href="/Permission/nodeList/"><span>节点管理</span></a>                                    
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="ant-menu-submenu ant-menu-submenu-inline">
-                            <div class="ant-menu-submenu-title" style="padding-left: 24px;">
-                                <span>
-                                    <i class="anticon anticon-table"></i>
-                                    <span>列表页</span>
-                                </span>
-                                <i class="ant-menu-submenu-arrow"></i>
-                            </div>
-                            <ul class="ant-menu  ant-menu-sub ant-menu-inline ant-menu-hidden" style="" data_tag="tag2">
-                                <li class="ant-menu-item" style="padding-left: 48px;">
-                                    <a href="#"><span>查询表格</span></a>
-                                </li>
-                                <li class="ant-menu-item" style="padding-left: 48px;">
-									<a href="#"><span>标准列表</span></a>                                    
-                                </li>
-                                <li class="ant-menu-item" style="padding-left: 48px;">
-									<a href="#"><span>卡片列表</span></a>
-                                </li>
-                                <li class="ant-menu-submenu ant-menu-submenu-inline">
-                                    <div class="ant-menu-submenu-title" title="搜索列表" style="padding-left: 48px;">
-                                        搜索列表
-                                        <i class="ant-menu-submenu-arrow"></i>
-                                    </div>
-                                    <ul class="ant-menu  ant-menu-sub ant-menu-inline ant-menu-hidden"  style="">
-                                        <li class="ant-menu-item" style="padding-left: 72px;">
-                                            <a href="#"><span>搜索列表（文章）</span></a>
-                                        </li>
-                                        <li class="ant-menu-item ant-menu-item-selected" style="padding-left: 72px;">
-                                            <a href="#"><span>搜索列表（项目）</span></a>
+								<volist name='vo.child' id="v1">
+									<if condition="$v1['ismenu'] eq 1">
+										<li class="ant-menu-item" style="padding-left: 48px;"><!-- ant-menu-item-selected-->
+											<a href="<{$v1.name}>"><span><{$v1.title}></span></a>
 										</li>
-                                        <li class="ant-menu-item" style="padding-left: 72px;">
-                                            <a href="#"><span>搜索列表（应用）</span></a>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
+									</if>
+								</volist>
+							</ul>
                         </li>
-                        <li class="ant-menu-submenu ant-menu-submenu-inline">
-                            <div class="ant-menu-submenu-title" style="padding-left: 24px;">
-                                <span>
-                                    <i class="anticon anticon-profile"></i>
-                                    <span>详情页</span>
-                                </span>
-                                <i class="ant-menu-submenu-arrow"></i>
-                            </div>
-                        </li>
-                        <li class="ant-menu-submenu ant-menu-submenu-inline">
-                            <div class="ant-menu-submenu-title" style="padding-left: 24px;">
-								 <span>
-                                    <i class="anticon anticon-check-circle-o"></i>
-                                    <span>结果页</span>
-                                </span>
-                                <i class="ant-menu-submenu-arrow"></i>                                
-                            </div>
-                            <ul class="ant-menu  ant-menu-sub ant-menu-inline ant-menu-hidden" style="" data_tag="tag4">
-                                <li class="ant-menu-item"  style="padding-left: 48px;">
-                                    <a href="#"><span>成功</span></a>									
-                                </li>
-                                <li class="ant-menu-item ant-menu-item-selected" style="padding-left: 48px;">
-                                    <a href="#"><span>失败</span></a>									
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="ant-menu-submenu ant-menu-submenu-inline">
-                            <div class="ant-menu-submenu-title" style="padding-left: 24px;">
-                                <span>
-                                    <i class="anticon anticon-warning"></i>
-                                    <span>异常页</span>
-                                </span>
-                                <i class="ant-menu-submenu-arrow"></i>								
-                            </div>
-                        </li>
+						</volist>
                     </ul>
                 </div>
             </div>
-            
+<script>
+    $(function () {
+        var url_tag = "<?php echo strtolower(CONTROLLER_NAME.'/'.ACTION_NAME); ?>";
+        $('.ant-menu-sub li a').each(function () {
+            var _href = $(this).attr('href').toLowerCase();
+            if (_href.indexOf(url_tag) > 0) {
+                $(this).parent("li").addClass("ant-menu-item-selected");
+				var html=$(this).parents('.ant-menu-submenu').html();				
+                $(this).parents('.ant-menu-submenu').find('.ant-menu-submenu-title').trigger('click');return false;
+            }
+        });
+		$(".manager-tab li").each(function(){		
+            var _href = $(this).find('a').attr('href').toLowerCase();
+            if (_href.indexOf(url_tag) > 0) {
+                $(this).addClass("liactive");
+                $(this).siblings("li").removeClass('liactive');return false;
+            }
+		});
+    });
+</script>

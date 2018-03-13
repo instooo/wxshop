@@ -74,7 +74,7 @@ function fangda(){
 	$('.ant-menu-submenu-title').bind('click',menu_tab);		
 }
 //菜单的展开和收缩
-function menu_tab(){	
+function menu_tab(){		
 	$(this).parent().siblings().find(".ant-menu-sub").addClass("ant-menu-hidden");
 	$(this).parent().siblings().removeClass("ant-menu-submenu-selected");	
 	$(this).siblings("ul").toggleClass("ant-menu-hidden");
