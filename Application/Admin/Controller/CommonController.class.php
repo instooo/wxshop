@@ -27,7 +27,7 @@ class CommonController extends Controller {
         //账户信息
         $where = array();
         $where['User.id'] = $_SESSION['userid'];		
-        $this->meminfo = D('UserView')->where($where)->find();
+        $this->meminfo = D('UserView')->where($where)->find();		
         $this->assign("meminfo",$this->meminfo);		
         if($_SESSION[C('ADMIN_AUTH_KEY')])
             $datalist   =   D('Node')->getNodeList();

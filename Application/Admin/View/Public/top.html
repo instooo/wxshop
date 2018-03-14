@@ -1,9 +1,23 @@
+				<div style="position: absolute; top: 0px; left: 0px; width: 100%;">
+					<div>
+						<div class="ant-dropdown  ant-dropdown-placement-bottomRight " style="left: 1731px; top: 68px;">
+							<ul class="ant-dropdown-menu menu___2IuJy ant-dropdown-menu-light ant-dropdown-menu-root ant-dropdown-menu-vertical ant-menu-hidden" role="menu" aria-activedescendant="" tabindex="0">
+								<li class="ant-dropdown-menu-item ant-dropdown-menu-item-disabled" role="menuitem" aria-selected="false" aria-disabled="true">
+									<i class="anticon anticon-user"></i>个人中心</li>
+								<li class="ant-dropdown-menu-item ant-dropdown-menu-item-disabled" role="menuitem" aria-selected="false" aria-disabled="true">
+									<i class="anticon anticon-setting"></i>设置</li>
+								<li class="ant-dropdown-menu-item" id="logout">
+									<i class="anticon anticon-poweroff "></i>退出登录</li>
+							</ul>
+						</div>
+					</div>
+				</div>
 				<div class="ant-layout-header" style="padding: 0px;">
                     <div class="header___1L3tU">
                         <i class="anticon anticon-menu-fold trigger___3Dsd1">
                         </i>
                         <div class="right___3kEl5">
-                            <span class="action___119rd search___345Sj headerSearch___1yNxp">
+                            <!--<span class="action___119rd search___345Sj headerSearch___1yNxp">
                                 <i class="anticon anticon-search">
                                 </i>
                                 <div class="input___3Zg3O ant-select-show-search ant-select-auto-complete ant-select ant-select-combobox ant-select-enabled">
@@ -32,17 +46,52 @@
                             <a target="_blank" href="#" rel="noopener noreferrer" class="action___119rd">
                                 <i class="anticon anticon-question-circle-o">
                                 </i>
-                            </a>
+                            </a>	-->						
+							<span class="ant-badge">
+								<i class="anticon anticon-bell icon___2PleP"></i>
+							</span>
                             <span class="action___119rd account___39VBq ant-dropdown-trigger">
                                 <span class="ant-avatar avatar___HsSLb ant-avatar-sm ant-avatar-circle ant-avatar-image">
                                     <img src="https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png"
                                     />
                                 </span>
                                 <span class="name___dJ0yb">
-                                    Serati Ma
+                                    <{$meminfo.username}>
                                 </span>
-                            </span>
+                            </span>							
                         </div>
                     </div>
                 </div>
-                
+<script>
+layui.use(['layer', 'form'], function(){
+  var layer = layui.layer
+  ,form = layui.form;
+});
+	$(function(){	
+		$(".action___119rd").click(function(){
+			$(".ant-dropdown-menu-light").toggleClass("ant-menu-hidden");
+		});
+
+		//退出登录
+        $('#logout').click(function () {
+            $.ajax({
+                type:'post',
+                dataType:'json',
+                data:{},
+                url:'/Public/loginout',
+                error:function () {
+                    layer.msg('未知错误', {icon:5,time:1000});
+                },
+                success:function (data) {
+                    if (data.code == 1) {
+                        layer.msg('退出成功', {icon:6,time:1000}, function () {
+                            location.reload();
+                        });
+                    }else {
+                        layer.msg(data.msg, {icon:5,time:1000});
+                    }
+                }
+            });
+        });
+	})
+</script>

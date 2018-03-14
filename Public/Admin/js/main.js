@@ -1,6 +1,7 @@
 $(function(){	
 	$('.ant-menu-submenu-title').bind('click',menu_tab);
 	is_iphone();
+	
 })
  function close_left(){
 	 $(".ant-layout-sider").toggle();

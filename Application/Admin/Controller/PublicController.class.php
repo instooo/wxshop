@@ -85,7 +85,10 @@ class PublicController extends Controller {
 		$_SESSION['uid']=null;
 		unset($_SESSION);
 		session('[destroy]');	//销毁所有SESSION
-		$this->redirect("/public/login");
+		$ret['code'] = 1;
+        $ret['msg'] = '退出成功';
+		exit(json_encode($ret));
+		//$this->redirect("/public/login");
 	}
 	
 }
