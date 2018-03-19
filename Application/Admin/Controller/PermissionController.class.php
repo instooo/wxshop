@@ -58,7 +58,9 @@ class PermissionController extends CommonController {
 				$data['access_name']	=	I('post.access_name');
 				$data['sort']	=	I('post.sort',0,'intval');
 				$data['ismenu']		=	I('post.ismenu',1,'intval');
-				$data['status']		=	1;					
+				$data['status']		=	1;	
+				$data['iconclass']		=I('post.iconclass');	
+					
 				if (!is_numeric($data['pid']) || !$data['name'] || !$data['title'] || !$data['zhu_module'] || !$data['access_name']) {
 					$ret['code'] = -2;
 					$ret['msg'] = '参数不全';
@@ -125,6 +127,7 @@ class PermissionController extends CommonController {
 				$data['access_name']	=	I('post.access_name');
 				$data['sort'] = I('post.sort');
 				$data['ismenu'] = I('post.ismenu');
+				$data['iconclass']	=I('post.iconclass');	
 				if (empty($id) || empty($data['title']) || empty($data['name']) || !is_numeric($data['sort']) || !is_numeric($data['ismenu']) || empty($data['zhu_module']) || empty($data['access_name']) ) {
 					$ret['code'] = -2;
 					$ret['msg'] = '参数不全';

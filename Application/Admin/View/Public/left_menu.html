@@ -10,14 +10,15 @@
 						<volist name="tree" id="vo">
                         <li class="ant-menu-submenu ant-menu-submenu-inline">
                             <div class="ant-menu-submenu-title" style="padding-left: 24px;">
-                                <span><i class="anticon anticon-dashboard"></i><span><{$vo.title}></span></span>
+                                <span><i class="anticon <{$vo.iconclass}>"></i><span><{$vo.title}></span></span>
                                 <i class="ant-menu-submenu-arrow"></i>
                             </div>							
                             <ul class="ant-menu ant-menu-sub ant-menu-inline ant-menu-hidden" data_tag="tag0">
 								<volist name='vo.child' id="v1">
 									<if condition="$v1['ismenu'] eq 1">
-										<li class="ant-menu-item" style="padding-left: 48px;"><!-- ant-menu-item-selected-->
-											<a href="<{$v1.name}>"><span><{$v1.title}></span></a>
+										<li class="ant-menu-item" style="padding-left: 48px;">
+											<span><i class="anticon <{$v1.iconclass}>"></i><span>
+											<a href="<{$v1.name}>"><span style="color:#fff"><{$v1.title}></span></a>
 										</li>
 									</if>
 								</volist>

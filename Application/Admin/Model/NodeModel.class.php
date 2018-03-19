@@ -6,7 +6,7 @@ class NodeModel extends Model{
 	
 	public function getNodeList(){
 		$where=array();		
-		$data	=	$this->field('id,name,title,zhu_module,access_name,pid,level,ismenu,sort,(pid*level*sort) as sortby')->where($where)->order('sortby asc,sort asc')->select();
+		$data	=	$this->field('id,name,title,zhu_module,iconclass,access_name,pid,level,ismenu,sort,(pid*level*sort) as sortby')->where($where)->order('sortby asc,sort asc')->select();
 		return $data;
 	}
 	
@@ -72,7 +72,7 @@ class NodeModel extends Model{
 				$where[$key]=$val;
 			}
 		}			
-		$datalist	= $this->field('id,name,title,zhu_module,access_name,pid,level,ismenu,sort,(pid*level*sort) as sortby')->where($where)->order('sortby asc,sort asc')->select();		
+		$datalist	= $this->field('id,name,title,zhu_module,iconclass,access_name,pid,level,ismenu,sort,(pid*level*sort) as sortby')->where($where)->order('sortby asc,sort asc')->select();		
 		$tree=$this->getChildNode(0,$datalist);
 		return $tree;
 	}

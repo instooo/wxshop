@@ -174,7 +174,7 @@ table.bt tbody td {
 table.bt tfoot th:before,
 table.bt tfoot td:before,
 table.bt tbody td:before {
-  background: #56a2cf;
+  background: #999a9b;
   color: white;
   margin-right: 10px;
   padding: 2px 10px;
