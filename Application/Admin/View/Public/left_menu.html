@@ -8,18 +8,40 @@
                     </div>
                     <ul class="ant-menu ant-menu-dark ant-menu-root ant-menu-inline" style="padding: 16px 0px; width: 100%;">
 						<volist name="tree" id="vo">
-                        <li class="ant-menu-submenu ant-menu-submenu-inline">
+                        <li class="ant-menu-submenu ant-menu-submenu-inline levelone">
                             <div class="ant-menu-submenu-title" style="padding-left: 24px;">
                                 <span><i class="anticon <{$vo.iconclass}>"></i><span><{$vo.title}></span></span>
                                 <i class="ant-menu-submenu-arrow"></i>
                             </div>							
                             <ul class="ant-menu ant-menu-sub ant-menu-inline ant-menu-hidden" data_tag="tag0">
 								<volist name='vo.child' id="v1">
-									<if condition="$v1['ismenu'] eq 1">
-										<li class="ant-menu-item" style="padding-left: 48px;">
+									<if condition="$v1['ismenu'] eq 1 and $v1['child'] eq null">
+										<li class="ant-menu-item leveltwo" style="padding-left: 48px;">
 											<span><i class="anticon <{$v1.iconclass}>"></i><span>
 											<a href="<{$v1.name}>"><span style="color:#fff"><{$v1.title}></span></a>
 										</li>
+									<elseif condition="$v1['ismenu'] eq 1 and $v1['child'] neq null"/>
+									<li class="ant-menu-submenu ant-menu-submenu-inline leveltwo">
+                                    <div class="ant-menu-submenu-title" title="搜索列表" style="padding-left: 48px;">
+										  <i class="anticon <{$v1.iconclass}>"> </i>
+                                          <i class="ant-menu-submenu-arrow"> </i>
+										<{$v1.title}>
+                                      
+                                    </div>
+                                    <ul class="ant-menu  ant-menu-sub ant-menu-inline ant-menu-hidden"  style="">
+										<volist name='v1.child' id="v2">
+										<if condition="$v2['ismenu'] eq 1">
+                                        <li class="ant-menu-item levelthree" style="padding-left: 72px;">	
+											<a href="<{$v2.name}>">											
+                                                <span>
+                                                    <{$v2.title}>
+                                                </span>
+                                            </a>
+                                        </li>  
+										</if>
+										</volist>										
+                                    </ul>
+									</li>
 									</if>
 								</volist>
 							</ul>
@@ -31,13 +53,26 @@
 <script>
     $(function () {
         var url_tag = "<?php echo strtolower(CONTROLLER_NAME.'/'.ACTION_NAME); ?>";
-        $('.ant-menu-sub li a').each(function () {
-            var _href = $(this).attr('href').toLowerCase();
-            if (_href.indexOf(url_tag) > 0) {
-                $(this).parent("li").addClass("ant-menu-item-selected");
-				var html=$(this).parents('.ant-menu-submenu').html();				
-                $(this).parents('.ant-menu-submenu').find('.ant-menu-submenu-title').trigger('click');return false;
+        $('.leveltwo').each(function () {
+            var _href = $(this).find("span span >a").eq(0).attr('href');
+			if(typeof(_href) == "undefined"){
+			}else{
+				_href = _href.toLowerCase();
+				 if (_href.indexOf(url_tag) > 0) {				
+					$(this).addClass("ant-menu-item-selected");						
+					$(this).parent().siblings(".ant-menu-submenu-title").trigger('click');				
+				}
+			}			
+				
+           
+        });	
+		$('.levelthree').each(function () {			
+            var _href = $(this).find(">a").attr('href').toLowerCase();				
+            if (_href.indexOf(url_tag) > 0) {				
+                $(this).addClass("ant-menu-item-selected");					
+                $(this).parent("ul").siblings(".ant-menu-submenu-title").trigger('click');	
+				$(this).parent("ul").parents("ul").removeClass('ant-menu-hidden');	
             }
-        });		
+        });				
     });
 </script>

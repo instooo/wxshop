@@ -61,7 +61,7 @@ class PermissionController extends CommonController {
 				$data['status']		=	1;	
 				$data['iconclass']		=I('post.iconclass');	
 					
-				if (!is_numeric($data['pid']) || !$data['name'] || !$data['title'] || !$data['zhu_module'] || !$data['access_name']) {
+				if (!is_numeric($data['pid']) || !$data['name'] || !$data['title']) {
 					$ret['code'] = -2;
 					$ret['msg'] = '参数不全';
 					break;
@@ -360,7 +360,7 @@ class PermissionController extends CommonController {
 					$v['hv']	= 0;
 				}					
 			}
-			$nodetree	=	D("node")->getLevelNode(0,0,$nodelist);
+			$nodetree	=	D("node")->getLevelNode(0,0,$nodelist);			
 			$this->assign('roleinfo',$roleinfo);
 			$this->assign('nodetree',$nodetree);
 			$this->assign('roleid',$roleid);
@@ -389,11 +389,11 @@ class PermissionController extends CommonController {
             }
             $moduleid_str = I('post.moduleid'); 
 			//找找所有的节点ID
-			$map['access_name']=array('in',$moduleid_str);
-			$nodeArr = M('node')->where($map)->select();
-			$pidarr = array_column($nodeArr,'zhu_module');
-			$moduleid_str = array_merge($moduleid_str,$pidarr);
-			$map['access_name']=array('in',$moduleid_str);
+			$map['access_name']=array('in',$moduleid_str);			
+			$nodeArr = M('node')->where($map)->select();	
+			$pidarr=D('node')->getAllZhumodule($nodeArr);			
+			$moduleid_str = array_merge($moduleid_str,$pidarr);			
+			$map['access_name']=array('in',array_unique($moduleid_str));
 			$nodeArr = M('node')->where($map)->select();			
             //删除原有权限
             $model = M('access');
@@ -409,7 +409,7 @@ class PermissionController extends CommonController {
 
             $data = array();
             foreach ($nodeArr as $val) {
-                $temp = array();
+                $temp = array();				
                 $temp['role_id'] = $roleid;
                 $temp['node_id'] = $val['id'];
                 $temp['level'] = $val['level'];
@@ -425,7 +425,8 @@ class PermissionController extends CommonController {
         }while(0);
         exit(json_encode($ret));
     }
-
+	
+	
 
     /**
      * 管理员列表
