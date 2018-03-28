@@ -14,10 +14,20 @@ class Ad extends Content implements ContentInterface
 		* 0:字段名称
 		* 1：文字描述
 		* 2：类型（input|file|text|editor)
-		*
+		* 3：默认数据和多选数据结合
 		*/
-		$fields[]=array('title',"广告名称",'input','',1);
-		$fields[]=array('img_duo',"产品详情",'editor',10);
+		$fields[]=array('title',"广告名称",'input');
+		$fields[]=array('imgaa',"广告名称",'duo_file');
+		$fields[]=array('imgduo',"产品详情",'editor');
+		$fields[]=array('imgduo',"产品详情",'text');	
+		$fields[]=array('titlea',"时间",'date');
+		
+		$other['default']=array("","默认");
+		$other['many_data'][]=array("1","攻城掠地");
+		$other['many_data'][]=array("2","万古仙踪");		
+		
+		$fields[]=array('titleaa',"时间",'select',$other);
+		$fields[]=array('titleaaaa',"单选",'radio',$other);			
 		return $fields;		
 	}
 	//获取html

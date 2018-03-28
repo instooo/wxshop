@@ -2,11 +2,15 @@
 <head>
 <title></title>
 </head>
+    <link href="__CSS__/main.css" rel="stylesheet" />
 <link rel="stylesheet" type="text/css" href="__PUBLIC__/layui/css/layui.css" />
 <script type="text/javascript" src="__PUBLIC__/layui/layui.js"></script>
 <script type="text/javascript" src="__JS__/jquery-3.3.1.min.js"></script>
 <script type="text/javascript" charset="utf-8" src="__PUBLIC__/ueditor/ueditor.config.js"></script>
 <script type="text/javascript" charset="utf-8" src="__PUBLIC__/ueditor/ueditor.all.min.js"> </script>
+<script type="text/javascript" src="__PUBLIC__/webuploader/webuploader.js"></script>
+<script type="text/javascript" src="__JS__/uploader.js"></script>
+<link href="__CSS__/upload.css" rel="stylesheet" type="text/css" />
 <style>
 .textright{
 text-align:left;
@@ -27,14 +31,13 @@ width:40px;
 <script>
 
 var test= {};
-var len = $("textarea[data-type=editor]").length;		
+var len = $("textarea[data_type=editor]").length;
 for(var i=0;i<len;i++){
-	var editor_name = $("textarea[data-type=editor]").eq(i).attr('name');			
+	var editor_name = $("textarea[data_type=editor]").eq(i).attr('name');			
 	test.editor_name = UE.getEditor(editor_name,{
 		initialFrameWidth : "100%",
 		initialFrameHeight: 400
-	});	
-					 
+	});						 
 }
 
 
