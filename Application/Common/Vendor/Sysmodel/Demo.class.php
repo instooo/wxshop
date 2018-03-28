@@ -17,26 +17,23 @@ class Ad extends Content implements ContentInterface
 		* 3：默认数据和多选数据结合
 		*/
 		$fields[]=array('title',"广告名称",'input');
-		$fields[]=array('imgaa',"广告名称",'duo_file');
-		$fields[]=array('imgduo',"产品详情",'editor');
-		$fields[]=array('imgduo',"产品详情",'text');	
-		$fields[]=array('titlea',"时间",'date');
-		
+		$fields[]=array('duo_file',"广告名称",'duo_file');
+		$fields[]=array('editor',"产品详情",'editor');
+		$fields[]=array('saa',"产品详情",'text');	
+		$fields[]=array('start',"时间",'date');			
 		$other['default']=array("","默认");
 		$other['many_data'][]=array("1","攻城掠地");
 		$other['many_data'][]=array("2","万古仙踪");		
-		
-		$fields[]=array('titleaa',"时间",'select',$other);
-		$fields[]=array('titleaaaa',"单选",'radio',$other);			
+		$fields[]=array('game',"时间",'select',$other);
+		$fields[]=array('radio',"单选",'radio',$other);			
 		return $fields;		
 	}
 	//获取html
-	 function get_html(){		
+	function get_html(){		
 		$common_fields =$this->getFields();			
 		$html = parent::get_html($common_fields);
 		return $html;
-	}
-	
+	}	
 	//编辑html	
 	function edit_html($info){		
 		$common_fields =$this->getFields();		
