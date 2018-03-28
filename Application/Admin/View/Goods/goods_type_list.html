@@ -94,41 +94,40 @@ layui.use(['layer', 'form'], function(){
                                     </div>
                                 </div>
                             </form>
-                        </div>  
-<!--<div  class="ant-alert ant-alert-info">
-	<i class="anticon anticon-info-circle ant-alert-icon"></i>
-	<span class="ant-alert-message">
-		<div>角色管理页面</div>
-	</span>
-	<span class="ant-alert-description"></span>
-</div>--> 
+                        </div> 
 				<div class="standardTable___348Kf">                           
 					<table id="table">
 					  <thead>
-						<tr><th>ID</th><th>角色名</th><th>启用</th><th>添加时间</th><th>操作</th></tr>
+						<tr>
+						<volist name="fileds" id="vo">							
+							<th><{$vo.1}></th>
+						</volist>
+                        <th>操作</th>    
+						</tr>
 					  </thead>
 					  <tbody>
+						<if condition="$list">
 							<volist name="list" id="vo">
-								<tr data-id="<{$vo.id}>">
-									<td class="id" data="<{$vo.id}>"><{$vo.id}></td>
-									<td class="name" data="<{$vo.name}>"><{$vo.name}></td>
-									<td class="status" data="<{$vo.status}>"><switch name="vo.status"><case value="1">是</case><case value="0">否</case></switch></td>
-									<td class="create_time" data="<{$vo.create_time}>"><{$vo.create_time|date="Y-m-d H:i:s",###}></td>
-									<td>
-										<if condition="$vo['name'] neq '超级管理员'">
-											<a class="btn_edit" href="javascript:void(0);">编辑</a>
-											&nbsp;|&nbsp;
-											<a class="btn_pri" href="javascript:void(0);">分配权限</a>
-											&nbsp;|&nbsp;
-											<a class="btn_dele" href="javascript:void(0);">删除</a>
+								<tr data-id="<{$vo.id}>" align="center">
+									<volist name="fileds" id="v">
+										<if condition="$v['0'] eq 'one_file'">
+										<td style="text-align:center"><img src='<{$vo["$v[0]"]}>'/></td>
+										<else/>
+										<td style="text-align:center"><{$vo["$v[0]"]}></td>
 										</if>
-									</td>
+									</volist>
+									<td style="text-align:center; padding-left:30px;">
+									<a href="javascript:void(0);" >编辑</a>&nbsp;|&nbsp;
+									<a href="javascript:void(0);">删除</a>										
 								</tr>
 							</volist>
+							<else />
+							<tr><td colspan="7" style="text-align:center; font-size:24px; color:#ccc;">无记录</td></tr>
+							</if>
 					  </tbody>
 					</table>
 					<div class="page">
-						<{$pagebar}>
+						<{$page}>
 					</div>	
 				</div>                                
             </div>

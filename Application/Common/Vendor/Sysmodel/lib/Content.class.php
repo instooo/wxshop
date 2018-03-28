@@ -54,6 +54,67 @@ class Content{
 		}		
 		return $html;
 	}
+	
+	//处理数据
+	public function filter($data,$fields){
+		return $data;
+	}
+	
+	
+	//检测输入数据
+	public function checkData($data,$_validate,$common_fields){		
+		$ret = array('code'=>-1,'msg'=>'','data'=>'');
+		do{			
+			if($_validate){	
+				foreach($common_fields as $key=>$val){
+					$common_fieldsnew[$val[0]]=$val;
+				}
+				foreach($_validate as $key=>$val){					
+					$check = $this->regex($data[$val[0]],$val[1]);					
+					if(!$check){		
+						$ret['code'] = -2;
+						$ret['msg'] =$common_fieldsnew[$val[0]][1].$val[2];
+						break;
+					}
+				}			
+				if($ret['code']!=-2){					
+					$ret = array('code'=>1,'msg'=>'success','data'=>'');					
+					break;		
+				}		
+			}else{
+				$ret = array('code'=>1,'msg'=>'success','data'=>'');
+				break;
+			}
+		}while(0);	
+		return $ret;
+	}
+	
+	
+	/**
+     * 使用正则验证数据
+     * @access public
+     * @param string $value  要验证的数据
+     * @param string $rule 验证规则
+     * @return boolean
+     */
+    public function regex($value,$rule) {
+        $validate = array(
+            'require'   =>  '/\S+/',
+            'email'     =>  '/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/',
+            'url'       =>  '/^http(s?):\/\/(?:[A-za-z0-9-]+\.)+[A-za-z]{2,4}(:\d+)?(?:[\/\?#][\/=\?%\-&~`@[\]\':+!\.#\w]*)?$/',
+            'currency'  =>  '/^\d+(\.\d+)?$/',
+            'number'    =>  '/^\d+$/',
+            'zip'       =>  '/^\d{6}$/',
+            'integer'   =>  '/^[-\+]?\d+$/',
+            'double'    =>  '/^[-\+]?\d+(\.\d+)?$/',
+            'english'   =>  '/^[A-Za-z]+$/',
+        );
+        // 检查是否有内置的正则表达式
+        if(isset($validate[strtolower($rule)]))
+            $rule       =   $validate[strtolower($rule)];
+        return preg_match($rule,$value)===1;
+    }
+	
 	//输入框
 	private function get_input(){
 		$str = '
@@ -133,7 +194,7 @@ class Content{
 		<label class="layui-form-label textright" style="width:100px;">
 		<font color="red">*</font>'.$val[1].'</label>
 		<div class="layui-input-block" style="margin-left:100px;">
-		<select name="order_status" lay-verify="required">';
+		<select name="'.$val[0].'">';
 		$str.='<option value="'.$val[3]['default'][0].'">'.$val[3]['default'][1].'</option>';
 		foreach($val[3]['many_data'] as $k=>$v){
 			$str.='<option value='.$v[0].'>'.$v[1].'</option>';	

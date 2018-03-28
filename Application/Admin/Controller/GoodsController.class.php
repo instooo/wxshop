@@ -19,13 +19,13 @@ class GoodsController extends CommonController {
             do{ 
 				$data = $_POST;				
 				//检查数据
-				//$checkresult = $class->checkData($data);				
-				//if($checkresult['code']!=1){
-				//	$ret = $checkresult;
-				//	break;
-				//}
+				$checkresult = $class->checkData($data);				
+				if($checkresult['code']!=1){
+					$ret = $checkresult;
+					break;
+				}
 				//整理数据
-				//$data = $class->filter($data);				
+				$data = $class->filter($data);				
 				$content = M($classname);
 				$data['addtime']=time();				
 				$st = $content->data($data)->add();					
@@ -56,8 +56,28 @@ class GoodsController extends CommonController {
 	}
 	
 	//商品类型列表
-	public function goods_type_list(){		
-		$this->display();
+	public function goods_type_list(){
+		$classname =ucfirst(strtolower('goodstype'));
+		import('Common/Vendor/Sysmodel/'.$classname);		
+        $class    = new $classname();		
+		$fileds =$class->getFields();	
+		//查找对应的栏目id		
+		$content = M($classname);
+		$contentmap=array();
+		$count = $content	
+				->where($contentmap)					
+				->count();	
+		$page = new \Think\Page($count, 1);
+		
+		$list = $content
+				->where($contentmap)
+				->limit($page->firstRow.','.$page->listRows)
+				->order('sort desc,id desc')
+				->select();		
+		$this->assign('list',$list);
+		$this->assign ('page', $page->show () );
+		$this->assign('fileds',$fileds);		
+		$this->display();	
 	}
 	//商品类型添加
 	public function goods_type_add(){
@@ -69,6 +89,15 @@ class GoodsController extends CommonController {
 			$ret = array("code"=>-1,"msg"=>'',"data"=>"");
             do{ 
 				$data = $_POST;
+				//检查数据
+				$checkresult = $class->checkData($data);				
+				if($checkresult['code']!=1){
+					$ret = $checkresult;
+					break;
+				}
+				//整理数据
+				$data = $class->filter($data);		
+				
 				$content = M($classname);
 				$data['addtime']=time();				
 				$st = $content->data($data)->add();					
