@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50624
 File Encoding         : 65001
 
-Date: 2018-03-19 19:16:05
+Date: 2018-03-29 19:39:20
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -59,6 +59,7 @@ CREATE TABLE `wxshop_address` (
   `detailaddress` varchar(255) NOT NULL COMMENT '详细地址',
   `street` varchar(255) DEFAULT '' COMMENT '街道',
   `isdefault` int(11) DEFAULT '0' COMMENT '0普通 1默认',
+  `addtime` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`,`member_id`),
   KEY `userid` (`member_id`) USING BTREE
@@ -74,12 +75,12 @@ CREATE TABLE `wxshop_address` (
 DROP TABLE IF EXISTS `wxshop_goods`;
 CREATE TABLE `wxshop_goods` (
   `id` int(11) unsigned zerofill NOT NULL AUTO_INCREMENT,
-  `shop_id` int(11) DEFAULT NULL COMMENT '店铺ID',
+  `shop_id` int(11) DEFAULT '1' COMMENT '店铺ID',
   `good_type_id` int(11) DEFAULT NULL COMMENT '商品类型ID',
   `goods_name` varchar(255) CHARACTER SET utf8 DEFAULT '' COMMENT '商品名称',
   `thumb_id` int(11) NOT NULL COMMENT '缩略图',
   `price` varchar(255) CHARACTER SET utf8 DEFAULT NULL COMMENT '前台显示价格',
-  `create_time` int(11) DEFAULT NULL COMMENT '创建时间',
+  `add_time` int(11) DEFAULT NULL COMMENT '创建时间',
   `update_time` int(11) DEFAULT NULL,
   `status` tinyint(11) DEFAULT NULL,
   `description` text CHARACTER SET utf8 COMMENT '描述',
@@ -102,12 +103,18 @@ CREATE TABLE `wxshop_goodslabel` (
   `sort` int(11) NOT NULL DEFAULT '0' COMMENT '排序',
   `pic1` varchar(200) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '小图片链接地址',
   `status` int(11) NOT NULL DEFAULT '1' COMMENT '1-启用 0 冻结',
+  `addtime` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='产品标签表';
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='产品标签表';
 
 -- ----------------------------
 -- Records of wxshop_goodslabel
 -- ----------------------------
+INSERT INTO `wxshop_goodslabel` VALUES ('4', '阿萨德飞洒', '1', '/uploads/2018-03-28/5abb3df807148.png', '1', '1522220966');
+INSERT INTO `wxshop_goodslabel` VALUES ('5', 'fdsga', '0', '/uploads/2018-03-28/5abb3df807148.png', '1', '1522221526');
+INSERT INTO `wxshop_goodslabel` VALUES ('6', 'asdfsad', '111', '', '1', '1522233520');
+INSERT INTO `wxshop_goodslabel` VALUES ('7', 'asdfsa', '0', '', '1', '1522317501');
+INSERT INTO `wxshop_goodslabel` VALUES ('8', '', '0', '', '0', '1522323529');
 
 -- ----------------------------
 -- Table structure for wxshop_goodssize
@@ -117,7 +124,8 @@ CREATE TABLE `wxshop_goodssize` (
   `id` int(11) DEFAULT NULL,
   `sizename` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
   `price` decimal(10,2) DEFAULT NULL,
-  `kucun` int(11) DEFAULT NULL
+  `kucun` int(11) DEFAULT NULL,
+  `addtime` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
@@ -134,12 +142,17 @@ CREATE TABLE `wxshop_goodstype` (
   `sort` int(11) NOT NULL DEFAULT '0' COMMENT '排序',
   `pic1` varchar(200) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '小图片链接地址',
   `status` int(11) NOT NULL DEFAULT '1' COMMENT '1-启用 0 冻结',
+  `addtime` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='产品标签表';
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='产品标签表';
 
 -- ----------------------------
 -- Records of wxshop_goodstype
 -- ----------------------------
+INSERT INTO `wxshop_goodstype` VALUES ('4', '白茶', '1', '/uploads/2018-03-28/5abb3df807148.png', '1', '1522220539');
+INSERT INTO `wxshop_goodstype` VALUES ('5', '按时', '0', '|/uploads/2018-03-29/5abcaf8265130.png|/uploads/2018-03-29/5abcaf827b0c0.png|/uploads/2018-03-29/5abcaf9fdac00.png|/uploads/2018-03-29/5abcaf9fe7b08.png', '1', '1522315185');
+INSERT INTO `wxshop_goodstype` VALUES ('6', 'ecasada', '0', '', '1', '1522317492');
+INSERT INTO `wxshop_goodstype` VALUES ('7', 'ecasada', '0', '', '1', '1522317493');
 
 -- ----------------------------
 -- Table structure for wxshop_member
@@ -200,7 +213,7 @@ CREATE TABLE `wxshop_node` (
   KEY `pid` (`pid`),
   KEY `status` (`status`),
   KEY `name` (`name`)
-) ENGINE=MyISAM AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=33 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of wxshop_node
@@ -220,6 +233,20 @@ INSERT INTO `wxshop_node` VALUES ('13', '/Permission/memberEdit', '用户修改'
 INSERT INTO `wxshop_node` VALUES ('15', '/Permission/memberDelete', '用户删除', '权限管理', '用户删除', '1', null, '11', '1', '1', '0', '0', null, '0');
 INSERT INTO `wxshop_node` VALUES ('17', '/Permission/addAccess', '分配权限', '权限管理', '分配权限', '1', null, '12', '1', '1', '0', '0', null, '0');
 INSERT INTO `wxshop_node` VALUES ('18', '/Permission/saveAccess', '分配权限', '权限管理', '分配权限', '1', null, '12', '1', '1', '0', '0', null, '0');
+INSERT INTO `wxshop_node` VALUES ('19', '/', '充值管理', '0', '充值管理', '1', null, '1', '0', '0', '0', '0', 'anticon-pay-circle-o', '1');
+INSERT INTO `wxshop_node` VALUES ('20', '/', '商品管理', '0', '商品管理', '1', null, '2', '0', '0', '0', '0', 'anticon-shop', '1');
+INSERT INTO `wxshop_node` VALUES ('21', '/Goods/index', '物品列表', '商品管理', '物品列表', '1', null, '1', '20', '1', '0', '0', 'anticon-database', '1');
+INSERT INTO `wxshop_node` VALUES ('22', '/Goods/goodadd', '物品添加', '物品列表', '物品添加', '1', null, '1', '20', '1', '0', '0', '1', '0');
+INSERT INTO `wxshop_node` VALUES ('23', '/Goods/goodedit', '物品编辑', '商品管理', '物品编辑', '1', null, '2', '20', '1', '0', '0', '1', '0');
+INSERT INTO `wxshop_node` VALUES ('24', '/Goods/gooddelete', '产品删除', '商品管理', '产品删除', '1', null, '3', '20', '1', '0', '0', '1', '0');
+INSERT INTO `wxshop_node` VALUES ('25', '/Goods/goods_type_list', '产品类型列表管理', '商品管理', '产品类型列表管理', '1', null, '5', '20', '1', '0', '0', 'anticon-api', '1');
+INSERT INTO `wxshop_node` VALUES ('26', '/Goods/goods_type_add', '产品类型添加', '商品管理', '产品类型添加', '1', null, '6', '20', '1', '0', '0', '1', '0');
+INSERT INTO `wxshop_node` VALUES ('27', '/Goods/goods_type_edit', '产品类型编辑', '商品管理', '产品类型编辑', '1', null, '7', '20', '1', '0', '0', '1', '0');
+INSERT INTO `wxshop_node` VALUES ('28', '/Goods/goods_type_delete', '产品类型删除', '商品管理', '产品类型删除', '1', null, '8', '20', '1', '0', '0', '1', '0');
+INSERT INTO `wxshop_node` VALUES ('29', '/Goods/goods_label_list', '产品标签列表', '商品管理', '产品标签列表', '1', null, '9', '20', '1', '0', '0', 'anticon-tag', '1');
+INSERT INTO `wxshop_node` VALUES ('30', '/Goods/goods_label_add', '产品标签增加', '商品管理', '产品标签增加', '1', null, '10', '20', '1', '0', '0', '1', '0');
+INSERT INTO `wxshop_node` VALUES ('31', '/Goods/goods_label_edit', '产品标签编辑', '商品管理', '产品标签编辑', '1', null, '11', '20', '1', '0', '0', '1', '0');
+INSERT INTO `wxshop_node` VALUES ('32', '/Goods/goods_label_delete', '产品标签删除', '商品管理', '产品标签删除', '1', null, '12', '20', '1', '0', '0', '1', '0');
 
 -- ----------------------------
 -- Table structure for wxshop_role
@@ -297,5 +324,5 @@ CREATE TABLE `wxshop_user` (
 -- ----------------------------
 -- Records of wxshop_user
 -- ----------------------------
-INSERT INTO `wxshop_user` VALUES ('68', 'admin', '管理员', 'admin', 'e10adc3949ba59abbe56e057f20f883e', '', '1521437767', '127.0.0.1', '147', null, '', '', '1467963560', '1467963560', '1', '0', '/portrait/57be642fb50eb.png');
+INSERT INTO `wxshop_user` VALUES ('68', 'admin', '管理员', 'admin', 'e10adc3949ba59abbe56e057f20f883e', '', '1522315068', '127.0.0.1', '151', null, '', '', '1467963560', '1467963560', '1', '0', '/portrait/57be642fb50eb.png');
 INSERT INTO `wxshop_user` VALUES ('80', 'test', '123456', '测试1', 'e10adc3949ba59abbe56e057f20f883e', '', '1520995646', null, '20', null, '测试1@7477.com', '', '1520579106', '1520579106', '1', '0', '');
