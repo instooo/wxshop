@@ -2,49 +2,17 @@
 namespace Admin\Controller;
 use Think\Controller;
 use Think\Model;
-
+//$request = \Admin\Logic\Common\Request::filter($_REQUEST);
+//$paylist = new \Admin\Logic\Pay\Pay($request,0);		
+	
 class GoodsController extends CommonController {
 	//商品列表
-	public function index(){		
-		$this->display();
+	public function index(){
+		$this->data_list("goods");		
 	}
 	//添加商品
 	public function goodadd(){
-		//查找模型对应的表格和对应的类名
-		$classname =ucfirst(strtolower('goods'));
-		import('Common/Vendor/Sysmodel/'.$classname);		
-		$class    = new $classname();
-		if ($_POST) {
-			$ret = array("code"=>-1,"msg"=>'',"data"=>"");
-            do{ 
-				$data = $_POST;				
-				//检查数据
-				$checkresult = $class->checkData($data);				
-				if($checkresult['code']!=1){
-					$ret = $checkresult;
-					break;
-				}
-				//整理数据
-				$data = $class->filter($data);				
-				$content = M($classname);
-				$data['addtime']=time();				
-				$st = $content->data($data)->add();					
-				if(!$st){
-					$ret['code'] = 0;
-					$ret['msg'] = '添加失败';
-					break;					
-				}			
-				$ret['code'] = 1;
-				$ret['msg'] = '添加成功';
-				break;
-			}while(0);
-			exit(json_encode($ret));
-		}else{
-			//这些案例所有都有对应栏目，所以是公用的		
-			$html = $class->get_html();			
-			$this->assign('html',$html);	
-			$this->display();
-		}
+		$this->data_add("goods");
 	}
 	//编辑商品
 	public function goodedit(){
@@ -56,66 +24,12 @@ class GoodsController extends CommonController {
 	}
 	
 	//商品类型列表
-	public function goods_type_list(){
-		$classname =ucfirst(strtolower('goodstype'));
-		import('Common/Vendor/Sysmodel/'.$classname);		
-        $class    = new $classname();		
-		$fileds =$class->getFields();	
-		//查找对应的栏目id		
-		$content = M($classname);
-		$contentmap=array();
-		$count = $content	
-				->where($contentmap)					
-				->count();	
-		$page = new \Think\Page($count, 1);
-		
-		$list = $content
-				->where($contentmap)
-				->limit($page->firstRow.','.$page->listRows)
-				->order('sort desc,id desc')
-				->select();		
-		$this->assign('list',$list);
-		$this->assign ('page', $page->show () );
-		$this->assign('fileds',$fileds);		
-		$this->display();	
+	public function goods_type_list(){	
+		$this->data_list("goodstype");			
 	}
 	//商品类型添加
 	public function goods_type_add(){
-		//查找模型对应的表格和对应的类名
-		$classname =ucfirst(strtolower('goodstype'));
-		import('Common/Vendor/Sysmodel/'.$classname);		
-		$class    = new $classname();
-		if ($_POST) {
-			$ret = array("code"=>-1,"msg"=>'',"data"=>"");
-            do{ 
-				$data = $_POST;
-				//检查数据
-				$checkresult = $class->checkData($data);				
-				if($checkresult['code']!=1){
-					$ret = $checkresult;
-					break;
-				}
-				//整理数据
-				$data = $class->filter($data);		
-				
-				$content = M($classname);
-				$data['addtime']=time();				
-				$st = $content->data($data)->add();					
-				if(!$st){
-					$ret['code'] = 0;
-					$ret['msg'] = '添加失败';
-					break;					
-				}			
-				$ret['code'] = 1;
-				$ret['msg'] = '添加成功';
-				break;
-			}while(0);
-			exit(json_encode($ret));
-		}else{				
-			$html = $class->get_html();			
-			$this->assign('html',$html);	
-			$this->display();
-		}		
+		$this->data_add("goodstype");			
 	}
 	//商品类型编辑
 	public function goods_type_edit(){		
@@ -128,56 +42,11 @@ class GoodsController extends CommonController {
 	
 	//商品标签列表
 	public function goods_label_list(){	
-		$classname =ucfirst(strtolower('goodslabel'));
-		import('Common/Vendor/Sysmodel/'.$classname);		
-        $class    = new $classname();		
-		$fileds =$class->getFields();	
-		//查找对应的栏目id		
-		$content = M($classname);
-		$contentmap=array();
-		$count = $content	
-				->where($contentmap)					
-				->count();	
-		$page = new \Think\Page($count, 5);
-		
-		$list = $content
-				->where($contentmap)
-				->limit($page->firstRow.','.$page->listRows)
-				->order('sort desc,id desc')
-				->select();		
-		$this->assign('list',$list);
-		$this->assign ('page', $page->show () );
-		$this->assign('fileds',$fileds);		
-		$this->display();
+		$this->data_list("goodslabel");		
 	}
 	//商品标签添加
 	public function goods_label_add(){		
-		//查找模型对应的表格和对应的类名
-		$classname =ucfirst(strtolower('goodslabel'));
-		import('Common/Vendor/Sysmodel/'.$classname);		
-		$class    = new $classname();
-		if ($_POST) {
-			$ret = array("code"=>-1,"msg"=>'',"data"=>"");
-            do{ 
-				$data = $_POST;
-				$content = M($classname);
-				$data['addtime']=time();				
-				$st = $content->data($data)->add();					
-				if(!$st){
-					$ret['code'] = 0;
-					$ret['msg'] = '添加失败';
-					break;					
-				}			
-				$ret['code'] = 1;
-				$ret['msg'] = '添加成功';
-				break;
-			}while(0);
-			exit(json_encode($ret));
-		}else{				
-			$html = $class->get_html();			
-			$this->assign('html',$html);	
-			$this->display();
-		}	
+		$this->data_add("goodslabel");		
 	}
 	//商品标签编辑
 	public function goods_label_edit(){		

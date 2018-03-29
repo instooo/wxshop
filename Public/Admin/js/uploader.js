@@ -1,3 +1,15 @@
+String.prototype.trim = function (char, type) {
+  if (char) {
+    if (type == 'left') {
+      return this.replace(new RegExp('^\\'+char+'+', 'g'), '');
+    } else if (type == 'right') {
+      return this.replace(new RegExp('\\'+char+'+$', 'g'), '');
+    }
+    return this.replace(new RegExp('^\\'+char+'+|\\'+char+'+$', 'g'), '');
+  }
+  return this.replace(/^\s+|\s+$/g, '');
+};
+
 //upload('#picker-down','name');
 function upload(id,uploadname){
 	var name_str = uploadname;
@@ -366,7 +378,7 @@ function upload_many(id,uploadname,num){
 							var nowval = $("input[name='"+name_str+"']").val();							
 							var new_val = nowval.replace(datasrc,'');							
 							new_val = new_val.replace("||",'|');						
-							$("input[name='"+name_str+"']").val(new_val);		
+							$("input[name='"+name_str+"']").val(trim(new_val,"|"));		
 						} else { 
     
 						}

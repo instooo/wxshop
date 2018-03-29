@@ -48,5 +48,28 @@ class CommonController extends Controller {
 		}
 		exit(json_encode($html));
 	}
+	
+	//公用添加方法
+	public function data_list($table){
+		$module = new \Admin\Logic\Common\Module($table);
+		$data = $module->module_list();
+		$this->assign('data',$data);		
+		$this->display();
+		
+	}
+	
+	
+	//公用添加方法
+	public function data_add($table){
+		$module = new \Admin\Logic\Common\Module($table);
+		$data = $module->module_add();		
+		if ($_POST) {
+			exit(json_encode($data));
+		}else{
+			$this->assign('html',$data);	
+			$this->display();
+		}		
+	}
+	
 }
                                 

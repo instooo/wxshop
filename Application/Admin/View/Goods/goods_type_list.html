@@ -94,22 +94,29 @@ layui.use(['layer', 'form'], function(){
                                     </div>
                                 </div>
                             </form>
-                        </div> 
+                        </div>  
+<!--<div  class="ant-alert ant-alert-info">
+	<i class="anticon anticon-info-circle ant-alert-icon"></i>
+	<span class="ant-alert-message">
+		<div>角色管理页面</div>
+	</span>
+	<span class="ant-alert-description"></span>
+</div>--> 
 				<div class="standardTable___348Kf">                           
 					<table id="table">
 					  <thead>
 						<tr>
-						<volist name="fileds" id="vo">							
+						<volist name="data.fileds" id="vo">							
 							<th><{$vo.1}></th>
 						</volist>
-                        <th>操作</th>    
+						<th>操作</th>    
 						</tr>
 					  </thead>
 					  <tbody>
-						<if condition="$list">
-							<volist name="list" id="vo">
+							<if condition="$data['list']">
+							<volist name="data.list" id="vo">
 								<tr data-id="<{$vo.id}>" align="center">
-									<volist name="fileds" id="v">
+									<volist name="data.fileds" id="v">
 										<if condition="$v['0'] eq 'one_file'">
 										<td style="text-align:center"><img src='<{$vo["$v[0]"]}>'/></td>
 										<else/>
@@ -118,7 +125,7 @@ layui.use(['layer', 'form'], function(){
 									</volist>
 									<td style="text-align:center; padding-left:30px;">
 									<a href="javascript:void(0);" >编辑</a>&nbsp;|&nbsp;
-									<a href="javascript:void(0);">删除</a>										
+									<a href="javascript:void(0);">删除</a></td>										
 								</tr>
 							</volist>
 							<else />
@@ -127,7 +134,7 @@ layui.use(['layer', 'form'], function(){
 					  </tbody>
 					</table>
 					<div class="page">
-						<{$page}>
+						<{$data.page}>
 					</div>	
 				</div>                                
             </div>
