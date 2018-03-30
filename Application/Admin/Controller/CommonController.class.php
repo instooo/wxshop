@@ -54,8 +54,7 @@ class CommonController extends Controller {
 		$module = new \Admin\Logic\Common\Module($table);
 		$data = $module->module_list();
 		$this->assign('data',$data);		
-		$this->display();
-		
+		$this->display();		
 	}
 	
 	

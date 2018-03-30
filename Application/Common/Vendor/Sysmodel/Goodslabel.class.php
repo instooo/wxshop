@@ -5,9 +5,21 @@ include "lib/Content.class.php";
 // 没有声明命名空间
 class Goodslabel extends Content implements ContentInterface 
 {	
+	//需要验证的字段
 	protected $_validate = array(
-		array('title','require','不能为空'), //默认情况下用正则进行验证	
+		array('name','require','栏目名称不能为空'), //默认情况下用正则进行验证	
+		array('pic1','require','缩略图不能为空'), //默认情况下用正则进行验证		
+		array('sort','number','排序必须为数字'), //默认情况下用正则进行验证
+		array('status','number','状态必须为数字'), //默认情况下用正则进行验证		
 	);
+	//获取显示的字段
+	function getShowFields(){
+		$other[1]="开启";
+		$other[0]="关闭";
+		$showfields['status']=$other;
+		return $showfields;		
+		
+	}
     //获取模型字段和类型
     function getFields(){	
 		/*
@@ -21,16 +33,8 @@ class Goodslabel extends Content implements ContentInterface
 		$other['many_data'][]=array("1","开启");
 		$other['many_data'][]=array("0","关闭");
 		$fields[]=array('sort',"排序",'input');		
-		$fields[]=array('status',"状态",'select',$other);
+		$fields[]=array('status',"状态",'select',$other);	
 		
-		
-		//$fields[]=array('duo_file',"广告名称",'duo_file');
-		//
-		//$fields[]=array('saa',"产品详情",'text');	
-		//$fields[]=array('start',"时间",'date');			
-		//$other['default']=array("","默认");
-        //
-		//$fields[]=array('radio',"单选",'radio',$other);			
 		return $fields;		
 	}
 	//获取html
@@ -45,5 +49,12 @@ class Goodslabel extends Content implements ContentInterface
 		$html = parent::edit_html($common_fields,$info);	
 		return $html;
 	}	
+	//检测数据
+	public function checkData($data){
+		$_validate =$this->_validate;
+		$fields =$this->getFields();			
+		$result = parent::checkData($data,$_validate,$fields);			
+		return $result;
+	}
 }
 ?>

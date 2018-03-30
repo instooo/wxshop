@@ -37,7 +37,10 @@ class Module {
 				->limit($page->firstRow.','.$page->listRows)
 				->order('sort desc,id desc')
 				->select();	
+		$showfields = $class->getShowFields();
+		
 		$data['list'] = $list;
+		$data['showfields'] = $showfields ;
 		$data['page'] = $page->show ();
 		$data['fileds'] = $fileds;
 		return $data;		

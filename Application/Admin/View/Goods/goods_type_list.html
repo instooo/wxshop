@@ -117,8 +117,10 @@ layui.use(['layer', 'form'], function(){
 							<volist name="data.list" id="vo">
 								<tr data-id="<{$vo.id}>" align="center">
 									<volist name="data.fileds" id="v">
-										<if condition="$v['0'] eq 'one_file'">
-										<td style="text-align:center"><img src='<{$vo["$v[0]"]}>'/></td>
+										<if condition="$v['2'] eq 'one_file'">
+										<td style="text-align:center"><img src='<{$vo["$v[0]"]}>' width="50px" height="50px"/></td>
+										<elseif condition="$v['2'] eq 'select'"/>
+											<td style="text-align:center"><{$data["showfields"][$v['0']][$vo[$v[0]]]}></td>
 										<else/>
 										<td style="text-align:center"><{$vo["$v[0]"]}></td>
 										</if>

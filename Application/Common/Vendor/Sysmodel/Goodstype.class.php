@@ -6,10 +6,19 @@ include "lib/Content.class.php";
 class Goodstype extends Content implements ContentInterface 
 {	
 	protected $_validate = array(
-		array('name','require','栏目名称不能为空'), //默认情况下用正则进行验证		
+		array('name','require','栏目名称不能为空'), //默认情况下用正则进行验证	
+		array('pic1','require','缩略图不能为空'), //默认情况下用正则进行验证		
 		array('sort','number','排序必须为数字'), //默认情况下用正则进行验证
 		array('status','number','状态必须为数字'), //默认情况下用正则进行验证		
 	);
+	//获取显示的字段
+	function getShowFields(){
+		$other[1]="开启";
+		$other[0]="关闭";
+		$showfields['status']=$other;
+		return $showfields;		
+		
+	}
     //获取模型字段和类型
     function getFields(){	
 		/*

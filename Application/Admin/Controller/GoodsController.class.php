@@ -16,11 +16,11 @@ class GoodsController extends CommonController {
 	}
 	//编辑商品
 	public function goodedit(){
-		$this->display();
+		$this->data_edit("goods");
 	}
 	//删除商品
 	public function gooddelete(){
-		$this->display();
+		$this->data_delete("goods");		
 	}
 	
 	//商品类型列表
@@ -50,11 +50,11 @@ class GoodsController extends CommonController {
 	}
 	//商品标签编辑
 	public function goods_label_edit(){		
-		//$this->display();
+		$this->data_edit("goodslabel");		
 	}
 	//商品标签删除
 	public function goods_label_delete(){		
-		//$this->display();
-	}
+		$this->data_delete("goodslabel");		
+	}	
 	
 }
