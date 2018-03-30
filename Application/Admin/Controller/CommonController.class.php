@@ -70,6 +70,26 @@ class CommonController extends Controller {
 			$this->display();
 		}		
 	}
+	//公用更新方法
+	public function data_edit($table){
+		$id =  $_REQUEST ['id'];
+		$module = new \Admin\Logic\Common\Module($table);
+		$data = $module->module_edit($id);
+		if ($_POST) {
+			exit(json_encode($data));
+		}else{
+			$this->assign('html',$data);	
+			$this->display();
+		}		
+	}
+	//公用删除方法
+	public function data_delete($table){
+		$id =  $_REQUEST ['id'];
+		$module = new \Admin\Logic\Common\Module($table);
+		$data = $module->module_delete($id);		
+		exit(json_encode($data));
+			
+	}
 	
 }
                                 

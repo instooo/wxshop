@@ -26,7 +26,7 @@ layui.use(['layer', 'form'], function(){
 			<span class="ant-breadcrumb-separator">/</span>       
 			<span>权限管理</span>
 			<span class="ant-breadcrumb-separator">/</span>
-			<button type="button" class="ant-btn ant-btn-primary ant-btn-sm member_add" style="float:right;margin-right:10px;">
+			<button type="button" class="ant-btn ant-btn-primary ant-btn-sm btn_add" style="float:right;margin-right:10px;">
 				<span>+ 新建 </span>
 			</button>
         </div>  
@@ -124,8 +124,8 @@ layui.use(['layer', 'form'], function(){
 										</if>
 									</volist>
 									<td style="text-align:center; padding-left:30px;">
-									<a href="javascript:void(0);" >编辑</a>&nbsp;|&nbsp;
-									<a href="javascript:void(0);">删除</a></td>										
+									<a href="javascript:void(0);" class="btn_edit" >编辑</a>&nbsp;|&nbsp;
+									<a href="javascript:void(0);" class="btn_dele">删除</a></td>										
 								</tr>
 							</volist>
 							<else />
@@ -154,17 +154,17 @@ layui.use(['layer', 'form'], function(){
         $('.btn_dele').click(function () {
             var id = $(this).parents('tr').attr('data-id');
             if (id == '') return false;
-            layer.confirm('确定要删除该产品吗？', {
+            layer.confirm('确定要删除该产品类型吗？', {
                 btn: ['确定','取消']
             }, function(){
                 doDeleteData(id);
             });
         });
 		//新增
-        $('.member_add').click(function () {
+        $('.btn_add').click(function () {
             layer.open({
                 type: 2,
-                title: '添加产品',
+                title: '添加产品类型',
                 skin: 'layui-layer', //加上边框
                 area: ['100%',"100%"], //宽高
                 content: "/Goods/goods_type_add"
@@ -176,9 +176,9 @@ layui.use(['layer', 'form'], function(){
             var id = _tr.attr('data-id');          
             layer.open({
                 type: 2,
-                title: '添加用户',
+                title: '编辑产品类型',
                 skin: 'layui-layer', //加上边框
-                area: ['350px', '400px'], //宽高
+                area: ['100%', '100%'], //宽高
                 content: "/Goods/goods_type_edit/id/"+id
             });           
         });		
@@ -186,7 +186,22 @@ layui.use(['layer', 'form'], function(){
 	
 	 //删除
     function doDeleteData(id) {
-       
+       $.ajax({
+			type:'post',
+			dataType:'json',
+			data:{id:id},
+			url:'/Goods/goods_type_delete',
+			error:function () {
+				layer.msg('未知错误', {icon:5,time:1000});
+			},
+			success:function (data) {
+				if (data.code == 0) {
+					layer.msg('删除成功', {icon:6,time:1000}, function () {location.reload()});
+				}else {
+					layer.msg(data.msg, {icon:5,time:1000});
+				}
+			}
+		});
     }
 	
 </script> 

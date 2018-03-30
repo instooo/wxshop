@@ -19,20 +19,16 @@ class Content{
 			if($key!=='val'){			
 				switch($val[2]){
 					case 'input':
-						$tpl =$this->get_input();
-						$html.=sprintf($tpl,$val['1'],$val['0'],$val['1']);						
+						$html.=$this->get_input($val);											
 						break;
 					case 'editor':						
-						$tpl =$this->get_editor();	
-						$html.=sprintf($tpl,$val['1'],$val['0'],$val['0'],$val['2']);						
+						$html.=$this->get_editor($val);									
 						break;
 					case 'text':
-						$tpl =$this->get_text();
-						$html.=sprintf($tpl,$val['1'],$val['1'],$val['0']);						
+						$html.=$this->get_text($val);										
 						break;	
 					case 'date':
-						$tpl =$this->get_date_input();
-						$html.=sprintf($tpl,$val['1'],$val['1'],$val['0'],$val['0'],$val['0']);						
+						$html.=$this->get_date_input($val);										
 						break;		
 					case 'select':
 						$html.=$this->get_select($val);
@@ -41,12 +37,47 @@ class Content{
 						$html.=$this->get_radio($val);
 						break;			
 					case 'one_file':
-						$tpl =$this->get_one_file();
-						$html.=sprintf($tpl,$val['0'],$val['1'],$val['0'],$val['0'],$val['0']);						
+						$html.=$this->get_one_file($val);											
 						break;					
 					case 'duo_file':
-						$tpl =$this->get_duo_file();
-						$html.=sprintf($tpl,$val['0'],$val['1'],$val['0'],$val['0'],$val['0']);						
+						$html.=$this->get_duo_file($val);											
+						break;
+				}	
+			}
+			
+		}		
+		return $html;
+	}
+	//根据类型获得不同类型的前端代码
+	public function edit_html($fields,$info){		
+		$html = "";		
+		$html .= "<input type='hidden' name='id' id='id'  value='".$info['id']."'>";	
+		foreach($fields as $key=>$val){
+			if($key!=='val'){			
+				switch($val[2]){
+					case 'input':
+						$html.=$this->get_input($val,$info);											
+						break;
+					case 'editor':						
+						$html.=$this->get_editor($val,$info);									
+						break;
+					case 'text':
+						$html.=$this->get_text($val,$info);										
+						break;	
+					case 'date':
+						$html.=$this->get_date_input($val,$info);										
+						break;		
+					case 'select':
+						$html.=$this->get_select($val,$info);
+						break;
+					case 'radio':
+						$html.=$this->get_radio($val,$info);
+						break;			
+					case 'one_file':
+						$html.=$this->get_one_file($val,$info);											
+						break;					
+					case 'duo_file':
+						$html.=$this->get_duo_file($val,$info);											
 						break;
 				}	
 			}
@@ -115,50 +146,50 @@ class Content{
         return preg_match($rule,$value)===1;
     }
 	
-	//输入框
-	private function get_input(){
+	//输入框$html.=sprintf($tpl,,$val['0'],$val['1']);	
+	private function get_input($val,$info){
 		$str = '
 		<div class="layui-form-item">
 		<label class="layui-form-label textright" style="width:100px;">
-		<font color="red">*</font>%s</label>
+		<font color="red">*</font>'.$val['1'].'</label>
 		<div class="layui-input-block" style="margin-left:100px;">
-			<input type="text" name="%s" lay-verify="required" lay-verType="tips" placeholder="请%s" autocomplete="off" class="layui-input">
+			<input type="text" name="'.$val['0'].'" lay-verify="required" lay-verType="tips" placeholder="请'.$val['1'].'" autocomplete="off" class="layui-input" value="'.$info[$val[0]].'">
 		</div>
 		</div>';
 		return $str;
 	}
-	//文本编辑框
-	private function get_editor(){
+	//文本编辑框$html.=sprintf($tpl,$val['1'],$val['0'],$val['0'],$val['2']);				
+	private function get_editor($val,$info){
 		$str='
 		<div class="layui-form-item">
 		<label class="layui-form-label textright" style="width:100px;">
-		<font color="red">*</font>%s</label>
+		<font color="red">*</font>'.$val['1'].'</label>
 		<div class="layui-input-block" style="margin-left:100px;">
-		<textarea name="%s" id="%s" data_type="%s"></textarea>			
+		<textarea name="'.$val['0'].'" id="'.$val['0'].'" data_type="'.$val['2'].'">'.$info[$val[0]].'</textarea>			
 		</div>
 		</div>';
 		return $str;		
 	}
-	//text
-	private function get_text(){
+	//text$html.=sprintf($tpl,$val['1'],$val['1'],$val['0']);		
+	private function get_text($val,$info){
 		$str='
 		<div class="layui-form-item">
 			<label class="layui-form-label textright" style="width:100px;">
-			<font color="red">*</font>%s</label>
+			<font color="red">*</font>'.$val['0'].'</label>
 			<div class="layui-input-block" style="margin-left:100px;">
-			 <textarea placeholder="请输入%s" name="%s" class="ant-col-md-24 ant-input" style="height:100px;"></textarea>		
+			 <textarea placeholder="请输入'.$val['1'].'" name="'.$val['0'].'" class="ant-col-md-24 ant-input" style="height:100px;">'.$info[$val[0]].'</textarea>		
 			</div>
 			</div>';		
 		return $str;
 	}
 	//date
-	private function get_date_input(){
+	private function get_date_input($val,$info){
 		$str = '
 		<div class="layui-form-item">
 		<label class="layui-form-label textright" style="width:100px;">
-		<font color="red">*</font>%s</label>
+		<font color="red">*</font>'.$val['1'].'</label>
 		<div class="layui-input-block" style="margin-left:100px;">
-			<input type="text" name="%s" lay-verify="required" lay-verType="tips" placeholder="请%s" autocomplete="off" class="layui-input" id="%s">
+			<input type="text" name="'.$val['0'].'" lay-verify="required" lay-verType="tips" placeholder="请'.$val['1'].'" autocomplete="off" class="layui-input" id="'.$val['0'].'" value="'.date('Y-m-d H:i:s',$info[$val[0]]).'" readonly>
 		</div>
 		</div>';
 		$str.='<script type="text/javascript">
@@ -166,14 +197,14 @@ class Content{
 			  var laydate = layui.laydate;  
 			  //执行一个laydate实例
 			  laydate.render({
-				elem: "#%s" 
+				elem: "#'.$val['0'].'" 
 			  });
 			});
 			</script>';		
 		return $str;
 	}
 	//radio
-	private function get_radio($val){
+	private function get_radio($val,$info){
 		$str = '
 		<div class="layui-form-item">
 		<label class="layui-form-label textright" style="width:100px;">
@@ -181,14 +212,19 @@ class Content{
 		<div style="margin-left:100px;">
 		<div class="ant-radio-group" id="public" style="line-height:28px;vertical-align: middle;">';
 		foreach($val[3]['many_data'] as $k=>$v){
-			$str.=$v[1].'<input type="radio" name="'.$val[0].'" value="'.$v[0].'">';	
+			if($v[0]==$info[$val[0]]){
+				$str.=$v[1].'<input type="radio" name="'.$v[0].'" value="'.$v[0].'" checked>';	
+			}else{
+				$str.=$v[1].'<input type="radio" name="'.$v[0].'" value="'.$v[0].'">';	
+			}
+			
 		}
 		$str.='</div></div>
 		</div>';
 		return $str;
 	}
 	//select
-	private function get_select($val){
+	private function get_select($val,$info){
 		$str = '
 		<div class="layui-form-item">
 		<label class="layui-form-label textright" style="width:100px;">
@@ -197,58 +233,78 @@ class Content{
 		<select name="'.$val[0].'">';
 		$str.='<option value="'.$val[3]['default'][0].'">'.$val[3]['default'][1].'</option>';
 		foreach($val[3]['many_data'] as $k=>$v){
-			$str.='<option value='.$v[0].'>'.$v[1].'</option>';	
+			if($v[0]==$info[$val[0]]){
+				$str.='<option value='.$v[0].' selected>'.$v[1].'</option>';	
+			}else{
+				$str.='<option value='.$v[0].'>'.$v[1].'</option>';	
+			}
 		}
 		$str.='</select></div></div>';
 		return $str;
 	}
 	//单文件
-	private function get_one_file(){
+	private function get_one_file($val,$info){
+		//对图片进行处理	
+		if(trim($info[$val['0']],'|')){						
+			$picarr = explode("|",trim($info[$val['0']],'|'));
+			$pic_html="";						
+			foreach($picarr as $k=>$v){
+				$pic_html.='<div class="preview-small imgWrap fl" data-src="'.$v.'" style="background: url('.$v.') center center no-repeat;"><i class="position-ab havepic"></i></div>';
+			}	
+		}
 		$str = '
 		<div class="layui-form-item">	
-		<input type="hidden" name="%s" value="">	
+		<input type="hidden" name="'.$val[0].'" value="'.$info[$val['0']].'">	
 		<label class="layui-form-label textright" style="width:100px;">
-		<font color="red">*</font>%s</label>
+		<font color="red">*</font>'.$val[1].'</label>
 		<div class="layui-input-block" style="margin-left:100px;">
 			<div class="upload-category clearfix">						
-			<a href="javascript:void(0);" id="%s" class="category-y fl">上传预览图</a>
+			<a href="javascript:void(0);" id="'.$val[0].'" class="category-y fl">上传预览图</a>
 			<span class="category-notice fl" data-tag="preview">支持jpg、png格式,RGB模式,单张</span>
 			<span class="notice fl" data-name="preview">
 			  <i></i>
 			  预览图上传错误
 			</span>
-			<div class="wait-upload"></div>
+			<div class="wait-upload">'.$pic_html.'</div>
 		  </div>	
 		</div>
 		
 		</div>';
 		
 		$str.= "<script type='text/javascript'>
-				upload('#%s','%s');
+				upload('#".$val[0]."','".$val[0]."');
 		</script>";
 		return $str;
 	}
 	//单文件
-	private function get_duo_file(){
+	private function get_duo_file($val,$info){
+		//对图片进行处理	
+		if(trim($info[$val['0']],'|')){						
+			$picarr = explode("|",trim($info[$val['0']],'|'));
+			$pic_html="";						
+			foreach($picarr as $k=>$v){
+				$pic_html.='<div class="preview-small imgWrap fl" data-src="'.$v.'" style="background: url('.$v.') center center no-repeat;"><i class="position-ab havepic"></i></div>';
+			}	
+		}
 		$str = '
 		<div class="layui-form-item">	
-		<input type="hidden" name="%s" value="">	
+		<input type="hidden" name="'.$val[0].'" value="">	
 		<label class="layui-form-label textright" style="width:100px;">
-		<font color="red">*</font>%s</label>
+		<font color="red">*</font>'.$val[1].'</label>
 		<div class="layui-input-block" style="margin-left:100px;">
 			<div class="upload-category clearfix">						
-			<a href="javascript:void(0);" id="%s" class="category-y fl">上传预览图</a>
+			<a href="javascript:void(0);" id="'.$val[0].'" class="category-y fl">上传预览图</a>
 			<span class="category-notice fl" data-tag="preview">支持jpg、png格式,RGB模式,单张</span>
 			<span class="notice fl" data-name="preview">
 			  <i></i>
 			  预览图上传错误
 			</span>
-			<div class="wait-upload"></div>
+			<div class="wait-upload">'.$pic_html.'</div>
 		  </div>	
 		</div>		
 		</div>';		
 		$str.= "<script type='text/javascript'>				
-				upload_many('#%s','%s',10);
+				upload_many('#".$val[0]."','".$val[0]."',10);
 		</script>";
 		return $str;
 	}

@@ -33,11 +33,11 @@ class GoodsController extends CommonController {
 	}
 	//商品类型编辑
 	public function goods_type_edit(){		
-		$this->display();
+		$this->data_edit("goodstype");		
 	}
 	//商品类型删除
 	public function goods_type_delete(){		
-		$this->display();
+		$this->data_delete("goodstype");
 	}
 	
 	//商品标签列表

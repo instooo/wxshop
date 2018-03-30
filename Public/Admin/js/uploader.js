@@ -461,3 +461,19 @@ function upload_many(id,uploadname,num){
 			}, thumbnailWidth, thumbnailHeight);
 	}
 }
+
+$(function(){
+	$(".havepic").click(function(){
+		// 清除input文本
+		var datasrc=$(this).parents(".preview-small").attr('data-src');
+		var nowval = $(this).parents(".layui-form-item").find("input").val();		
+		var new_val = nowval.replace(datasrc,'');
+		new_val = new_val.replace("||",'|');
+		$(this).parents(".layui-form-item").find("input").val(new_val);			
+		// 移除上传文本框
+		$(this).parents(".preview-small").fadeOut(500, function(){
+			$(this).remove();
+		});
+	})
+
+})
