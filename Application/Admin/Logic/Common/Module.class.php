@@ -48,7 +48,7 @@ class Module {
 	//数据添加
 	public function module_add(){
 		//查找模型对应的表格和对应的类名
-		$classname =ucfirst(strtolower($this->table));
+		$classname =ucfirst(strtolower($this->table));		
 		import('Common/Vendor/Sysmodel/'.$classname);		
 		$class    = new $classname();
 		if ($_POST) {

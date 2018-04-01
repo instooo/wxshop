@@ -11,8 +11,18 @@ class GoodsController extends CommonController {
 		$this->data_list("goods");		
 	}
 	//添加商品
-	public function goodadd(){
-		$this->data_add("goods");
+	public function goodadd(){		
+		$html = $this->data_get_html("goods");//获取商品常规参数
+		//获取商品栏目
+		$module = new \Admin\Logic\Goods\GoodsData("goodstype");
+		$data = $module->get_all_list();
+		print_r($data);die;
+		//获取商品标签
+		//获取实体店
+		
+		$this->assign('html',$html);		
+		$this->display();
+		
 	}
 	//编辑商品
 	public function goodedit(){

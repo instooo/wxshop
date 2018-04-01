@@ -57,10 +57,16 @@ class CommonController extends Controller {
 		$this->display();		
 	}
 	
-	
+	//获取html
+	public function data_get_html($table){
+		$module = new \Admin\Logic\Common\Module($table);		
+		$data = $module->module_add();		
+		return $data;				
+		
+	}
 	//公用添加方法
-	public function data_add($table){
-		$module = new \Admin\Logic\Common\Module($table);
+	public function data_add($table){		
+		$module = new \Admin\Logic\Common\Module($table);		
 		$data = $module->module_add();		
 		if ($_POST) {
 			exit(json_encode($data));
