@@ -28,4 +28,5 @@ class GoodsData {
 				->select();
 		return $list;
 	}
+
 }

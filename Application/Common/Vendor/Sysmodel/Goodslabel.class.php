@@ -1,7 +1,7 @@
 <?php
 
-include "lib/ContentInterface.php";
-include "lib/Content.class.php";
+require_once "lib/ContentInterface.php";
+require_once "lib/Content.class.php";
 // 没有声明命名空间
 class Goodslabel extends Content implements ContentInterface 
 {	

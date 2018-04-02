@@ -107,16 +107,16 @@ class Content{
 						$ret['msg'] =$common_fieldsnew[$val[0]][1].$val[2];
 						break;
 					}
-				}			
+				}				
 				if($ret['code']!=-2){					
 					$ret = array('code'=>1,'msg'=>'success','data'=>'');					
 					break;		
-				}		
+				}					
 			}else{
 				$ret = array('code'=>1,'msg'=>'success','data'=>'');
 				break;
 			}
-		}while(0);	
+		}while(0);			
 		return $ret;
 	}
 	
@@ -233,11 +233,15 @@ class Content{
 		<select name="'.$val[0].'">';
 		$str.='<option value="'.$val[3]['default'][0].'">'.$val[3]['default'][1].'</option>';
 		foreach($val[3]['many_data'] as $k=>$v){
-			if($v[0]==$info[$val[0]]){
-				$str.='<option value='.$v[0].' selected>'.$v[1].'</option>';	
+			foreach($v AS $i=>$j){
+			  $arr[] = $j;
+			}			
+			if($arr[0]==$info[$val[0]]){
+				$str.='<option value='.$arr[0].' selected>'.$arr[1].'</option>';	
 			}else{
-				$str.='<option value='.$v[0].'>'.$v[1].'</option>';	
+				$str.='<option value='.$arr[0].'>'.$arr[1].'</option>';	
 			}
+			unset($arr);
 		}
 		$str.='</select></div></div>';
 		return $str;

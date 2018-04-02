@@ -30,41 +30,41 @@ width:40px;
 			<label class="layui-form-label textright" style="width:100px;">
 			<font color="red">*</font>规格名称</label>
 			<div class="layui-input-block" style="margin-left:100px;">
-				<input type="text" name="size_sizename" lay-verify="required" lay-vertype="tips" placeholder="请输入规格名称" autocomplete="off" class="layui-input" value="">
+				<input type="text" name="size_sizename[]" lay-verify="required" lay-vertype="tips" placeholder="请输入规格名称" autocomplete="off" class="layui-input" value="">
 			</div>
 		</div>
 		<div class=" ant-col-sm-24 ant-col-md-12 ant-col-lg-4">
 			<label class="layui-form-label textright" style="width:100px;">
 			<font color="red">*</font>价格</label>
 			<div class="layui-input-block" style="margin-left:100px;">
-				<input type="text" name="size_price" lay-verify="required" lay-vertype="tips" placeholder="请输入规格价格" autocomplete="off" class="layui-input" value="">
+				<input type="text" name="size_price[]" lay-verify="required" lay-vertype="tips" placeholder="请输入规格价格" autocomplete="off" class="layui-input" value="">
 			</div>
 		</div>
 		<div class=" ant-col-sm-24 ant-col-md-12 ant-col-lg-4">
 			<label class="layui-form-label textright" style="width:100px;">
 			<font color="red">*</font>库存</label>
 			<div class="layui-input-block" style="margin-left:100px;">
-				<input type="text" name="size_kucun" lay-verify="required" lay-vertype="tips" placeholder="请输入库存" autocomplete="off" class="layui-input" value="">
+				<input type="text" name="size_kucun[]" lay-verify="required" lay-vertype="tips" placeholder="请输入库存" autocomplete="off" class="layui-input" value="">
 			</div>
 		</div>
 		<div class=" ant-col-sm-24 ant-col-md-12 ant-col-lg-4">			
 			<label class="layui-form-label textright" style="width:100px;">
 			<font color="red">*</font>状态</label>
 			<div class="layui-input-block" style="margin-left:100px;">
-				<select name="size_status">	
+				<select name="size_status[]">	
 					<option value="1">上架</option>
 					<option value="0">下架</option>
 				</select>
 			</div>
 		</div>
 		<div class=" ant-col-sm-24 ant-col-md-12 ant-col-lg-4">
-			<button class="layui-btn" lay-filter="demo1" style="background-color: #1890ff;border-color: #1890ff; margin-left:10px;">新增+</button>
+			<button class="layui-btn" id="addsize" lay-filter="demo1" style="background-color: #1890ff;border-color: #1890ff; margin-left:10px;">新增+</button>
 		</div>
 	</div>
 	
 	<div class="layui-form-item">
 		<div>
-			<button class="layui-btn" lay-filter="demo1" style="width:100%;background-color: #1890ff;border-color: #1890ff;">立即提交</button>
+			<button class="layui-btn" id="subbtn"lay-filter="demo1" style="width:100%;background-color: #1890ff;border-color: #1890ff;">立即提交</button>
 		</div>
 	</div>
 </div>
@@ -89,7 +89,7 @@ layui.use(['layer', 'form'], function(){
 });
 
 $(function(){
-	$('body').on('click','.layui-btn',function() {
+	$('body').on('click','#subbtn',function() {
 		var options = {
 			url: "/goods/goodadd",
 			type:"post",
@@ -115,6 +115,16 @@ $(function(){
 		}; 
 			
 		$("form").ajaxSubmit(options);      
+	});	
+	$('body').on('click','#addsize',function() {
+		var _html=$(this).parents(".layui-form-item").prop("outerHTML");
+		var btn_html = $("#addsize").prop("outerHTML");
+		var del_html='<button class="layui-btn delsize" style="background-color: #efa887;border-color: #efa887; margin-left:10px;">删除-</button>'
+		_html = _html.replace(btn_html,del_html);
+		$(this).parents(".layui-form-item").after(_html);
+	});	
+	$('body').on('click','.delsize',function() {
+		$(this).parents(".layui-form-item").remove();		
 	});	
 })
 </script> 

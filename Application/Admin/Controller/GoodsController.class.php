@@ -11,17 +11,33 @@ class GoodsController extends CommonController {
 		$this->data_list("goods");		
 	}
 	//添加商品
-	public function goodadd(){		
-		$html = $this->data_get_html("goods");//获取商品常规参数
-		//获取商品栏目
-		$module = new \Admin\Logic\Goods\GoodsData("goodstype");
-		$data = $module->get_all_list();
-		print_r($data);die;
-		//获取商品标签
-		//获取实体店
+	public function goodadd(){
+		if($_POST){
+			$module = new \Admin\Logic\Common\Module("goods");		
+			$data = $module->module_add();				
+			$module2 = new \Admin\Logic\Common\Module("goodssize");
+			$count = count($_POST['size_sizename']);
+			for($i=0;$i<$count;$i++){
+				$ext['data'][$i]['goods_id']=$data['data'];
+				$ext['data'][$i]['sizename']=$_POST['size_sizename'][$i];
+				$ext['data'][$i]['price']=$_POST['size_price'][$i];
+				$ext['data'][$i]['kucun']=$_POST['size_kucun'][$i];
+				$ext['data'][$i]['status']=$_POST['size_status'][$i];
+			}			
+			$data = $module2->module_add_duo($ext);	
+			exit(json_encode($data));		
+		}else{
+			//获取商品栏目
+			$module = new \Admin\Logic\Goods\GoodsData("goodstype");
+			$extend['goodstype'] = $module->get_all_list();			
+			//获取商品标签
+			$module = new \Admin\Logic\Goods\GoodsData("goodslabel");
+			$extend['goodslabel'] = $module->get_all_list();		
+			$html = $this->data_get_html("goods",$extend);//获取商品常规参数		
+			$this->assign('html',$html);		
+			$this->display();	
+		}
 		
-		$this->assign('html',$html);		
-		$this->display();
 		
 	}
 	//编辑商品

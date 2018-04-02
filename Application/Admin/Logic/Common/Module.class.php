@@ -46,7 +46,8 @@ class Module {
 		return $data;		
 	}
 	//数据添加
-	public function module_add(){
+	public function module_add($ext){	
+		
 		//查找模型对应的表格和对应的类名
 		$classname =ucfirst(strtolower($this->table));		
 		import('Common/Vendor/Sysmodel/'.$classname);		
@@ -54,15 +55,20 @@ class Module {
 		if ($_POST) {
 			$ret = array("code"=>-1,"msg"=>'',"data"=>"");
             do{ 
-				$data = $_POST;				
+				if(!$ext['data']){
+					$data = $_POST;	
+				}else{
+					$data = $ext['data'];	
+				}							
 				//检查数据
-				$checkresult = $class->checkData($data);				
+				$checkresult = $class->checkData($data);					
 				if($checkresult['code']!=1){
 					$ret = $checkresult;
 					break;
-				}
+				}						
 				//整理数据
-				$data = $class->filter($data);				
+				$data = $class->filter($data);	
+				
 				$content = M($classname);
 				$data['addtime']=time();				
 				$st = $content->data($data)->add();					
@@ -73,16 +79,59 @@ class Module {
 				}			
 				$ret['code'] = 1;
 				$ret['msg'] = '添加成功';
+				$ret['data'] = $st;
 				break;
-			}while(0);
+			}while(0);			
 			return $ret;
-		}else{
+		}else{			
 			//这些案例所有都有对应栏目，所以是公用的		
-			$html = $class->get_html();	
+			$html = $class->get_html($ext);	
 			return $html;			
 		}
 	}
-	
+	//数据添加
+	public function module_add_duo($ext){	
+		
+		//查找模型对应的表格和对应的类名
+		$classname =ucfirst(strtolower($this->table));		
+		import('Common/Vendor/Sysmodel/'.$classname);		
+		$class    = new $classname();
+		if ($_POST) {
+			$ret = array("code"=>-1,"msg"=>'',"data"=>"");
+            do{ 
+				if(!$ext['data']){
+					$data = $_POST;	
+				}else{
+					$data = $ext['data'];	
+				}							
+				//检查数据
+				foreach($ext['data'] as $key=>$val){
+					$checkresult = $class->checkData($val);					
+					if($checkresult['code']!=1){
+						$ret = $checkresult;
+						break;
+					}						
+					//整理数据
+					$data[$key] = $class->filter($val);	
+				}			
+				$content = M($classname);
+				foreach($data as $key=>$val){
+					$data[$key]=$val;
+					$data[$key]['addtime']=time();	
+				}				
+				$st = $content->addAll($data);					
+				if(!$st){
+					$ret['code'] = 0;
+					$ret['msg'] = '添加失败';
+					break;					
+				}			
+				$ret['code'] = 1;
+				$ret['msg'] = '添加成功';				
+				break;
+			}while(0);			
+			return $ret;
+		}
+	}
 	//数据添加
 	public function module_edit($id){
 		//查找模型对应的表格和对应的类名
@@ -100,7 +149,8 @@ class Module {
 					break;
 				}
 				//整理数据
-				$data = $class->filter($data);				
+				$data = $class->filter($data);
+				print_r($data);die;
 				$content = M($classname);
 				if(!$data['id']){
 					$ret['code'] = -1;

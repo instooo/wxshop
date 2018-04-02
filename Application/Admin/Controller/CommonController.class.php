@@ -58,9 +58,9 @@ class CommonController extends Controller {
 	}
 	
 	//获取html
-	public function data_get_html($table){
+	public function data_get_html($table,$ext){
 		$module = new \Admin\Logic\Common\Module($table);		
-		$data = $module->module_add();		
+		$data = $module->module_add($ext);		
 		return $data;				
 		
 	}

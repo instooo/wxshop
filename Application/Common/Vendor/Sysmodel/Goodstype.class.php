@@ -1,7 +1,7 @@
 <?php
 
-include "lib/ContentInterface.php";
-include "lib/Content.class.php";
+require_once "lib/ContentInterface.php";
+require_once "lib/Content.class.php";
 // 没有声明命名空间
 class Goodstype extends Content implements ContentInterface 
 {	
@@ -20,7 +20,7 @@ class Goodstype extends Content implements ContentInterface
 		
 	}
     //获取模型字段和类型
-    function getFields(){	
+    function getFields($ext){	
 		/*
 		* 0:字段名称
 		* 1：文字描述
@@ -36,8 +36,8 @@ class Goodstype extends Content implements ContentInterface
 		return $fields;		
 	}
 	//获取html
-	function get_html(){		
-		$common_fields =$this->getFields();			
+	function get_html($ext){		
+		$common_fields =$this->getFields($ext);			
 		$html = parent::get_html($common_fields);
 		return $html;
 	}	
@@ -54,5 +54,6 @@ class Goodstype extends Content implements ContentInterface
 		$result = parent::checkData($data,$_validate,$fields);			
 		return $result;
 	}
+	
 }
 ?>
