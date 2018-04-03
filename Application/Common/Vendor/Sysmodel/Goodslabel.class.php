@@ -44,8 +44,8 @@ class Goodslabel extends Content implements ContentInterface
 		return $html;
 	}	
 	//编辑html	
-	function edit_html($info){		
-		$common_fields =$this->getFields();		
+	function edit_html($info,$ext){		
+		$common_fields =$this->getFields($ext);		
 		$html = parent::edit_html($common_fields,$info);	
 		return $html;
 	}	

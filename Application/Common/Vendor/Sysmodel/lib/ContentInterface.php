@@ -8,5 +8,5 @@ interface ContentInterface{
 	function get_html($ext);
 	
 	//±à¼­html	
-	function edit_html($info);
+	function edit_html($info,$ext);
 }

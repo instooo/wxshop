@@ -6,9 +6,9 @@ class Goodssize extends Content implements ContentInterface
 {	
 	protected $_validate = array(
 		array('sizename','require','不能为空'), //默认情况下用正则进行验证	
-		array('price','number','价格必须为数字'), //默认情况下用正则进行验证	
-		array('kucun','number','价格必须为数字'), //默认情况下用正则进行验证
-		array('goods_id','require','物品名称'), //默认情况下用正则进行验证			
+		array('price','number','必须为数字'), //默认情况下用正则进行验证	
+		array('kucun','number','必须为数字'), //默认情况下用正则进行验证
+		array('goods_id','require','不能为空'), //默认情况下用正则进行验证			
 	);
 		//获取显示的字段
 	function getShowFields(){
@@ -40,8 +40,8 @@ class Goodssize extends Content implements ContentInterface
 		return $html;
 	}	
 	//编辑html	
-	function edit_html($info){		
-		$common_fields =$this->getFields();		
+	function edit_html($info,$ext){		
+		$common_fields =$this->getFields($ext);		
 		$html = parent::edit_html($common_fields,$info);	
 		return $html;
 	}	
@@ -56,6 +56,7 @@ class Goodssize extends Content implements ContentInterface
 	//数据过滤
 	public function filter($data){
 		$common_fields =$this->getFields();
+		$common_fields[]=array('id',"主键",'input');	
 		foreach($common_fields as $key=>$val){
 			$keyarr[]=$val[0];
 		}

@@ -292,7 +292,7 @@ class Content{
 		}
 		$str = '
 		<div class="layui-form-item">	
-		<input type="hidden" name="'.$val[0].'" value="">	
+		<input type="hidden" name="'.$val[0].'" value="'.$info[$val['0']].'">	
 		<label class="layui-form-label textright" style="width:100px;">
 		<font color="red">*</font>'.$val[1].'</label>
 		<div class="layui-input-block" style="margin-left:100px;">

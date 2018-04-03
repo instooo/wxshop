@@ -53,8 +53,8 @@ class Goods extends Content implements ContentInterface
 		return $html;
 	}	
 	//编辑html	
-	function edit_html($info){		
-		$common_fields =$this->getFields();		
+	function edit_html($info,$ext){
+		$common_fields =$this->getFields($ext);		
 		$html = parent::edit_html($common_fields,$info);	
 		return $html;
 	}		
@@ -68,6 +68,7 @@ class Goods extends Content implements ContentInterface
 	//数据过滤
 	public function filter($data){
 		$common_fields =$this->getFields();
+		$common_fields[]=array('id',"主键",'input');	
 		foreach($common_fields as $key=>$val){
 			$keyarr[]=$val[0];
 		}

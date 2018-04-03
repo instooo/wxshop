@@ -50,9 +50,9 @@ class CommonController extends Controller {
 	}
 	
 	//公用添加方法
-	public function data_list($table){
+	public function data_list($table,$ext){
 		$module = new \Admin\Logic\Common\Module($table);
-		$data = $module->module_list();
+		$data = $module->module_list($ext);
 		$this->assign('data',$data);		
 		$this->display();		
 	}
@@ -61,6 +61,15 @@ class CommonController extends Controller {
 	public function data_get_html($table,$ext){
 		$module = new \Admin\Logic\Common\Module($table);		
 		$data = $module->module_add($ext);		
+		return $data;				
+		
+	}
+	
+	//获取html
+	public function data_get_edithtml($table,$ext){
+		$id =  $_REQUEST ['id'];
+		$module = new \Admin\Logic\Common\Module($table);		
+		$data = $module->module_edit($id,$ext);		
 		return $data;				
 		
 	}

@@ -19,7 +19,12 @@ class Module {
     }
 	
 	//所有数据列表
-	public function module_list(){
+	public function module_list($ext){
+		if($ext){
+			foreach($ext['ext'] as $key=>$val){
+				$arr[$key]=array_column($val,$ext['field'][$key][1],$ext['field'][$key][0]);
+			}
+		}		
 		$classname =ucfirst(strtolower($this->table));
 		import('Common/Vendor/Sysmodel/'.$classname);		
         $class    = new $classname();		
@@ -38,9 +43,13 @@ class Module {
 				->order('sort desc,id desc')
 				->select();	
 		$showfields = $class->getShowFields();
-		
+		if($showfields && $ext){
+			$fieldsdata = array_merge($showfields,$arr);
+		}else{
+			$fieldsdata=$showfields?$showfields:$ext;
+		}		
 		$data['list'] = $list;
-		$data['showfields'] = $showfields ;
+		$data['showfields'] = $fieldsdata ;
 		$data['page'] = $page->show ();
 		$data['fileds'] = $fileds;
 		return $data;		
@@ -132,25 +141,79 @@ class Module {
 			return $ret;
 		}
 	}
-	//数据添加
-	public function module_edit($id){
+	
+	//数据编辑
+	public function module_edit_duo($ext){	
+		
 		//查找模型对应的表格和对应的类名
-		$classname =ucfirst(strtolower($this->table));
+		$classname =ucfirst(strtolower($this->table));		
 		import('Common/Vendor/Sysmodel/'.$classname);		
 		$class    = new $classname();
 		if ($_POST) {
 			$ret = array("code"=>-1,"msg"=>'',"data"=>"");
             do{ 
-				$data = $_POST;				
+				if(!$ext['data']){
+					$data = $_POST;	
+				}else{
+					$data = $ext['data'];	
+				}							
 				//检查数据
-				$checkresult = $class->checkData($data);				
+				foreach($ext['data'] as $key=>$val){
+					$checkresult = $class->checkData($val);					
+					if($checkresult['code']!=1){
+						print_r($val);
+						$ret = $checkresult;
+						break;
+					}						
+					//整理数据
+					$data[$key] = $class->filter($val);	
+				}				
+				if($checkresult['code']!=1){
+					$ret = $checkresult;
+					break;
+				}					
+				$content = M($classname);
+				foreach($data as $key=>$val){				
+					$val['addtime']=time();						
+					if($val['id']){						
+						$map['id'] = $val['id'];
+						$st = $content->where($map)->save($val);	
+					}else{						
+						$st = $content->add($val);	
+					}									
+				}	
+				if(!$st){
+					$ret['code'] = 0;
+					$ret['msg'] = '修改失败';
+					break;					
+				}			
+				$ret['code'] = 1;
+				$ret['msg'] = '修改成功';				
+				break;
+			}while(0);			
+			return $ret;
+		}
+	}
+	
+	//数据添加
+	public function module_edit($id,$ext){		
+		//查找模型对应的表格和对应的类名
+		$classname =ucfirst(strtolower($this->table));
+		import('Common/Vendor/Sysmodel/'.$classname);		
+		$class    = new $classname();
+		if ($_POST) {			
+			$ret = array("code"=>-1,"msg"=>'',"data"=>"");
+            do{ 
+				$data = $_POST;							
+				//检查数据
+				$checkresult = $class->checkData($data);						
 				if($checkresult['code']!=1){
 					$ret = $checkresult;
 					break;
 				}
+				
 				//整理数据
-				$data = $class->filter($data);
-				print_r($data);die;
+				$data = $class->filter($data);					
 				$content = M($classname);
 				if(!$data['id']){
 					$ret['code'] = -1;
@@ -174,7 +237,7 @@ class Module {
 			$content = M($classname);			
 			$where['id'] =$id;
 			$detail_info = $content->where($where)->find();	
-			$html = $class->edit_html($detail_info);
+			$html = $class->edit_html($detail_info,$ext);
 			return $html;			
 		}
 	}
