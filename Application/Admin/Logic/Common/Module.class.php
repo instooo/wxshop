@@ -31,7 +31,7 @@ class Module {
 		$fileds =$class->getFields();	
 		//查找对应的栏目id		
 		$content = M($classname);
-		$contentmap=array();
+		$contentmap = \Admin\Logic\Common\Request::filter($_REQUEST);
 		$count = $content	
 				->where($contentmap)					
 				->count();	
@@ -52,6 +52,7 @@ class Module {
 		$data['showfields'] = $fieldsdata ;
 		$data['page'] = $page->show ();
 		$data['fileds'] = $fileds;
+		$data['request'] = $contentmap;
 		return $data;		
 	}
 	//数据添加

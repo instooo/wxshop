@@ -18,7 +18,7 @@ class GoodsController extends CommonController {
 		$ext["ext"]=$extend;
 		$ext["field"]["good_type_id"]=array("id","name");
 		$ext["field"]["label_id"]=array("id","name");	
-		
+		$this->assign("extend",$extend);
 		$this->data_list("goods",$ext);		
 	}
 	//添加商品
