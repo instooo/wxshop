@@ -54,6 +54,21 @@ class Goodstype extends Content implements ContentInterface
 		$result = parent::checkData($data,$_validate,$fields);			
 		return $result;
 	}
-	
+	//数据过滤
+	public function filter($data){
+		$common_fields =$this->getFields();
+		foreach($common_fields as $key=>$val){
+			$keyarr[]=$val[0];
+		}
+		$para_filter = array();
+		while (list ($key, $val) = each ($data)) {
+			if(!in_array($key,$keyarr)){
+					continue;
+			}else{
+				$para_filter[$key] = $data[$key];
+			}		
+		}		
+		return $para_filter;		
+	}
 }
 ?>

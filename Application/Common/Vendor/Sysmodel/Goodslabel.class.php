@@ -21,7 +21,7 @@ class Goodslabel extends Content implements ContentInterface
 		
 	}
     //获取模型字段和类型
-    function getFields(){	
+    function getFields($ext){	
 		/*
 		* 0:字段名称
 		* 1：文字描述
@@ -38,8 +38,8 @@ class Goodslabel extends Content implements ContentInterface
 		return $fields;		
 	}
 	//获取html
-	function get_html(){		
-		$common_fields =$this->getFields();			
+	function get_html($ext){		
+		$common_fields =$this->getFields($ext);			
 		$html = parent::get_html($common_fields);
 		return $html;
 	}	

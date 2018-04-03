@@ -26,7 +26,7 @@ layui.use(['layer', 'form'], function(){
 			<span class="ant-breadcrumb-separator">/</span>       
 			<span>权限管理</span>
 			<span class="ant-breadcrumb-separator">/</span>
-			<button type="button" class="ant-btn ant-btn-primary ant-btn-sm member_add" style="float:right;margin-right:10px;">
+			<button type="button" class="ant-btn ant-btn-primary ant-btn-sm btn_add" style="float:right;margin-right:10px;">
 				<span>+ 新建 </span>
 			</button>
         </div>  
@@ -117,15 +117,17 @@ layui.use(['layer', 'form'], function(){
 							<volist name="data.list" id="vo">
 								<tr data-id="<{$vo.id}>" align="center">
 									<volist name="data.fileds" id="v">
-										<if condition="$v['0'] eq 'one_file'">
-										<td style="text-align:center"><img src='<{$vo["$v[0]"]}>'/></td>
+										<if condition="$v['2'] eq 'one_file'">
+										<td style="text-align:center"><img src='<{$vo["$v[0]"]}>' width="50px" height="50px"/></td>
+										<elseif condition="$v['2'] eq 'select'"/>
+											<td style="text-align:center"><{$data["showfields"][$v['0']][$vo[$v[0]]]}></td>
 										<else/>
 										<td style="text-align:center"><{$vo["$v[0]"]}></td>
 										</if>
 									</volist>
 									<td style="text-align:center; padding-left:30px;">
-									<a href="javascript:void(0);" >编辑</a>&nbsp;|&nbsp;
-									<a href="javascript:void(0);">删除</a></td>										
+									<a href="javascript:void(0);" class="btn_edit" >编辑</a>&nbsp;|&nbsp;
+									<a href="javascript:void(0);" class="btn_dele">删除</a></td>										
 								</tr>
 							</volist>
 							<else />
@@ -161,7 +163,7 @@ layui.use(['layer', 'form'], function(){
             });
         });
 		//新增
-        $('.member_add').click(function () {
+        $('.btn_add').click(function () {
             layer.open({
                 type: 2,
                 title: '添加产品',
@@ -178,7 +180,7 @@ layui.use(['layer', 'form'], function(){
                 type: 2,
                 title: '添加用户',
                 skin: 'layui-layer', //加上边框
-                area: ['350px', '400px'], //宽高
+                area: ['100%', '100%'], //宽高
                 content: "/Goods/goodedit/id/"+id
             });           
         });		
@@ -186,7 +188,22 @@ layui.use(['layer', 'form'], function(){
 	
 	 //删除
     function doDeleteData(id) {
-       
+       $.ajax({
+			type:'post',
+			dataType:'json',
+			data:{id:id},
+			url:'/Goods/gooddelete',
+			error:function () {
+				layer.msg('未知错误', {icon:5,time:1000});
+			},
+			success:function (data) {
+				if (data.code == 0) {
+					layer.msg('删除成功', {icon:6,time:1000}, function () {location.reload()});
+				}else {
+					layer.msg(data.msg, {icon:5,time:1000});
+				}
+			}
+		});
     }
 	
 </script> 
