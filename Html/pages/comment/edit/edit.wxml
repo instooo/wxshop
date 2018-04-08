@@ -1,0 +1,45 @@
+<view class="order-list-item-dzf">
+      <view class="order-list-item-dzf-head">
+        <span class="orderno-tag">物品号:</span>
+        <span class="orderno-imp">{{havewaredetail.warenumber}}</span>
+      </view>
+
+      <view class="order-list-item-dzf-bd">
+        <view class="item-left">
+          <image class="item-img" src="{{imageRootPath}}{{havewaredetail.pic1}}"></image>
+        </view>
+        <view class="item-right">
+          <text class="item-title">{{havewaredetail.warename}}</text>
+          <view class="item-spec">
+            <span class="item-spec-one">剩余租用天数：{{havewaredetail.left_rent_time}}天</span>
+            <span>新旧：{{havewaredetail.level}}</span>
+          </view>
+          <view class="item-spec">
+            <span class="item-spec-one">已租赁时长：{{havewaredetail.have_rent_time}}天</span>
+            <span>颜色：{{havewaredetail.color}}</span>
+          </view>
+        </view>
+      </view>
+</view>
+
+<view class="comment-wrap">
+  <view class="comment-box">
+    <textarea class="comment-text-textarea" placeholder="说说你的使用心得,分享给想买的他们吧" value="{{commentContent}}" bindblur="bindTextBlur" bindinput="bindTextInput">
+    </textarea>
+    <view class="upload-img-box">
+      <view class="img-item" wx:for="{{picA}}" wx:key="unique" wx:for-item="item">
+        <image src="{{item}}"  class="upload-img" data-index="{{index}}"/>
+        <image src="/images/comment/icon_delete.png" class="icon-delete" bindtap="deteleImg" data-index="{{index}}"/>
+      </view>
+      <image src="/images/comment/icon_upload.png"  class="icon-upload" bindtap="uploadImgClick"/>
+    </view>  
+
+  </view>
+</view>
+
+
+<view class="comment-add-btn">
+    <button class="comment-add-impl" bindtap="publishCommentClick">
+      发布
+    </button>
+</view>

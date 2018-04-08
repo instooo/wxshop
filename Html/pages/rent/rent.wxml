@@ -1,0 +1,141 @@
+<view class="empty-box {{isEmpty}}">
+  <view class="empty-box-txt">
+    暂时没有数据
+  </view>
+  <view class="empty-box-btn">
+    <button class="empty-box-btn-cls" catchtap="gotoIndex">
+      去首页逛逛
+      <image src="/images/order/no_icon.png" class="empty-box-btn-img"></image>
+    </button>
+  </view>
+</view>
+
+<view class="order-list {{isShow}}">
+  <view wx:for="{{rentlist}}" wx:key="unique1">
+    <view class="order-list-item-dzf item-nobottom">
+      <view class="order-list-item-dzf-head">
+        <view wx:if="{{item.status == 1}}">
+          <view wx:if="{{item.selected}}" class="orderno-icon active" bindtap="selectList" data-index="{{index}}"></view>
+          <view wx:else class="orderno-icon" bindtap="selectList" data-index="{{index}}"></view>
+        </view>
+        <span class="orderno-tag item-mleft-45" bindtap="selectList" data-index="{{index}}">物品编码:</span>
+        <span class="orderno-imp" bindtap="selectList" data-index="{{index}}">{{item.warenumber}}</span>
+        <span class="orderno-imp" bindtap="selectList" data-index="{{index}}">
+        <view wx:if="{{item.status == 10000}}">
+          (已购买)
+        </view>
+        <view wx:if="{{item.status == 1}}">
+          (在使用中)
+        </view>
+        <view wx:if="{{item.status == 2}}">
+          (已归还)
+        </view>
+        <view wx:if="{{item.status == 3}}">
+          (换货中)
+        </view>
+        <view wx:if="{{item.status == 4}}">
+          (退货中)
+        </view>
+        <view wx:if="{{item.status == 5}}">
+          (逾期中)
+        </view>
+        </span>
+      </view>
+
+      <navigator url="/pages/product/info/info?id={{item.wareid}}">
+        <view class="order-list-item-dzf-bd" data-index="{{index}}">
+          <view class="item-left">
+            <image class="item-img" src="{{imageRootPath}}{{item.pic1}}"></image>
+          </view>
+          <view class="item-right">
+            <text class="dfh-item-title">{{item.warename}}</text>
+            <text class="item-day" wx:if="{{item.status == 10000}}">颜色：{{item.color}}天</text>
+            <text class="item-day" wx:if="{{item.status == 10000}}">新旧：{{item.level}}天</text>
+            <text class="item-day" wx:if="{{item.status != 10000}}">租用天数：{{item.rent_time}}天</text>
+            <text class="item-day" wx:if="{{item.status != 10000}}">已租用天数：{{item.have_rent_time}}天</text>
+            <text class="item-day" wx:if="{{item.status != 10000}}">剩余天数：{{item.left_rent_time}}天</text>
+            <view class="item-spec item-relative item-height-60">
+                <button class="btn-pj" data-id="{{item.id}}" catchtap="pjOrder">
+                  评价
+                </button>
+            </view>
+          </view>
+        </view>
+      </navigator>
+    </view>
+  </view>
+</view>
+<view class="order-list-item-dzf-foot {{isShow}}">
+  <view wx:if="{{selectAllStatus}}" class="btn-icon active" bindtap="selectAll"></view>
+  <view wx:else class="btn-icon" bindtap="selectAll"></view>
+  <text class="btn-txt" bindtap="selectAll">全选</text>
+  
+  <button class="btn-buy" bindtap="czClick">
+      操作
+  </button>
+</view>
+
+<!-- 修改弹窗 -->
+<view hidden="{{!modalSpecShow}}" class="modal-spec modal-wrap vertical-center">
+  <view class="modal">
+    <view class="modal-close" bindtap="closeModal" >
+      <image class="modal-close-img" src="/images/product/modal_close.png" mode="widthFix"></image>
+    </view>
+    <view class="modal-body-xz">
+      <view class="modal-item">
+        <span class="modal-item-desc">续租月数:</span>
+        <span class="modal-item-inp">
+          <span class="ocon ocon-l" bindtap="reduceNumber">-</span>
+          <input class="inp" value="{{updRentdates}}" bindinput="bindRentdatesChange"></input>
+          <span class="ocon ocon-r" bindtap="addNumber">+</span>
+        </span>
+      </view>
+    </view>
+    <view class="modal-footer">
+      <button class="modal-qd" bindtap="xzClickImp">
+        确定
+      </button>
+    </view>
+  </view>
+</view>
+<!-- /修改弹窗 -->
+
+
+<!-- 操作弹窗 -->
+<view hidden="{{!modalOperShow}}" class="modal-spec modal-wrap vertical-center">
+  <view class="modal">
+    <view class="modal-close" bindtap="closeOperModal" >
+      <image class="modal-close-img" src="/images/product/modal_close.png" mode="widthFix"></image>
+    </view>
+    <view class="modal-header">
+      <view class="modal-header-item">
+        请选择
+      </view>
+    </view>
+    <view class="modal-body">
+      <view class="modal-body-item">
+        <button class="syz-btn-com ml {{1 == operIdx ? ' active' : ''}}" data-idx="1" bindtap="operClick">
+          租转买 
+        </button>
+        <button class="syz-btn-com mr {{2 == operIdx ? ' active' : ''}}" data-idx="2" bindtap="operClick">
+          续租
+        </button>
+      </view>
+      <view class="modal-body-item">
+        <button class="syz-btn-com ml {{3 == operIdx ? ' active' : ''}}" data-idx="3" bindtap="operClick">
+          退还
+        </button>
+        <button class="syz-btn-com mr {{4 == operIdx ? ' active' : ''}}" data-idx="4" bindtap="operClick">
+          换货
+        </button>
+      </view>
+    </view>
+    <view class="modal-footer">
+      <button class="modal-qd" bindtap="operClickImpl">
+        确定
+      </button>
+    </view>
+  </view>
+</view>
+<!-- /操作弹窗 -->
+

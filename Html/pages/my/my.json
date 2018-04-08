@@ -1,0 +1,10 @@
+{
+  "navigationBarTitleText": "我的",
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#e1e1e1",
+    "navigationBarTitleText": "WeChat",
+    "navigationBarTextStyle": "#fff",
+    "enablePullDownRefresh": false
+  }
+}

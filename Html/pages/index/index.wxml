@@ -1,0 +1,76 @@
+<!--index.wxml -->
+<view class="container">
+  <!-- start 搜索 -->
+  <!--<view class="search-view">
+    <view class="search-box" bindtap="gotoSearch">
+        <image src="/images/index/search.png" class="search-img" mode="widthFix"/>
+        <span class="search-text">请输入关键词</span>
+    </view>
+  </view>-->
+
+  <!--start banner --> 
+  <swiper indicator-dots="true" autoplay="true" interval="6000" duration="500" indicator-color="#b2b2b2" indicator-active-color="#000000" class="swiper-wrap">
+    <block wx:for="{{imgUrls}}" wx:key="unique">
+      <navigator url="{{item.url}}">
+      <swiper-item>
+        <image src="{{imageRootPath}}{{item.linkurl}}" class="slide-image" mode="widthFix"/>
+      </swiper-item>
+      </navigator>
+    </block>
+  </swiper>
+
+  <!-- list模块 -->
+  <view class="list-view">
+    <navigator url="/pages/guide/list/list">
+      <view class="list-item">
+        <image src="/images/index/icon1.png" class="list-item-img" />
+        <view class="list-item-txt">新手指南</view>
+      </view>
+    </navigator>
+    <button class="list-item no-cls" open-type="contact">
+      <image src="/images/index/icon2.png" class="list-item-img" />
+      <view class="list-item-txt">客服咨询</view>
+    </button>
+
+    <navigator url="/pages/product/search/search?source=index">
+      <view class="list-item">
+        <image src="/images/index/icon3.png" class="list-item-img" />
+        <view class="list-item-txt">搜索</view>
+      </view>
+    </navigator>
+
+    <navigator url="/pages/brand/list/list">
+      <view class="list-item">
+        <image src="/images/index/icon4.png" class="list-item-img" />
+        <view class="list-item-txt">品牌推介</view>
+      </view>
+    </navigator>
+  </view>
+
+
+  <!-- 为你推荐 -->
+  <view class="recommend-box">
+    <block>
+      <view class="recommend-title">
+       首页推荐
+        <view class="recommend-more" bindtap="gotoMore">
+          更多
+          <image src="/images/index/more.png" class="recommend-more-img" />
+        </view>
+      </view>
+    </block>
+
+    <!-- 为你推荐列表 -->
+    <view class="product-list">
+      <navigator url="/pages/product/info/info?id={{item1.id}}" wx:for="{{warelist}}" wx:for-item="item" wx:key="unique1">
+        <view class="product-list-item">
+          <image src="{{imageRootPath}}{{item.thumb}}" mode="aspectFit" class="product-image"/>
+          <view class="product-desc">{{item.goods_name}}</view>
+          <view class="product-price">      
+            <span wx:if="{{item1.type == 1}}">¥{{item.price}}</span>
+          </view>
+        </view>
+      </navigator>
+    </view>
+  </view>
+</view>

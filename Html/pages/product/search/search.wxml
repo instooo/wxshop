@@ -1,0 +1,43 @@
+<!--index.wxml-->
+<view class="container">
+ 
+  <!-- start搜索 -->
+  <view class="search-wrap">
+    <view class="search-box">
+        <input placeholder="搜索" class="search-box-inp" bindinput="bindinputFun"/>
+    </view>
+    <span class="search-box-qd" wx:if="{{searchStatus}}" bindtap="searchProduct">搜索</span>
+    <span class="search-box-qd" wx:else bindtap="cancelSearch">取消</span>
+   
+  </view>
+
+  <!--关键字列表-->
+    <view class="search-key">
+      <view class="search-key-title">
+        热门搜索
+      </view>
+      <view class="search-key-list">
+        <span class="search-key-tag" wx:for="{{hotsKey}}" wx:for-item="item" bindtap="productInfoByKey" data-name="{{item.name}}">{{item.name}}</span>
+      </view>
+    </view>
+
+  <!-- 产品列表 -->
+  <view class="recommend-box">
+    <view class="product-list">
+
+      <view class="product-empty {{hide}}"> 抱歉，没找到商品！ </view>
+
+      <navigator url="/pages/product/info/info?id={{item1.id}}" class="product-list-item" wx:for="{{warelist}}" wx:for-item="item1" wx:key="unique1" data-id="{{item1.id}}">
+          <image src="{{imageRootPath}}{{item1.pic1}}" mode="aspectFit" class="product-image"/>
+          <view class="product-desc">{{item1.name}}</view>
+          <view class="product-price" wx:if="{{item1.type == 2||item1.type == 3}}">
+			<span>¥{{item1.price}}</span>
+			<view class="del-price">押金：¥{{item1.rent_cost}}</view>
+		  </view>
+		  <view class="product-price" wx:if="{{item1.type ==1}}">
+			<span>¥{{item1.smprice}}</span>			
+		  </view>
+      </navigator>
+    </view>
+  </view>
+</view>

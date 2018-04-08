@@ -1,0 +1,91 @@
+.integral{
+  width:100%;
+  height: 100%;
+  background-color: #fff;
+  position: relative;
+}
+.score-rule {
+  width: 160rpx;
+  height: 50rpx;
+  line-height: 50rpx;
+  font-size: 28rpx;
+  color: #fff;
+  text-align: center;
+  background: #ff4965;
+  position: absolute;
+  top: 45rpx;
+  right: 30rpx;
+  border-radius: 10rpx;
+}
+.integral-my{
+  height: 140rpx;
+  line-height: 140rpx;
+}
+.integral-my-img{
+  width: 80rpx;
+  height: 80rpx;
+  margin-left:27rpx;
+  margin-right: 25rpx;
+  display: inline-block;
+  vertical-align: middle;
+  margin-top: -2px;
+  border-radius: 100%;
+}
+.integral-my-txt{
+  color: #282828;
+  font-size: 30rpx;
+  margin-right: 25rpx;
+}
+.integral-my-point{
+  color: #ff4965;
+  font-size: 30rpx;
+}
+.integral-mx{
+  height: 90rpx;
+  line-height: 90rpx;
+  text-align: center;
+  background: #f9f9f9;
+  color: #414141;
+  font-size: 30rpx;
+}
+.integral-item{
+  padding:40rpx 27rpx;
+  width:100%;
+  position: relative;
+  border-bottom: 1rpx #ebebeb solid;
+  -webkit-box-sizing:border-box;
+  box-sizing:border-box;
+}
+.integral-item-succ {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: #414141;
+  font-size: 34rpx;
+}
+.integral-item-time {
+  margin-top:20rpx;
+  color: #c3c3c3;
+  font-size: 30rpx;
+}
+.integral-item-icon{
+  width: 30rpx;
+  height: 30rpx;
+  position: absolute;
+  top: 70rpx;
+  right: 64rpx;
+}
+.integral-item-point{
+  position: absolute;
+  top: 49rpx;
+  right: 27rpx;
+  font-size: 30rpx;
+  color: #414141;
+  display: inline-block;
+}
+.integral-item-point span {
+  color: #ff4965;
+  font-size: 48rpx;
+  margin-right: 3rpx;
+}

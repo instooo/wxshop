@@ -1,0 +1,30 @@
+<view class="service">
+
+ <view class="service-top">
+ 遇到任何问题请联系我们
+</view>
+  <view class="service-item">
+    <image src="/images/service/kf.png" class="service-icon" mode="widthFix"/> 
+    <text>客服热线</text>
+    <text class="service-style" data-sysphone="{{sysphone}}" bindtap="phone">{{sysphone}}</text>
+  </view>
+
+  <view class="service-item">
+    <image src="/images/service/wx.png" class="service-icon" mode="widthFix"/>
+    <text>客服微信</text>
+    <text class="service-style" data-wxno="{{sywx}}" bindtap="copywxno">{{sywx}}</text>
+  </view>
+
+  <view class="service-item">
+    <image src="/images/service/em.png" class="service-icon" mode="widthFix"/>
+    <text>客服email</text>
+    <text class="service-style" data-wxno="{{sysemail}}" bindtap="copywxno">{{sysemail}}</text>
+  </view>
+
+  <!-- <view class="service-item-address">
+    <image src="/images/service/ad.png" class="service-icon" mode="widthFix"/>
+    <text>客服地址</text>
+    <view class="service-style-address">{{sysaddress}}</view>
+  </view> -->
+  
+</view>

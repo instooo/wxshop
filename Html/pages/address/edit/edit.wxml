@@ -1,0 +1,54 @@
+<view class="address">
+<form bindsubmit="formSubmit" bindreset="formReset">
+  <view class="addrss-edit">
+    <view class="addrss-edit-item">
+      <view class="addrss-edit-item-impl">
+        <text class="addrss-edit-item-text">收货人</text>
+        <input placeholder="请输入收货人姓名" name="ordername" class="addrss-edit-item-inp" value="{{ordername}}"/>        
+      </view>
+    </view>
+
+    <view class="addrss-edit-item">
+      <view class="addrss-edit-item-impl">
+        <text class="addrss-edit-item-text">联系方式</text>
+        <input placeholder="请输入收货人手机号码" name="mobile" class="addrss-edit-item-inp" maxlength="11" value="{{mobile}}"/>        
+      </view>
+    </view>
+
+    <view class="addrss-edit-item">
+      <view class="addrss-edit-item-impl">
+        <text class="addrss-edit-item-text">省市地区</text>
+        <picker class="addrss-edit-item-area" mode="multiSelector" bindchange="bindMultiPickerChange" bindcolumnchange="bindMultiPickerColumnChange" value="{{areaIndex}}" range="{{areaArray}}" range-key="name">
+          <view class="picker">
+            {{address}}
+          </view>
+        </picker>  
+      </view>
+    </view>
+
+    <view class="addrss-edit-item">
+      <view class="addrss-edit-item-impl">
+        <text class="addrss-edit-item-xtext">详细地址</text>
+        <textarea name="detailaddress" placeholder="请输入详细地址(5-120个字）" auto-height class="addrss-edit-item-textarea" value="{{detailaddress}}"/>        
+      </view>
+    </view>
+
+    <view class="addrss-edit-item">
+      <view class="addrss-edit-item-implm" bindtap="defaultChange">
+        <view wx:if="{{isdefault == 0}}" class="addrss-edit-item-icon" ></view>
+        <view wx:if="{{isdefault == 1}}" class="addrss-edit-item-icon active"></view>
+        <text class="addrss-edit-item-mtext">设置默认地址</text>
+      </view>
+    </view>
+
+  </view>
+
+  <view class="address-add-btn">
+      <button class="address-add-impl" formType="submit">
+        保存
+      </button>
+      <button class="addrss-edit-delete" wx:if="{{ddShow}}" bindtap="deleteAddress">删除</button>
+  </view>
+  </form>
+
+</view>

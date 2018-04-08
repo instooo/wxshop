@@ -1,0 +1,81 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/my/my",
+    "pages/address/edit/edit",
+    "pages/address/list/list",
+    "pages/product/list/list",
+    "pages/product/info/info",
+    "pages/product/search/search",
+    "pages/cart/cart",
+    "pages/order/list/list",
+    "pages/order/detail/detail",
+    "pages/order/dfh/dfh",
+    "pages/order/dsh/dsh",
+    "pages/order/dzf/dzf",
+    "pages/order/syz/syz",
+    "pages/order/yqz/yqz",
+    "pages/order/relet/relet",
+    "pages/order/exchange/exchange",
+    "pages/order/return/return",
+    "pages/order/confirm/confirm",
+    "pages/scroce/scroce",
+    "pages/rent/rent",
+    "pages/comment/edit/edit",
+    "pages/question/list/list",
+    "pages/question/detail/detail",
+    "pages/service/service",
+    "pages/comment/list/list",
+    "pages/protocol/protocol",
+    "pages/logistics/logistics",
+    "pages/brand/list/list",
+    "pages/brand/detail/detail",
+    "pages/guide/list/list",
+    "pages/guide/detail/detail",
+    "pages/depreciation/depreciation",
+    "pages/collection/collection",
+    "pages/order/rentbuy/rentbuy"
+  ],
+  "tabBar": {
+    "color": "#414141",
+    "backgroundColor": "#ffffff",
+    "selectedColor": "#ff4965",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "images/nav/index.png",
+        "selectedIconPath": "images/nav/index_active.png"
+      },
+      {
+        "pagePath": "pages/product/list/list",
+        "text": "分类",
+        "iconPath": "images/nav/product.png",
+        "selectedIconPath": "images/nav/product_active.png"
+      },     
+      {
+        "pagePath": "pages/cart/cart",
+        "text": "购物车",
+        "iconPath": "images/nav/cart.png",
+        "selectedIconPath": "images/nav/cart_active.png"
+      },
+      {
+        "pagePath": "pages/my/my",
+        "text": "我的",
+        "iconPath": "images/nav/my.png",
+        "selectedIconPath": "images/nav/my_active.png"
+      }
+    ]
+  },
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "",
+    "navigationBarTitleText": "WeChat",
+    "navigationBarTextStyle": "#fff",
+    "enablePullDownRefresh": false
+  },
+  "networkTimeout": {
+    "request": 100
+  }
+}

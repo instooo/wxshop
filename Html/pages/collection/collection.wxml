@@ -1,0 +1,34 @@
+<view class="empty-box {{isEmpty}}">
+  <view class="empty-box-txt">
+    暂时没有收藏数据
+  </view>
+  <view class="empty-box-btn">
+    <button class="empty-box-btn-cls" catchtap="gotoIndex">
+      去首页逛逛
+      <image src="/images/order/no_icon.png" class="empty-box-btn-img"></image>
+    </button>
+  </view>
+</view>
+
+<view class="order-list {{isShow}}">
+    <view class="order-list-item-dzf">
+      <navigator wx:for="{{list}}" wx:key="unique1" url="/pages/product/info/info?id={{item.wareid}}">
+        <view class="order-list-item-dzf-bd">
+          <view class="item-left">
+            <image class="item-img" src="{{imageRootPath}}{{item.pic1}}" bindtap="selectList" data-index="{{index}}"></image>
+          </view>
+          <view class="item-right" bindtap="updateCart" data-index="{{index}}">
+            <text class="item-title">{{item.name}}</text>
+            <view class="item-spec">
+              <span>{{item.system_time}}</span>
+            </view>
+
+            <view class="item-right-delete" data-id="{{item.id}}" catchtap="deleteCollection">
+              删除
+            </view>
+          </view>
+        </view>
+      </navigator>
+
+    </view>
+</view>

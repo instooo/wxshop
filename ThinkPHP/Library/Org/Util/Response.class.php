@@ -1,8 +1,8 @@
 <?php
 /**
- * Created by DaiLinLIn.
+ * Created by Dengxiaolong.
  * User: Administrator
- * Date: 2017/1/4
+ * Date: 2018/04/08
  * Time: 19:26
  * for: app接口数据返回类
  */

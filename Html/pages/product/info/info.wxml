@@ -1,0 +1,221 @@
+<import src="../../../wxParse/wxParse.wxml" />
+<view class="product">
+ 
+  <view class="product-header">
+    <view class="product-img">
+      <swiper class="swiper-image" indicator-dots="true" autoplay="true" interval="3000" duration="500">
+        <block wx:for="{{imgUrls}}" wx:key="unique">
+          <swiper-item>
+            <image src="{{imageRootPath}}{{item.url}}" class="slide-image" mode="widthFix"/>
+          </swiper-item>
+        </block>
+      </swiper>
+    </view>
+
+    <view class="product-title">
+      <view class="product-title-txt" bindtap="gotoDepreciation"> 
+        {{warebean.name}}
+        <view class="product-title-txt-xz" wx:if="{{warebean.type == 2 ||warebean.type == 3 }}">
+          折旧须知
+        </view>
+        <image class="product-title-txt-img" src="/images/product/icon.png" wx:if="{{warebean.type == 2 ||warebean.type == 3 }}"></image>
+      </view>
+      
+      <!--折旧程度-->
+      <view class="product-zj" wx:if="{{warebean.type == 2 ||warebean.type == 3 }}">
+        <view class="product-zj-item" wx:for="{{zjList}}">
+          <button class="product-zj-item-btn {{item.cls}}" bindtap="zjFun" data-obj="{{item.obj}}">
+            {{item.name}}
+          </button>
+        </view>
+      </view>
+
+      <view>
+        <span class="product-title-price-del" wx:if="{{warebean.type == 1 ||warebean.type == 3 }}">
+          零售价：¥{{specSmprice}}
+        </span>
+        <span class="product-title-price-del" wx:if="{{warebean.type == 2||warebean.type == 3}}">
+        押金：¥{{specRentCost}}
+        </span>
+        <span class="product-title-price" wx:if="{{warebean.type == 2||warebean.type == 3}}">
+        租金：<span class="product-price-red">¥{{specPrice}}/月</span>
+        </span>
+      </view>
+    </view>
+  </view>
+
+  <view class="comment-wrap">
+    <view class="comment-box">
+      <view class="comment-tab-box">
+        <view class="comment-tab {{'proInfo' == curComment ? ' active' : ''}}" bindtap="commentFun" data-status="proInfo">产品详情</view>
+        <view class="comment-tab {{'proSize' == curComment ? ' active' : ''}}" bindtap="commentFun" data-status="proSize">规格参数</view>
+        <view class="comment-tab {{'proCom' == curComment ? ' active' : ''}}" bindtap="commentFun" data-status="proCom">评价</view>
+      </view>
+      <view wx:if="{{'proInfo' == curComment}}">
+        <view class="product-info-spec desc-color">
+          <template is="wxParse" data="{{wxParseData:editor_detail.nodes}}" />
+        </view>
+      </view>
+      <view wx:if="{{'proSize' == curComment}}">
+        <view class="product-info-spec desc-color">
+          <template is="wxParse" data="{{wxParseData:descript.nodes}}" />
+        </view>
+      </view>
+      <view wx:if="{{'proCom' == curComment}}">
+        <view class="comment-item-nodata" wx:if="{{hasComment == 0 }}">
+          暂无评价信息
+        </view>
+        <view class="comment-item" wx:if="{{hasComment == 1 }}" wx:for="{{list}}" wx:for-item="item1" wx:key="unique1">
+          <view class="comment-item-top">
+            <image src="{{item1.avatarurl}}" class="comment-pic" />
+            <text class="comment-name">{{item1.username}}</text>
+            <text class="comment-time">{{item1.addtime}}</text>
+          </view>
+          <!-- <view class="comment-item-info">
+            <text class="comment-text">商品：{{item1.warename}}</text>
+            <text class="comment-text">颜色：{{item1.color}}</text>
+          </view> -->
+          <view class="comment-item-ct">
+            {{item1.content}}
+          </view>
+          <view class="comment-item-bt">
+              <image wx:if="{{item1.pica}}" src="{{item1.pica}}" class="upload-img" mode="aspectFill"/>
+              <image wx:if="{{item1.picb}}" src="{{item1.picb}}" class="upload-img" mode="aspectFill"/>
+              <image wx:if="{{item1.picc}}" src="{{item1.picc}}" class="upload-img" mode="aspectFill"/>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+   <!-- <view class="product-info-detail">
+    <view class="product-info-tag-detail">
+      产品详情
+    </view>
+    <view class="product-info-spec desc-color">
+      <template is="wxParse" data="{{wxParseData:editor_detail.nodes}}" />
+    </view>
+  </view>  -->
+
+  <view class="product-enjoy">
+    <view class="product-enjoy-tag"> 
+      猜你喜欢
+    </view>
+    <view class="product-list">
+      <navigator url="/pages/product/info/info?id={{item.id}}" wx:for="{{suggestwarelist}}" wx:for-item="item" wx:key="unique1">
+        <view class="product-list-item">
+            <image src="{{imageRootPath}}{{item.pic1}}" mode="aspectFit"  class="product-image"/>
+            <view class="product-desc">{{item.name}}</view>
+            <view class="product-price">
+              <span class="del-price" wx:if="{{item.type == 1 ||item.type == 3 }}">零售价：¥{{item.smprice}}</span>
+              <span class="del-price" wx:if="{{item.type == 2 }}">价格：¥{{item.price}}</span>
+              <span class="del-price-yj" wx:if="{{item.type == 2 }}">押金：¥{{item.rent_cost}}</span>
+            </view>
+        </view>
+      </navigator>
+    </view>
+  </view>
+
+  <view class="order-list-item-dzf-foot">
+    <view class="item-edit" bindtap="gotoCart">
+      <image src="/images/info/cart.png" class="item-edit-img"></image>
+      <text class="item-edit-nums" wx:if="{{cartNums>0}}">{{cartNums}}</text>
+      <text class="item-edit-nums" wx:else>+</text>
+    </view>
+    <button class="item-edit-hh" open-type="contact">
+      <image src="/images/info/hh.png" class="item-edit-img-hh"></image>
+    </button>
+    <view class="item-edit-sc" wx:if="{{scTag == 0 }}" bindtap="scProduct">
+      <image src="/images/info/sc.png" class="item-edit-img-sc"></image>
+    </view>
+    <view class="item-edit-sc" wx:if="{{scTag == 1 }}" bindtap="qxProduct">
+      <image src="/images/info/ysc.png" class="item-edit-img-sc"></image>
+    </view>
+    <button class="btn-buy" bindtap="openModal">
+      立即下单
+    </button>
+    <button class="btn-cart" bindtap="addCartModal">
+      加入购物车
+    </button>
+  </view>
+</view>
+
+<!-- 规格弹窗 -->
+<view hidden="{{!modalSpecShow}}" class="modal-spec modal-wrap vertical-center">
+  <view class="modal">
+    <view class="modal-close" bindtap="closeModal" >
+      <image class="modal-close-img" src="/images/product/modal_close.png" mode="widthFix"></image>
+    </view>
+    <view class="modal-header">
+      <view class="modal-header-item" wx:if="{{isCart == 1}}">
+        加入购买车
+      </view>
+      <view class="modal-header-item" wx:if="{{isCart != 1}}">
+        立即下单
+      </view>
+    </view>
+    <view class="modal-body">
+      <view class="modal-spec-item">
+        选择租买:
+      </view>
+      <view class="spec-wrap">
+        <text wx:if="{{warebean.type == 2||warebean.type == 3}}" class="spec{{modalTypeIndex == 2 ? ' active' : ''}}" catchtap="selectType" data-index="2">我要租</text>
+        <text wx:if="{{warebean.type == 1||warebean.type == 3}}" class="spec{{modalTypeIndex == 1 ? ' active' : ''}}" catchtap="selectType" data-index="1">我要买</text>
+      </view>
+
+      <view class="modal-spec-item">
+        新旧:
+      </view>
+      <view class="spec-wrap">
+        <text wx:for="{{waresizelist}}" class="spec{{item.id == waresizes ? ' active' : ''}}" catchtap="selectLevel" data-obj="{{item}}">{{item.level}}</text>
+      </view>
+
+      <view class="modal-spec-item">
+        颜色:
+      </view>
+      <view class="spec-wrap">
+        <text wx:for="{{colorsArr}}" class="spec{{modalColorIndex == index ? ' active' : ''}}" catchtap="selectColor" data-index="{{index}}" data-name="{{item.name}}">{{item.name}}</text>
+      </view>
+
+      <!--购买类型为租赁才显示-->
+      <view class="modal-item" wx:if="{{modalTypeIndex == 2}}">
+        <span class="modal-item-desc">租用月数:</span>
+        <span class="modal-item-inp">
+          <span class="ocon ocon-l" bindtap="reduceRentdates">-</span>
+          <input class="inp" bindinput="bindRentdatesChange" value="{{rentdates}}"></input>
+          <span class="ocon ocon-r" bindtap="addRentdates">+</span>
+        </span>
+      </view>
+      <view class="modal-item">
+        <span class="modal-item-desc">数量:</span>
+        <span class="modal-item-inp">
+          <span class="ocon ocon-l" bindtap="reduceNumber">-</span>
+          <input class="inp" bindinput="bindNumberChange" value="{{numbers}}"></input>
+          <span class="ocon ocon-r" bindtap="addNumber">+</span>
+        </span>
+      </view>
+      <view class="modal-item"  wx:if="{{modalTypeIndex == 1}}">
+        <span class="modal-item-desc">零售价:</span>
+        <span class="modal-item-inp">¥{{specSmprice}}</span>
+      </view>
+      <view class="modal-item"  wx:if="{{modalTypeIndex == 2}}">
+        <span class="modal-item-desc">价格:</span>
+        <span class="modal-item-inp">¥{{specPrice}}/月</span>
+      </view>
+      <view class="modal-item"  wx:if="{{modalTypeIndex == 2}}">
+        <span class="modal-item-desc">押金:</span>
+        <span class="modal-item-inp">¥{{specRentCost}}</span>
+      </view>
+      <!--<view class="modal-item">
+        <span class="modal-item-desc">库存:</span>
+        <span class="modal-item-inp">{{specKucun}}个</span>
+      </view>-->
+    </view>
+    <view class="modal-footer">
+      <button class="modal-qd" bindtap="confirmModal">
+        确定
+      </button>
+    </view>
+  </view>
+</view>
+<!-- /规格弹窗 -->
