@@ -1,0 +1,193 @@
+<include file="Public/header" />
+<link href="__CSS__/table.css" rel="stylesheet" />
+<link rel="stylesheet" type="text/css" href="__CSS__/basictable.css" />
+<script type="text/javascript" src="__JS__/jquery.basictable.min.js"></script>   
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/layui/css/layui.css" />
+<script type="text/javascript" src="__PUBLIC__/layui/layui.js"></script>   
+<script>
+//一般直接写在一个js文件中
+layui.use(['layer', 'form'], function(){
+  var layer = layui.layer
+  ,form = layui.form;
+});
+</script> 
+<body>
+<div id="root">
+    <div class="screen-xl">
+        <div class="ant-layout ant-layout-has-sider">
+			<include file="Public/left_menu" />
+            <div class="ant-layout">
+				<include file="Public/top" />
+                <div class="ant-layout-content" style="margin: 24px 24px 0px;">
+<div style="margin: -24px -24px 0px;">
+    <div class="pageHeader___Pze-l">
+        <div class="breadcrumb___3MKYT ant-breadcrumb">          
+			<span class="ant-breadcrumb-link"><a href="#">首页</a></span>
+			<span class="ant-breadcrumb-separator">/</span>       
+			<span>权限管理</span>
+			<span class="ant-breadcrumb-separator">/</span>
+			<button type="button" class="ant-btn ant-btn-primary ant-btn-sm btn_add" style="float:right;margin-right:10px;">
+				<span>+ 新建 </span>
+			</button>
+        </div>  
+		<div >
+		
+		</div>
+    </div>
+	
+    <div class="content___13wW7">
+        <div class="ant-card">
+            <div class="ant-card-body"> 
+                        <div class="tableListForm___1316u">
+                   <form class="layui-form">
+					
+
+                                <div class="ant-row">
+									<div class="ant-col-sm-24 ant-col-md-5" >
+										<div class="layui-form-item">
+											<label class="layui-form-label">名称</label>
+											<div class="layui-input-block" style="margin-left:95px;!important">
+												<input type="text" name="name"  lay-verify="required" placeholder="请产品名称" autocomplete="off" class="layui-input" value="<{$data['request']['name']}>">
+											</div>
+										</div>
+								    </div>
+									  
+								  <div class="ant-col-sm-24 ant-col-md-5" >
+									  <div class="layui-form-item">
+										<label class="layui-form-label">全部状态</label>
+										<div class="layui-input-block" style="margin-left:95px;!important">
+										  <select name="status" lay-verify="required">
+											<option value="">全部状态</option>
+											<option value="1" <if condition="$data['request']['status'] eq 1">selected</if>>开启</option>
+											<option value="0" <if condition="$data['request']['status'] eq 0">selected</if>>关闭</option>
+										   </select>
+										</div>
+									  </div>
+								  </div>								                           
+                                    <div class="ant-col-sm-24 ant-col-md-3" >
+									 <div class="layui-form-item" style="min-height:36px; line-height:36px;margin-left:20px;">
+										<button type="submit" class="ant-btn ant-btn-primary">
+											<span>查 询</span></button>
+										
+										<a style="margin-left: 8px;">展开
+											<i class="anticon anticon-down"></i></a>
+                                      </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>  
+<!--<div  class="ant-alert ant-alert-info">
+	<i class="anticon anticon-info-circle ant-alert-icon"></i>
+	<span class="ant-alert-message">
+		<div>角色管理页面</div>
+	</span>
+	<span class="ant-alert-description"></span>
+</div>--> 
+				<div class="standardTable___348Kf">                           
+					<table id="table">
+					  <thead>
+						<tr>
+						<volist name="data.fileds" id="vo">							
+							<th><{$vo.1}></th>
+						</volist>
+						<th>操作</th>    
+						</tr>
+					  </thead>
+					  <tbody>
+							<if condition="$data['list']">
+							<volist name="data.list" id="vo">
+								<tr data-id="<{$vo.id}>" align="center">
+									<volist name="data.fileds" id="v">
+										<if condition="$v['2'] eq 'one_file'">
+										<td style="text-align:center"><img src='<{$vo["$v[0]"]}>' width="50px" height="50px"/></td>
+										<elseif condition="$v['2'] eq 'select'"/>
+											<td style="text-align:center"><{$data["showfields"][$v['0']][$vo[$v[0]]]}></td>
+										<else/>
+										<td style="text-align:center"><{$vo["$v[0]"]}></td>
+										</if>
+									</volist>
+									<td style="text-align:center; padding-left:30px;">
+									<a href="javascript:void(0);" class="btn_edit" >编辑</a>&nbsp;|&nbsp;
+									<a href="javascript:void(0);" class="btn_dele">删除</a></td>										
+								</tr>
+							</volist>
+							<else />
+							<tr><td colspan="7" style="text-align:center; font-size:24px; color:#ccc;">无记录</td></tr>
+							</if>
+					  </tbody>
+					</table>
+					<div class="page">
+						<{$data.page}>
+					</div>	
+				</div>                                
+            </div>
+        </div>
+    </div>
+</div>
+				</div>
+                <include file="Public/footer" />
+			</div>
+        </div>
+    </div>
+</div>
+<script>
+	$('#table').basictable(); 
+	$(function () {
+		//删除
+        $('.btn_dele').click(function () {
+            var id = $(this).parents('tr').attr('data-id');
+            if (id == '') return false;
+            layer.confirm('确定要删除该产品类型吗？', {
+                btn: ['确定','取消']
+            }, function(){
+                doDeleteData(id);
+            });
+        });
+		//新增
+        $('.btn_add').click(function () {
+            layer.open({
+                type: 2,
+                title: '添加产品类型',
+                skin: 'layui-layer', //加上边框
+                area: ['100%',"100%"], //宽高
+                content: "/system/ad_type_add"
+            });           
+        });
+		//编辑
+        $('.btn_edit').click(function () {
+            var _tr = $(this).parents('tr');
+            var id = _tr.attr('data-id');          
+            layer.open({
+                type: 2,
+                title: '编辑产品类型',
+                skin: 'layui-layer', //加上边框
+                area: ['100%', '100%'], //宽高
+                content: "/system/ad_type_edit/id/"+id
+            });           
+        });		
+	});
+	
+	 //删除
+    function doDeleteData(id) {
+       $.ajax({
+			type:'post',
+			dataType:'json',
+			data:{id:id},
+			url:'/system/ad_type_delete',
+			error:function () {
+				layer.msg('未知错误', {icon:5,time:1000});
+			},
+			success:function (data) {
+				if (data.code == 0) {
+					layer.msg('删除成功', {icon:6,time:1000}, function () {location.reload()});
+				}else {
+					layer.msg(data.msg, {icon:5,time:1000});
+				}
+			}
+		});
+    }
+	
+</script> 
+</body>
+
+</html>
