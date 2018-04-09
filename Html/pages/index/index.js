@@ -4,9 +4,9 @@ var app = getApp();
 
 Page({
   data: {
-    'imgUrls': [],
+    'banner_list': [],
     'imageRootPath': '',
-    'warelist':[],
+    'good_list':[],
     'indicatorDots': true,
     'indicatorColor': '#bdaea7',
     'indicatorActiveColor': '#5eaaf9',
@@ -37,7 +37,8 @@ Page({
           imageRootPath: res.data.rooturl
         }); 
         self.setData({
-          warelist: res.data.good_list
+          good_list: res.data.good_list,
+          banner_list: res.data.banner_list
         });
       },
       failCallback: function(res) {
@@ -64,14 +65,7 @@ Page({
       url: '/pages/product/info/info?id=' + id
     })
   },
-
-  //跳转到搜索
-  gotoSearch:function(){
-    wx.navigateTo({
-      url: '/pages/product/search/search?source=index'
-    })
-  },
-
+  
   //更多跳转
   gotoMore: function () {
     wx.switchTab({

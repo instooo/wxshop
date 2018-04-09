@@ -76,6 +76,6 @@
     "enablePullDownRefresh": false
   },
   "networkTimeout": {
-    "request": 100
+    "request": 1000
   }
 }

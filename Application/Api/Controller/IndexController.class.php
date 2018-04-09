@@ -13,10 +13,12 @@ class IndexController extends ApiController
 {	
 	//首页
     public function index(){
-		//查找不同标签下的数据
-		$module = new \Api\Logic\Goods\Goods();
 		$data["rooturl"]="http://www.wxshop.me";
-		$data["good_list"]=$module->get_index_list(10);		
+		//查找不同标签下的数据
+		$module = new \Api\Logic\Common\TableData("goods");		
+		$data["good_list"]=$module->get_all_list(10);		
+		$module2 = new \Api\Logic\Common\TableData("ad");	
+		$data["banner_list"]=$module2->get_all_list(10);			
 		Response::apiReturn(0,"success",$data);
     }
 	//产品列表页
@@ -28,10 +30,17 @@ class IndexController extends ApiController
 		*/		
 	}
 	//产品详情页
-	public function goodsDetail(){
-		/*
-		*接收参数
-		*产品详情ID
-		*/		
+	public function goodsDetail(){		
+		$id=I("get.id","","intval");
+		$module = new \Api\Logic\Goods\Goods();	
+		$data['goodsinfo']	=$module->get_detail($id);
+		$data['goodssize']	=$module->get_size_detail($id);
+		//查找购物车的数量
+		$module2 = new \Api\Logic\Goods\Rent();	
+		$tmp["userid"]=666;
+		$tmp['goodid']=$id;
+		$data['rentcount'] = $module2->get_rent_counts($tmp);		
+		$data["rooturl"]="http://www.wxshop.me";	
+		Response::apiReturn(0,"success",$data);		
 	}
 }

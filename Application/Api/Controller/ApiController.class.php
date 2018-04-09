@@ -16,7 +16,6 @@ use Org\Util\Response;
 use Think\Controller;
 
 
-class ApiController extends Controller {
-	
+class ApiController extends Controller {	
 }
 	

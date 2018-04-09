@@ -29,7 +29,7 @@ class Response
             case 'JSON' :
                 // 返回JSON数据格式到客户端 包含状态信息
                 header('Content-Type:application/json; charset=utf-8');
-                exit(urldecode(json_encode($result,JSON_FORCE_OBJECT)));
+                exit(json_encode($result));
             case 'XML'  :
                 // 返回xml格式数据
                 header('Content-Type:text/xml; charset=utf-8');

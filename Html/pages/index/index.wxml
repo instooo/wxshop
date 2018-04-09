@@ -10,17 +10,17 @@
 
   <!--start banner --> 
   <swiper indicator-dots="true" autoplay="true" interval="6000" duration="500" indicator-color="#b2b2b2" indicator-active-color="#000000" class="swiper-wrap">
-    <block wx:for="{{imgUrls}}" wx:key="unique">
+    <block wx:for="{{banner_list}}" wx:key="unique">
       <navigator url="{{item.url}}">
       <swiper-item>
-        <image src="{{imageRootPath}}{{item.linkurl}}" class="slide-image" mode="widthFix"/>
+        <image src="{{imageRootPath}}{{item.pic}}" class="slide-image" mode="widthFix"/>
       </swiper-item>
       </navigator>
     </block>
   </swiper>
 
   <!-- list模块 -->
-  <view class="list-view">
+  <!--<view class="list-view">
     <navigator url="/pages/guide/list/list">
       <view class="list-item">
         <image src="/images/index/icon1.png" class="list-item-img" />
@@ -45,7 +45,7 @@
         <view class="list-item-txt">品牌推介</view>
       </view>
     </navigator>
-  </view>
+  </view>-->
 
 
   <!-- 为你推荐 -->
@@ -62,7 +62,7 @@
 
     <!-- 为你推荐列表 -->
     <view class="product-list">
-      <navigator url="/pages/product/info/info?id={{item1.id}}" wx:for="{{warelist}}" wx:for-item="item" wx:key="unique1">
+      <navigator url="/pages/product/info/info?id={{item.id}}" wx:for="{{good_list}}" wx:for-item="item" wx:key="unique1">
         <view class="product-list-item">
           <image src="{{imageRootPath}}{{item.thumb}}" mode="aspectFit" class="product-image"/>
           <view class="product-desc">{{item.goods_name}}</view>

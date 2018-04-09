@@ -16,7 +16,13 @@ class RentController extends ApiController
 	* 接受用户ID，自动筛选大于15天的地址
 	*/
 	public function rent_list(){
-		
+		$data["rooturl"]="http://www.wxshop.me";
+		$module=new \Api\Logic\Goods\Rent();		
+		$map = $_GET;
+		$map["userid"]="666";			
+		$data["rent_list"]=$module->rent_list($map);		
+		$data["flag"]=count($data["rent_list"])>0?true:false;		
+		Response::apiReturn(0,"success",$data);		
 	}
 	
 	/*地址详情页面
@@ -26,11 +32,18 @@ class RentController extends ApiController
 	public function rent_detail(){
 		
 	}
-	/*提交地址确认页面
-	* 接收参数 省,州,市,县
+	/*
+	* 添加订单
 	*/
 	public function add_rent(){
-		
+		$module=new \Api\Logic\Goods\Rent();		
+		$data = $_GET;
+		$data["userid"]="666";
+		$data["goodid"]=$data["goods_id"];
+		$data["goodsizeid"]=$data["goods_size_id"];
+		$data["num"]=$data["num"];
+		$result = $module->rent_add($data);
+		exit(json_encode($result));
 	}	
 	
 	/*地址删除
@@ -48,5 +61,6 @@ class RentController extends ApiController
 	public function rent_edit(){
 		
 	}
+	
 	
 }

@@ -29,6 +29,9 @@ App({
               city: city,
               country: country,
             };
+                if (callback) {                  
+                    callback();
+                }
           //self.ajax({
           //  url: url,
           //  data: data,

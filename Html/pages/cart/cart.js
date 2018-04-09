@@ -13,38 +13,15 @@ Page({
     updId:'',  //修改id
     updName:'',  //修改的商品
     updSizeName:'',  //修改的颜色
-    updLevel:'',  //新旧
-    updKuncun:0,  //修改的库存
-    updRentDate:0,  //修改的租赁月数
     updNums:0,  //修改的数量
     totalMoney:0,   //总金额
     isEmpty: '',   //是否显示空
-    isShow: 'hide', //是否显示数据 
-    curComment:1,
-    rtype: 1,  //购物车分类，1、我要租购物车 2、我要买购物车
+    isShow: 'show', //是否显示数据 
+    curComment:1,    
     specSmprice: 0,
     specPrice: 0,
     specRentCost: 0,
   },
-
-  //tab切换
-  commentFun: function (e) {
-    var self = this;  
-    this.setData({
-      curComment: e.currentTarget.dataset.type,
-      rtype: e.currentTarget.dataset.type,
-      modalSpecShow: false,
-      imageRootPath: '',
-      cartList: [],
-      selectAllStatus: true,  //默认全选
-      isEmpty: '',   //是否显示空
-      isShow: 'hide' //是否显示数据 
-    });
-
-    //重新获取数据
-    this.getCartInfo();
-  },
-
   onShow: function () {
     //获取数据
     this.getCartInfo();
@@ -61,32 +38,23 @@ Page({
     var self = this;
     var postData = {
       token: app.globalData.token,
-      rtype: self.data.rtype
     };
-
     app.ajax({
-      url: app.globalData.serviceUrl + 'mrentlist.htm',
+      url: app.globalData.serviceUrl + 'rent/rent_list',
       data: postData,
       method: 'GET',
-      successCallback: function (res) {
-        if (res.code == 0) {
-          //列表处理，默认全选
-          var retList = [];
-          if (res.data.mrentlist != null && res.data.mrentlist.length > 0) {
-            for (var i = 0; i < res.data.mrentlist.length; i++) {
-              var singleObj = res.data.mrentlist[i];
-              singleObj.selected = true;
-              retList.push(singleObj);
-            }
-          }
+      successCallback: function (res) {         
+        if (res.code == 0) { 
+          for (var i = 0; i < res.data.rent_list.length; i++) {
+            res.data.rent_list[i].selected=true              
+          }        
           self.setData({
-            imageRootPath: res.data.imageRootPath,
-            cartList: retList,
+            imageRootPath: res.data.rooturl,
+            cartList: res.data.rent_list,
             selectAllStatus:true,
-            isShow: retList.length > 0 ? '': 'hide',
-            isEmpty: retList.length > 0 ? '': 'show'
+            isShow: res.data.flag? '': 'hide',
+            isEmpty: res.data.flag ? '': 'show', 
           });
-
           self.countTotalMoney();  //计算总金额
         }
       },
@@ -98,18 +66,17 @@ Page({
 
   //计算总金额
   countTotalMoney:function(){
-    var cartList = this.data.cartList; 
+    var cartList = this.data.cartList;
     var money=0;
     for (var i = 0; i < cartList.length; i++) {
       if (cartList[i].selected) {
-        money = money+cartList[i].total_money
+        money = money+cartList[i].price*cartList[i].num
       }
     }
     this.setData({
       totalMoney: money
     });
-  },
-
+  },  
   //单选框事件
   selectList:function(e){
     var index = e.currentTarget.dataset.index;    // 获取data- 传进来的index
