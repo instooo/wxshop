@@ -87,8 +87,10 @@ layui.use(['layer', 'form'], function(){
 					<table id="table">
 					  <thead>
 						<tr>
-						<volist name="data.fileds" id="vo">							
-							<th><{$vo.1}></th>
+						<volist name="data.fileds" id="vo">		
+						<if condition="$vo['2'] neq 'duo_file' and $vo['2'] neq 'editor'">										
+						<th><{$vo.1}></th>
+						</if>
 						</volist>
 						<th>操作</th>    
 						</tr>
@@ -102,6 +104,10 @@ layui.use(['layer', 'form'], function(){
 										<td style="text-align:center"><img src='<{$vo["$v[0]"]}>' width="50px" height="50px"/></td>
 										<elseif condition="$v['2'] eq 'select'"/>
 											<td style="text-align:center"><{$data["showfields"][$v['0']][$vo[$v[0]]]}></td>
+										<elseif condition="$v['2'] eq 'duo_file'"/>
+										
+										<elseif condition="$v['2'] eq 'editor'"/>
+										
 										<else/>
 										<td style="text-align:center"><{$vo["$v[0]"]}></td>
 										</if>

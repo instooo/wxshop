@@ -24,7 +24,7 @@ class Module {
 			foreach($ext['ext'] as $key=>$val){
 				$arr[$key]=array_column($val,$ext['field'][$key][1],$ext['field'][$key][0]);
 			}
-		}		
+		}
 		$classname =ucfirst(strtolower($this->table));
 		import('Common/Vendor/Sysmodel/'.$classname);		
         $class    = new $classname();		
@@ -47,12 +47,12 @@ class Module {
 			$fieldsdata = array_merge($showfields,$arr);
 		}else{
 			$fieldsdata=$showfields?$showfields:$ext;
-		}		
+		}	
 		$data['list'] = $list;
 		$data['showfields'] = $fieldsdata ;
 		$data['page'] = $page->show ();
 		$data['fileds'] = $fileds;
-		$data['request'] = $contentmap;
+		$data['request'] = $contentmap;		
 		return $data;		
 	}
 	//数据添加
@@ -93,7 +93,7 @@ class Module {
 				break;
 			}while(0);			
 			return $ret;
-		}else{			
+		}else{				
 			//这些案例所有都有对应栏目，所以是公用的		
 			$html = $class->get_html($ext);	
 			return $html;			

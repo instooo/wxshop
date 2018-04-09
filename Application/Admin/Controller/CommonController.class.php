@@ -74,9 +74,9 @@ class CommonController extends Controller {
 		
 	}
 	//公用添加方法
-	public function data_add($table){		
+	public function data_add($table,$ext){			
 		$module = new \Admin\Logic\Common\Module($table);		
-		$data = $module->module_add();		
+		$data = $module->module_add($ext);		
 		if ($_POST) {
 			exit(json_encode($data));
 		}else{
@@ -85,10 +85,10 @@ class CommonController extends Controller {
 		}		
 	}
 	//公用更新方法
-	public function data_edit($table){
+	public function data_edit($table,$ext){
 		$id =  $_REQUEST ['id'];
 		$module = new \Admin\Logic\Common\Module($table);
-		$data = $module->module_edit($id);
+		$data = $module->module_edit($id,$ext);
 		if ($_POST) {
 			exit(json_encode($data));
 		}else{

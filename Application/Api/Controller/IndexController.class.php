@@ -14,9 +14,9 @@ class IndexController extends ApiController
 	//首页
     public function index(){
 		//查找不同标签下的数据
-		$result = M("goods")->group("label_id")->select();	
+		$module = new \Api\Logic\Goods\Goods();
 		$data["rooturl"]="http://www.wxshop.me";
-		$data["good_list"]=$result;
+		$data["good_list"]=$module->get_index_list(10);		
 		Response::apiReturn(0,"success",$data);
     }
 	//产品列表页

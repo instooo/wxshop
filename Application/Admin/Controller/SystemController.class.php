@@ -7,15 +7,24 @@ class SystemController extends CommonController {
 	
 	//广告列表
 	public function ad_list(){	
-		$this->data_list("ad");			
+		//获取商品栏目
+		$module = new \Admin\Logic\Goods\GoodsData("ad_type");
+		$ext["ext"]['adtypeid'] = $module->get_all_list();	
+		$ext["field"]["adtypeid"]=array("id","name");			
+		$this->data_list("ad",$ext);			
 	}
 	//广告添加
 	public function ad_add(){
-		$this->data_add("ad");			
+		//获取商品栏目
+		$module = new \Admin\Logic\Goods\GoodsData("ad_type");
+		$ext['adtypeid'] = $module->get_all_list();		
+		$this->data_add("ad",$ext);			
 	}
 	//广告编辑
-	public function ad_edit(){		
-		$this->data_edit("ad");		
+	public function ad_edit(){	
+		$module = new \Admin\Logic\Goods\GoodsData("ad_type");
+		$ext['adtypeid'] = $module->get_all_list();		
+		$this->data_edit("ad",$ext);		
 	}
 	//广告删除
 	public function ad_delete(){		

@@ -27,6 +27,8 @@ class Ad extends Content implements ContentInterface
 		* 2：类型（input|file|text|editor)
 		* 3：默认数据和多选数据结合
 		*/
+		$adtypeid['many_data']= $ext['adtypeid'];
+		$fields[]=array('adtypeid',"广告类型",'select',$adtypeid);
 		$fields[]=array('name',"广告标题",'input');
 		$fields[]=array('url',"链接地址",'input');
 		$fields[]=array('pic',"缩略图",'one_file');
@@ -37,7 +39,7 @@ class Ad extends Content implements ContentInterface
 		return $fields;		
 	}
 	//获取html
-	function get_html($ext){		
+	function get_html($ext){	
 		$common_fields =$this->getFields($ext);			
 		$html = parent::get_html($common_fields);
 		return $html;
