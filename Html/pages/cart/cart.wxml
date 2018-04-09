@@ -14,8 +14,7 @@
       </view>
     
       <view wx:for="{{cartList}}" wx:key="unique1">
-        <view class="order-list-item-dzf-bd">
-          <image src="/images/order/edit.png" class="item-edit" bindtap="updateCart" data-index="{{index}}"/>
+        <view class="order-list-item-dzf-bd">          
           <view class="item-left-icon">
             <view wx:if="{{item.selected}}" class="orderno-icon-45top orderno-icon active" bindtap="selectList" data-index="{{index}}"></view>
             <view wx:else class="orderno-icon-45top orderno-icon" bindtap="selectList" data-index="{{index}}"></view>
@@ -23,13 +22,17 @@
           <view class="item-left">
             <image class="item-img" src="{{imageRootPath}}{{item.thumb}}" bindtap="selectList" data-index="{{index}}"></image>
           </view>
-          <view class="item-right" bindtap="updateCart" data-index="{{index}}">
+          <view class="item-right" data-index="{{index}}">
             <text class="item-title">{{item.goods_name}}</text>           
             <view class="item-spec">
-              <span class="item-spec-one">总价格：¥{{item.price*item.num}}</span>              
+              <span class="item-spec-one">价格：¥{{item.price*item.num}}</span>              
             </view>
             <view class="item-spec">
-              <span>数量：{{item.num}}个</span>
+            <span class="modal-item-inp">
+            <span class="ocon ocon-l" bindtap="reduceNumber">-</span>
+            <input class="inp" value="{{item.num}}" bindinput="bindNumberChange"></input>
+            <span class="ocon ocon-r" bindtap="addNumber">+</span>
+            </span>            
             </view>
           </view>
         </view>
@@ -45,61 +48,3 @@
     结算
   </button>
 </view>
-
-<!-- 修改弹窗 -->
-<view hidden="{{!modalSpecShow}}" class="modal-spec modal-wrap vertical-center">
-  <view class="modal">
-    <image src="/images/modal-close.png" class="modal-close" bindtap="closeModal" data-modal="specModal"></image>
-    <view class="modal-body">
-      <view class="modal-item">
-        <span class="modal-item-desc">商品:</span>
-        <span class="modal-item-inp">{{updName}}</span>
-      </view>
-      <view class="modal-item">
-        <span class="modal-item-desc">新旧:</span>
-        <span class="modal-item-inp">{{updLevel}}</span>
-      </view>
-      <view class="modal-item">
-        <span class="modal-item-desc">颜色:</span>
-        <span class="modal-item-inp">{{updSizeName}}</span>
-      </view>
-      <view class="modal-item" wx:if="{{rtype == 1}}">
-        <span class="modal-item-desc">租用月数:</span>
-        <span class="modal-item-inp">
-          <span class="ocon ocon-l" bindtap="reduceRentdates">-</span>
-          <input class="inp" value="{{updRentDate}}" bindinput="bindRentdatesChange"></input>
-          <span class="ocon ocon-r" bindtap="addRentdates">+</span>
-        </span>
-      </view>
-      <view class="modal-item">
-        <span class="modal-item-desc">数量:</span>
-        <span class="modal-item-inp">
-          <span class="ocon ocon-l" bindtap="reduceNumber">-</span>
-          <input class="inp" value="{{updNums}}" bindinput="bindNumberChange"></input>
-          <span class="ocon ocon-r" bindtap="addNumber">+</span>
-        </span>
-      </view>
-      <view class="modal-item"  wx:if="{{rtype == 2}}">
-        <span class="modal-item-desc">零售价:</span>
-        <span class="modal-item-inp">¥{{specSmprice}}</span>
-      </view>
-      <view class="modal-item"  wx:if="{{rtype == 1}}">
-        <span class="modal-item-desc">价格:</span>
-        <span class="modal-item-inp">¥{{specPrice}}/月</span>
-      </view>
-      <view class="modal-item"  wx:if="{{rtype == 1}}">
-        <span class="modal-item-desc">押金:</span>
-        <span class="modal-item-inp">¥{{specRentCost}}</span>
-      </view>
-    </view>
-    <view class="modal-footer">
-      <button class="modal-qd" bindtap="confirmModal">
-        确定
-      </button>
-      <button class="modal-delete" bindtap="deleteModal">
-        删除
-      </button>
-    </view>
-  </view>
-</view>
-<!-- /修改弹窗 -->

@@ -116,107 +116,6 @@ Page({
     });
     this.countTotalMoney();  //计算总金额
   },
-
-  //编辑修改
-  updateCartBySel:function(e){
-    //获取勾选项
-    var self=this;
-    var selCart=null;
-    var cartList = self.data.cartList;
-    var selNums=0;
-    for (var i = 0; i < cartList.length; i++) {
-      if (cartList[i].selected) {
-        selCart = cartList[i];
-        selNums = selNums+1;
-      }
-    }
-    if (selNums==0){
-      self.showMsg('请选择一个进行修改');
-      return false;
-    }
-    if (selNums > 1) {
-      self.showMsg('只能选择一个进行修改');
-      return false;
-    }
-    this.setData({
-      modalSpecShow: true,
-      updId: selCart.id,  //修改id
-      updName: selCart.name,  //修改的商品
-      updKuncun: selCart.kuncun,  //修改的商品库存
-      updSizeName: selCart.color,  //修改的颜色
-      updLevel: selCart.level,  //修改的新旧
-      updRentDate: selCart.rent_date,  //修改的租赁月数
-      updNums: selCart.number,  //修改的数量
-      specSmprice: selCart.smprice,
-      specPrice: selCart.price,
-      specRentCost: selCart.rent_cost
-    });
-  },
-
-  //弹框修改
-  updateCart:function(e){
-    var index = e.currentTarget.dataset.index;    // 获取data- 传进来的index
-    var cartList = this.data.cartList;                    // 获取购物车列表
-    var selCart = cartList[index];   //选中修改的购物车
-    this.setData({
-      modalSpecShow: true,
-      updId: selCart.id,  //修改id
-      updName: selCart.name,  //修改的商品
-      updKuncun: selCart.kuncun,  //修改的商品库存
-      updSizeName: selCart.color,  //修改的颜色
-      updLevel: selCart.level,  //修改的新旧
-      updRentDate: selCart.rent_date,  //修改的租赁月数
-      updNums: selCart.number, //修改的数量
-      specSmprice: selCart.smprice,
-      specPrice: selCart.price,
-      specRentCost: selCart.rent_cost
-    });
-  },
-
-  //关闭弹框
-  closeModal: function () {
-    this.setData({
-      modalSpecShow: false
-    });
-  },
-
-  //租用月数输入
-  bindRentdatesChange: function (e) {
-    this.setData({
-      updRentDate: e.detail.value
-    });
-  },
-  //添加租用月数
-  addRentdates: function () {
-    var self = this;
-    var updRentDate = self.data.updRentDate;
-    if (/^[0-9]+$/.test(updRentDate)) {
-      updRentDate = Number(updRentDate);
-      updRentDate = updRentDate + 1;
-      self.setData({
-        updRentDate: updRentDate
-      });
-    } else {
-      self.showMsg('请输入正确的租用月数');
-      return false;
-    }
-  },
-  //减少租用月数
-  reduceRentdates: function () {
-    var self = this;
-    var updRentDate = self.data.updRentDate;
-    if (/^[0-9]+$/.test(updRentDate)) {
-      updRentDate = Number(updRentDate);
-      updRentDate = updRentDate > 1 ? updRentDate - 1 : 1;
-      self.setData({
-        updRentDate: updRentDate
-      });
-    } else {
-      self.showMsg('请输入正确的租用月数');
-      return false;
-    }
-  },
-
   //数量输入
   bindNumberChange: function (e) {
     this.setData({
@@ -230,6 +129,26 @@ Page({
     if (/^[0-9]+$/.test(updNums)) {
       updNums = Number(updNums);
       updNums = updNums + 1;
+
+      var postData = {
+        token: app.globalData.token,
+        id: self.data.updId,
+        number: numbers
+      };
+      app.ajax({
+        url: app.globalData.serviceUrl + 'mrentupdate.htm',
+        data: postData,
+        method: 'GET',
+        successCallback: function (res) {
+          if (res.code == 0) {
+            //修改成功，重新赋值，还原勾选状态
+            var ycartList = self.data.cartList;  //原来数据
+            self.getACartInfo(ycartList);
+          }
+        }
+      })
+
+
       self.setData({
         updNums: updNums
       });
@@ -253,51 +172,6 @@ Page({
       return false;
     }
   },
-
-  //提交修改
-  confirmModal: function (e, modalName) {
-    var self = this;
-    //租用月数
-    var rtype = self.data.rtype;
-    var rentdates = self.data.updRentDate;
-    if (rtype==1){
-      if (/^[0-9]+$/.test(rentdates) && rentdates != 0) {
-        rentdates = Number(rentdates)
-      } else {
-        self.showMsg('请输入正确的租用月数');
-        return false;
-      }
-    }
-
-    //租赁数量
-    var numbers = self.data.updNums;
-    if (/^[0-9]+$/.test(numbers) && numbers != 0) {
-      numbers = Number(numbers)
-    } else {
-      self.showMsg('请输入正确的数量');
-      return false;
-    }
-
-    var postData = {
-      token: app.globalData.token,
-      id: self.data.updId,
-      rent_date: rentdates,
-      number: numbers
-    };
-    app.ajax({
-      url: app.globalData.serviceUrl + 'mrentupdate.htm',
-      data: postData,
-      method: 'GET',
-      successCallback: function (res) {
-        if(res.code==0){
-          //修改成功，重新赋值，还原勾选状态
-          var ycartList = self.data.cartList;  //原来数据
-          self.getACartInfo(ycartList);
-        }
-      }
-    })
-  },
-
   //获取列表数据
   getACartInfo: function (ycartList) {
     var self = this;
