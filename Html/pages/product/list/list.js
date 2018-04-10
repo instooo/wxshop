@@ -5,15 +5,14 @@ var app = getApp();
 Page({
   data: {
     'imageRootPath': '',
-    'warelist': [],
-    'waretypelist': [],
+    'goodlist': [],
+    'typelist': [],
     'page':1,
     'loading': true,
     'noData': false,
     'isFirst': true,
-    'waretypeid': 0,
-    'hide': 'hide',
-    'type':2  //获取产品的类型：1我要买2租赁产品,默认租赁产品
+    'typeid': 0,
+    'hide': 'hide',    
   },
 
   /**
@@ -21,13 +20,13 @@ Page({
    */
   onLoad: function (options) {
     this.setData({
-      'warelist': [],
-      'waretypelist': [],
+      'goodlist': [],
+      'typelist': [],
       'page': 1,
       'loading': true,
       'noData': false,
       'isFirst': true,
-      'waretypeid': 0,
+      'typeid': 0,
       'hide': 'hide'
     });
     var self=this;
@@ -46,21 +45,19 @@ Page({
   getIndexData: function() {
     var self = this;
     var postData = {
-      waretypeid: self.data.waretypeid,
-      type: self.data.type,
+      typeid: self.data.typeid,      
       page: self.data.page
     };
 
     self.data.loading = false;
     //获取首页数据    
     app.ajax({
-      url: app.globalData.serviceUrl + '/mwarelist.html',
+      url: app.globalData.serviceUrl + '/index/goodslist',
       data: postData,
       method: 'GET',
-      successCallback: function(res) {
+      successCallback: function(res) {      
         var list = [];
-
-        if (res.code != 0 || res.data == null || res.data.warelablelist == 0) {
+        if (res.code != 0 || res.data == null || res.data.good_list.length < 1) {
           self.setData({
             noData: true,  //显示已经没有数据
             loading: false  //滚动不用再触发
@@ -68,35 +65,18 @@ Page({
           return false;
         }
 
-        if (self.data.isFirst && res.data.waretypelist && res.data.waretypelist.length > 0 ) {
+        if (self.data.isFirst && res.data.type_list && res.data.type_list.length > 0 ) {
           self.setData({
-            waretypelist: res.data.waretypelist
+            typelist: res.data.type_list
           });
           self.data.isFirst == false;
-        } 
-
-        if (self.data.page == 1 && res.data.warelablelist.length == 0) {
-          self.setData({
-            hide: 'show',
-            loading: false  //隐藏加载
-          })
-          return false;
         }
-        var alist = res.data.warelablelist;
-        list = self.data.warelist.concat(alist);
-
         self.setData({
-          imageRootPath: res.data.imageRootPath,
-          warelist: list,
+          imageRootPath: res.data.rooturl,
+          goodlist: res.data.good_list,
           hide: 'hide',
-          loading: true  //隐藏加载
+          loading:false
         });
-
-        if (self.data.page == 1 && res.data.warelablelist.length < 10) {
-          self.setData({
-            loading: false  //隐藏加载
-          });
-        }
       },
       failCallback: function(res) {
         console.log(res);
@@ -125,47 +105,21 @@ Page({
     })
   },
 
-  //跳转到搜索
-  gotoSearch: function () {
-    wx.navigateTo({
-      url: '/pages/product/search/search?source=list'
-    })
-  },
-
   //获取分类数据
   getCategoryInfo: function(event) {
-    var id = event.currentTarget.dataset.id;
+    var id = event.currentTarget.dataset.id;    
     var self = this;
     self.setData({
       page: 1,
       loading: true,
       noData: false,
-      warelist: [],
-      waretypeid: id,
+      goodlist: [],
+      typeid: id,
       hide: 'hide'
     });
 
     self.getIndexData();
   },
-
-  //购买类型切换
-  buyTypeChange: function (event) {
-    var buytype = event.currentTarget.dataset.type;
-    var self = this;
-    self.setData({
-      page: 1,
-      loading: true,
-      noData: false,
-      warelist: [],
-      waretypeid: 0,
-      isFirst: true,
-      hide: 'hide',
-      type: buytype
-    });
-
-    self.getIndexData();
-  },
-
   //分享
   onShareAppMessage: function () {
     return {

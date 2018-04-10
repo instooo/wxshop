@@ -11,7 +11,7 @@
     <view class="addrss-edit-item">
       <view class="addrss-edit-item-impl">
         <text class="addrss-edit-item-text">联系方式</text>
-        <input placeholder="请输入收货人手机号码" name="mobile" class="addrss-edit-item-inp" maxlength="11" value="{{mobile}}"/>        
+        <input placeholder="请输入收货人手机号码" name="phone" class="addrss-edit-item-inp" maxlength="11" value="{{phone}}"/>        
       </view>
     </view>
 

@@ -16,14 +16,13 @@ Page({
   getMyData: function() {
     var self = this;
     app.ajax({
-      url: app.globalData.serviceUrl + 'muser.htm',
+      url: app.globalData.serviceUrl + 'user/muserinfo',
       data: { token: app.globalData.token},
       method: 'POST',
-      successCallback: function(res) {
-        console.log(res);
+      successCallback: function(res) {      
         if(res.code == 0) {
           self.setData({
-            myInfo: res.data.userbean
+            myInfo: res.data.info
           });
         }
       },
@@ -46,12 +45,6 @@ Page({
   gotoMyAddress:function(){
     wx.navigateTo({ url: "/pages/address/list/list" });
   },
-
-  //我的租用
-  gotoMyRent:function(){
-    wx.navigateTo({ url: "/pages/rent/rent" });
-  },
-
   //常见问题
   gotoQuestion:function() {
     wx.navigateTo({ url: "/pages/question/list/list" });
@@ -61,16 +54,6 @@ Page({
   gotoService:function() {
     wx.navigateTo({ url: "/pages/service/service" });
   },
-
-  //去评价
-  gotoComment: function() {
-    wx.navigateTo({ url: "/pages/comment/list/list" });
-  },
-
-  gotoprotocol: function() {
-	  wx.navigateTo({ url: "/pages/protocol/protocol?id=6" });
-  },
-
   //我的收藏
   gotoCollection:function(){
     wx.navigateTo({ url: "/pages/collection/collection" });

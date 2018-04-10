@@ -16,7 +16,9 @@ class AddressController extends ApiController
 	* 接受用户ID，自动筛选大于15天的地址
 	*/
 	public function address_list(){
-		
+		$map['member_id'] = 666;
+		$data['addresslist']=M('address')->where($map)->select();
+		Response::apiReturn(0,"success",$data);
 	}
 	
 	/*地址详情页面
@@ -47,6 +49,22 @@ class AddressController extends ApiController
 	*/
 	public function address_edit(){
 		
+	}
+	/**
+	* 获取省份
+	**/
+	public function getprovince(){
+		$map['level'] = 1;
+		$data['provincelist']=M('area')->where($map)->select();
+		Response::apiReturn(0,"success",$data);
+	}
+	/**
+	* 获取省份
+	**/
+	public function getarea(){		
+		$map['parentId'] = I("get.code","","intval");
+		$data['arealist']=M('area')->where($map)->select();
+		Response::apiReturn(0,"success",$data);
 	}
 	
 }

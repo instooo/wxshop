@@ -113,16 +113,14 @@ page{
   bottom: 0;
   border-top: 1rpx #ebebeb solid;
   padding-top:30rpx;
-  margin-bottom:30rpx;
 }
 .address-btn-impl{
-  width:586rpx;
   height: 90rpx;
   line-height: 90rpx;
   background: #ff4965;
-  font-size: 42rpx;
+  font-size: 36rpx;
   color: #ffffff;
-  border-radius: 100rpx;
+  border-radius: 0rpx;
 }
 .address-btn-add-icon{
   width: 21rpx;

@@ -4,13 +4,7 @@
     <image src="{{myInfo.headimgurl}}" class="page-my-top-img" />
   </view>
   <view class="page-my-top-rt">
-    <view class="page-my-top-name" >{{myInfo.nickname}}<view class="user-know">
-          <navigator url="/pages/protocol/protocol?id=6">
-          用户须知<image src="/images/my/icon8.png"/>
-           </navigator>
-    </view>
-    </view>
-    <!--<view class="page-my-top-name" wx:if="{{myInfo.nickname}}">{{myInfo.nickname}}</view>-->
+    <view class="page-my-top-name" >{{myInfo.nickname}}</view>
     <view class="page-my-top-score">{{myInfo.point}}积分</view>
   </view>
   <navigator url="/pages/scroce/scroce">
@@ -25,14 +19,6 @@
       <text>全部订单</text>
     </view>
   </navigator>
-
-  <navigator url="/pages/rent/rent">
-    <view class="page-my-list-item">
-      <image src="/images/my/icon2.png" class="page-my-item-icon" />
-      <text>正在租用</text>
-    </view>
-  </navigator>
-
   <navigator url="/pages/collection/collection"> 
     <view class="page-my-list-item">
       <image src="/images/my/icon9.png" class="page-my-item-icon" />

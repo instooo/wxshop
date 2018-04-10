@@ -24,12 +24,11 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onLoad: function (options) {
-    if (!app.globalData.token) {
-      //wx.redirectTo({ url: "/pages/login/login" });
-      console.log("no login");
-      return false;
-    }
-    console.log(options);
+    //if (!app.globalData.token) {
+    //  //wx.redirectTo({ url: "/pages/login/login" });
+    //  console.log("no login");
+    //  return false;
+    //}
     if (options.source == 'confirm') {
       //判断是否为订单提交页面过来
       this.setData({
@@ -55,7 +54,7 @@ Page({
         className: options.select ? 'show' : '',
         curid: options.curid || 0
       });
-    }
+    }    
   },
 
   onShow: function () {
@@ -71,10 +70,11 @@ Page({
 
     //获取首页数据    
     app.ajax({
-      url: app.globalData.serviceUrl + 'maddresslist.htm',
+      url: app.globalData.serviceUrl + '/address/address_list',
       data: postData,
       method: 'GET',
       successCallback: function (res) {
+        console.log(res);
         if (res.code == 0) {
           var retList = res.data.addresslist;
           var yList=[];
@@ -82,8 +82,8 @@ Page({
           if (retList != null && retList.length > 0) {
             for (var i = 0; i < retList.length; i++) {
               var item = retList[i];
-              item.xmobile = item.mobile.substring(0, 3) + '*****'
-                 + item.mobile.substring(8);
+              item.xmobile = item.phone.substring(0, 3) + '*****'
+                + item.phone.substring(8);
               setList.push(item);
             }
           }
@@ -173,8 +173,6 @@ Page({
   // 选择收货地址
   selectAddr: function (event) {
     var self = this;
-    console.log(self.data.isSelect);
-    console.log(self.data.source);
     if (self.data.isSelect) {
       var id = event.currentTarget.dataset.id;
       if (self.data.source == 'confirm') {

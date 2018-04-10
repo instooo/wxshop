@@ -1,5 +1,4 @@
 <view class="address">
-
   <view class="address-list">
     <view wx:for="{{addressList}}" wx:key="unique1">
       <view class="address-item"  bindtap="selectAddr" data-id="{{item.id}}">

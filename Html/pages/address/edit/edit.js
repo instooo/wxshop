@@ -41,7 +41,6 @@ Page({
   bindMultiPickerChange: function (e) {
     var self = this;
     var current_value = e.detail.value;
-    console.log(current_value);
     //地址选中确定，拼装地址信息显示
     var address = self.data.areaArray[0][current_value[0]].name
       + (self.data.areaArray[1].length > 0 ? '/' +self.data.areaArray[1][current_value[1]].name:'')
@@ -75,10 +74,10 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    if (!app.globalData.token) {
-     // wx.redirectTo({ url: "/pages/login/login" });
-      return false;
-    }
+    //if (!app.globalData.token) {
+    // // wx.redirectTo({ url: "/pages/login/login" });
+    //  return false;
+    //}
 
     var self = this;
     var ddShow = true;
@@ -158,14 +157,13 @@ Page({
     var provinces = new Array();
     var thisPage = this;
     wx.request({
-      url: app.globalData.serviceUrl + 'getProvince.html',
+      url: app.globalData.serviceUrl + 'address/getprovince',
       data: {},
       method: 'GET',
       success: function (res) {
         var data = res.data;
         if (data.code == 0) {
           provinces = data.data.provincelist;
-
           var areaArray = thisPage.data.areaArray;
           areaArray[0] = provinces;
           thisPage.setData({
@@ -189,13 +187,13 @@ Page({
     var thisPage = this;
     var cities = new Array();
     wx.request({
-      url: app.globalData.serviceUrl + 'getArea.html',
+      url: app.globalData.serviceUrl + 'address/getArea',
       data: { 'code': code },
       method: 'GET',
       success: function (res) {
         var data = res.data;
         if (data.code == 0) {
-          cities = data.data.list;
+          cities = data.data.arealist;
           var areaArray = thisPage.data.areaArray;
           areaArray[1] = cities;
           if (cities.length>0){
@@ -219,13 +217,13 @@ Page({
     var thisPage = this;
     var counties = new Array();
     wx.request({
-      url: app.globalData.serviceUrl + 'getArea.html',
+      url: app.globalData.serviceUrl + 'address/getArea',
       data: { 'code': code },
       method: 'GET',
       success: function (res) {
         var data = res.data;
         if (data.code == 0) {
-          counties = data.data.list;
+          counties = data.data.arealist;
           var areaArray = thisPage.data.areaArray;
           areaArray[2] = counties;
           thisPage.setData({
@@ -262,14 +260,14 @@ Page({
       return false;
     }
 
-    if (!/^1[34578]\d{9}$/.test(formData.mobile)) {
+    if (!/^1[34578]\d{9}$/.test(formData.phone)) {
       self.showMsg('请输入正确的手机号码');
       return false;
     }
-    if (self.data.readySelArea==0){
-      self.showMsg('请点击选择送货区域');
-      return false;
-    } 
+   if (self.data.readySelArea==0){
+     self.showMsg('请点击选择送货区域');
+     return false;
+   } 
     if (!formData.detailaddress) {
       self.showMsg('请输入详细地址');
       return false;
@@ -303,6 +301,7 @@ Page({
   },
 
   saveOrUpdate: function (postData) {
+    console.log(postData);return false;
     var self = this;
     postData.token = app.globalData.token;
     var url = app.globalData.serviceUrl + 'maddressadd.htm';

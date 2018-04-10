@@ -51,7 +51,7 @@
   background: #f4f4f4;
   position: absolute;
   left: 0;
-  top: 91rpx;
+  top: 0;
   overflow-y: scroll;
   padding-bottom:20rpx;
   box-sizing:border-box;

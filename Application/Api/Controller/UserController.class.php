@@ -27,7 +27,9 @@ class UserController extends ApiController
 	
 	//获取用户信息
 	public function muserinfo(){
-		
+		$map['uid'] = 666;
+		$data['info']=M('member')->where($map)->find();
+		Response::apiReturn(0,"success",$data);
 	}
 	
 	//获取用户积分列表

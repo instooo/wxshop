@@ -18,11 +18,11 @@ class TableData {
     	$this->__construct($table);
     }	
 	//所有数据列表
-	public function get_all_list($limit=10){
+	public function get_all_list($limit=10,$map=array()){
 		$classname =ucfirst(strtolower($this->table));		
 		//查找对应的栏目id		
 		$content = M($classname);
-		$contentmap=array();
+		$contentmap=$map;
 		$list = $content
 				->where($contentmap)
 				->order("sort desc,id desc")

@@ -2,7 +2,7 @@
 /**
  * Created by PhpStorm.
  * User: dengxiaolong
- * Date: 2017/4/8
+ * Date: 2017/4/10
  * Time: 15:17
  */
 namespace Api\Controller;
@@ -27,7 +27,19 @@ class IndexController extends ApiController
 		* 栏目ID
 		* PAGE=默认为1
 		* 返回数据包含产品列表，分类列表
-		*/		
+		*/	
+		//查找不同标签下的数据
+		$module = new \Api\Logic\Common\TableData("goods");	
+		$typeid=I("get.typeid","","intval");
+		if($typeid){
+			$map['good_type_id']=$typeid;
+		}
+		$data["good_list"]=$module->get_all_list(18,$map);
+		$module2 = new \Api\Logic\Common\TableData("goodstype");		
+		$data["type_list"]=$module2->get_all_list(100);
+		$data["rooturl"]="http://www.wxshop.me";		
+		Response::apiReturn(0,"success",$data);
+		
 	}
 	//产品详情页
 	public function goodsDetail(){		
