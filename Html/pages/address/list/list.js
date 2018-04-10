@@ -129,7 +129,7 @@ Page({
     delete obj.xmobile;
     var postData=obj;
     postData.token = app.globalData.token;
-    var url = app.globalData.serviceUrl + 'maddressupdate.htm';
+    var url = app.globalData.serviceUrl + 'address/address_edit';
     postData.isdefault = obj.isdefault==0?1:0;
     //添加地址   
     app.ajax({
@@ -207,7 +207,7 @@ Page({
             id: id
           };
           app.ajax({
-            url: app.globalData.serviceUrl + 'maddressdel.htm',
+            url: app.globalData.serviceUrl + 'address/address_del',
             data: postData,
             method: 'POST',
             successCallback: function (res) {
@@ -216,10 +216,7 @@ Page({
                 addresslistCopy.splice(index, 1);
                 self.setData({
                   addressList: addresslistCopy
-                });
-                // wx.redirectTo({
-                //   url: '../list/list'
-                // });
+                });                
               }
             },
             failCallback: function (res) {

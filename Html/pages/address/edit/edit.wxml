@@ -46,8 +46,7 @@
   <view class="address-add-btn">
       <button class="address-add-impl" formType="submit">
         保存
-      </button>
-      <button class="addrss-edit-delete" wx:if="{{ddShow}}" bindtap="deleteAddress">删除</button>
+      </button>     
   </view>
   </form>
 

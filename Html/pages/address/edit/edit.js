@@ -16,7 +16,6 @@ Page({
     selAreaVal: '',   //区域选中的值
     address: '请点击选择送货区域',
     bcShow: true,   //显示保存按钮
-    ddShow: false,   //显示删除按钮
     isShow: false, // 显示区域选择框
     showDistrict: true, // 默认为省市区三级区域选择
     ordername: '',  //收货人姓名
@@ -58,6 +57,8 @@ Page({
 
     var col = e.detail.column;
     var val = e.detail.value;
+    console.log(col);
+    console.log(val);
     //重新加载地市
     if (col == 0) {
       var code = self.data.areaArray[0][val].code;
@@ -79,18 +80,13 @@ Page({
     //  return false;
     //}
 
-    var self = this;
-    var ddShow = true;
+    var self = this;    
 
     //页面加载先获取省份信息
     self.getProvince();
-    if (options.id == -1) {
-      ddShow = false;
-    }
 
     if (options.source=='confirm'){
-      //判断是否为订单提交页面过来，地址不允许删除 
-      ddShow = false; 
+      //判断是否为订单提交页面过来，地址不允许删除     
       self.setData({
         source:options.source,
         wareids: options.wareids,
@@ -101,8 +97,7 @@ Page({
         rtype: options.rtype
       });
     } else if (options.source == 'exchange' || options.source == 'return') {
-      //判断是否为换货提交页面过来，地址不允许删除 
-      ddShow = false;
+      //判断是否为换货提交页面过来，地址不允许删除    
       self.setData({
         source: options.source,
         warenumbers: options.warenumbers
@@ -110,8 +105,7 @@ Page({
     }
 
     self.setData({
-      id: options.id,
-      ddShow: ddShow,
+      id: options.id,     
       isSelect: !!options.select
     });
 
@@ -123,12 +117,12 @@ Page({
         id: id
       };
       app.ajax({
-        url: app.globalData.serviceUrl + 'maddressdetail.htm',
+        url: app.globalData.serviceUrl + 'address/address_detail',
         data: postData,
-        method: 'GET',
+        method: 'POST',
         successCallback: function (res) {
           if (res.code == 0) {
-            var obj = res.data.addressbean;
+            var obj = res.data.addressinfo;
             var address = obj.province +
               (obj.city == '' ? '' : '/' +obj.city)+
               (obj.area == '' ? '' : '/' +obj.area);
@@ -137,7 +131,7 @@ Page({
 
             self.setData({
               ordername: obj.ordername,
-              mobile: obj.mobile,
+              phone: obj.phone,
               detailaddress: obj.detailaddress,
               isdefault: obj.isdefault,
               address: address,
@@ -296,17 +290,16 @@ Page({
     var arr2 = self.data.areaArray[2];
     if (arr2.length != 0) {
       formData.area = arr2[cv[2]].name;
-    }
+    }    
     self.saveOrUpdate(formData);
   },
 
-  saveOrUpdate: function (postData) {
-    console.log(postData);return false;
+  saveOrUpdate: function (postData) {  
     var self = this;
     postData.token = app.globalData.token;
-    var url = app.globalData.serviceUrl + 'maddressadd.htm';
+    var url = app.globalData.serviceUrl + 'address/add_address';
     if (this.data.id != -1) {
-      url = app.globalData.serviceUrl + 'maddressupdate.htm';
+      url = app.globalData.serviceUrl + 'address/address_edit';
       postData.id = this.data.id;
     }
     //添加地址   
@@ -358,7 +351,7 @@ Page({
             id: id
           };
           app.ajax({
-            url: app.globalData.serviceUrl + 'maddressdel.htm',
+            url: app.globalData.serviceUrl + 'address/address_del',
             data: postData,
             method: 'POST',
             successCallback: function (res) {
@@ -392,7 +385,7 @@ Page({
     var thisPage = this;
     var areaIndex = thisPage.data.areaIndex;
     wx.request({
-      url: app.globalData.serviceUrl + 'getProvince.html',
+      url: app.globalData.serviceUrl + 'address/getprovince',
       data: {},
       method: 'GET',
       success: function (res) {
@@ -407,12 +400,12 @@ Page({
 
         if (cityName!=''){
           wx.request({
-            url: app.globalData.serviceUrl + 'getArea.html',
+            url: app.globalData.serviceUrl + 'address/getarea',
             data: { 'code': provinces[areaIndex[0]].code },
             method: 'GET',
             success: function (res) {
               var data = res.data;
-              var cities = data.data.list;
+              var cities = data.data.arealist;
               for (var ii = 0; ii < cities.length; ii++) {
                 if (cityName == cities[ii].name) {
                   areaIndex[1] = ii;
@@ -427,12 +420,12 @@ Page({
               });
               if (countyName != '') {
                 wx.request({
-                  url: app.globalData.serviceUrl + 'getArea.html',
+                  url: app.globalData.serviceUrl + 'address/getarea',
                   data: { 'code': cities[areaIndex[1]].code },
                   method: 'GET',
                   success: function (res) {
                     var data = res.data;
-                    var counties = data.data.list;
+                    var counties = data.data.arealist;
                     for (var iii = 0; iii < counties.length; iii++) {
                       if (countyName == counties[iii].name) {
                         areaIndex[2] = iii;

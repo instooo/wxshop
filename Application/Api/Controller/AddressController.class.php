@@ -26,21 +26,30 @@ class AddressController extends ApiController
 	* 自动获取 userid
 	*/
 	public function address_detail(){
+		$map['id']=$_POST['id'];
+		$map['member_id']=666;
+		$result['addressinfo'] = M('address')->where($map)->find();
+		if($result['addressinfo']){
+			Response::apiReturn(0,"success",$result);
+		}else{
+			Response::apiReturn(1,"fail");
+		}
 		
 	}
 	/*提交地址确认页面
 	* 接收参数 省,州,市,县
 	*/
 	public function add_address(){
-		
-	}	
-	
-	/*地址删除
-	* 接收参数 addressid
-	* 自动获取 userid
-	*/
-	public function address_del(){
-		
+		$data = $_POST;
+		$data['member_id']=666;
+		$data['addtime']=time();		
+		$result = M('address')->add($data);
+		if($result){
+			$redata['id']=$result;
+			Response::apiReturn(0,"success",$redata);
+		}else{
+			Response::apiReturn(1,"fail");
+		}	
 	}
 	
 	/*地址修改
@@ -48,8 +57,33 @@ class AddressController extends ApiController
 	* 自动获取 userid
 	*/
 	public function address_edit(){
-		
+		$data = $_POST;
+		$map['id']=$_POST['id'];
+		$map['member_id']=666;
+		$result = M('address')->where($map)->save($data);
+		if($result){			
+			Response::apiReturn(0,"success",$result);
+		}else{
+			Response::apiReturn(1,"fail");
+		}	
 	}
+	
+	/*地址删除
+	* 接收参数 addressid
+	* 自动获取 userid
+	*/
+	public function address_del(){
+		$map['id']=$_POST['id'];
+		$map['member_id']=666;
+		$result['addressList'] = M('address')->where($map)->delete();
+		if($result){			
+			Response::apiReturn(0,"success",$result);
+		}else{
+			Response::apiReturn(1,"fail");
+		}	
+	}
+	
+	
 	/**
 	* 获取省份
 	**/
