@@ -28,12 +28,15 @@
               <span class="item-spec-one">价格：¥{{item.price*item.num}}</span>              
             </view>
             <view class="item-spec">
-            <span class="modal-item-inp">
-            <span class="ocon ocon-l" bindtap="reduceNumber">-</span>
-            <input class="inp" value="{{item.num}}" bindinput="bindNumberChange"></input>
-            <span class="ocon ocon-r" bindtap="addNumber">+</span>
-            </span>            
+              <span class="modal-item-inp">
+                <span class="ocon ocon-l" bindtap="reduceNumber" data-index="{{index}}">-</span>
+                <input class="inp" value="{{item.num}}" bindinput="bindNumberChange"></input>
+                <span class="ocon ocon-r" bindtap="addNumber" data-index="{{index}}">+</span>
+              </span>            
             </view>
+          </view>
+          <view class="item-right" data-index="{{item.id}}" bindtap="deleteModal">
+             删除        
           </view>
         </view>
       </view>

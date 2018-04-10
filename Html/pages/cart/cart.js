@@ -123,122 +123,101 @@ Page({
     });
   },
   //添加数量
-  addNumber: function () {
+  addNumber: function (e) {
+    var index = e.currentTarget.dataset.index;
+    var nownum = Number(this.data.cartList[index].num)+1;
     var self = this;
-    var updNums = self.data.updNums;
-    if (/^[0-9]+$/.test(updNums)) {
-      updNums = Number(updNums);
-      updNums = updNums + 1;
-
+    if (/^[0-9]+$/.test(nownum)) {
+      this.data.cartList[index].num = nownum;
+      this.setData({
+        cartList: this.data.cartList
+      });        
       var postData = {
         token: app.globalData.token,
-        id: self.data.updId,
-        number: numbers
+        id: this.data.cartList[index].id,
+        num: nownum
       };
       app.ajax({
-        url: app.globalData.serviceUrl + 'mrentupdate.htm',
+        url: app.globalData.serviceUrl + 'rent/rent_edit',
         data: postData,
         method: 'GET',
         successCallback: function (res) {
           if (res.code == 0) {
-            //修改成功，重新赋值，还原勾选状态
-            var ycartList = self.data.cartList;  //原来数据
-            self.getACartInfo(ycartList);
+            //计算金额
+            self.countTotalMoney();  //计算总金额
           }
         }
-      })
-
-
-      self.setData({
-        updNums: updNums
-      });
+      })     
     } else {
       self.showMsg('请输入正确的数量');
       return false;
     }
   },
   //减少数量
-  reduceNumber: function () {
+  reduceNumber: function (e) {
+    var index = e.currentTarget.dataset.index;
+    var nownum = Number(this.data.cartList[index].num) - 1;
     var self = this;
-    var updNums = self.data.updNums;
-    if (/^[0-9]+$/.test(updNums)) {
-      updNums = Number(updNums);
-      updNums = updNums > 1 ? updNums - 1 : 1;
-      self.setData({
-        updNums: updNums
+    if (/^[0-9]+$/.test(nownum)) {
+      nownum = Number(nownum);
+      nownum = nownum > 0 ? nownum  : 1;
+      this.data.cartList[index].num = nownum;
+      this.setData({
+        cartList: this.data.cartList
       });
+      var postData = {
+        token: app.globalData.token,
+        id: this.data.cartList[index].id,
+        num: nownum
+      };
+      app.ajax({
+        url: app.globalData.serviceUrl + 'rent/rent_edit',
+        data: postData,
+        method: 'GET',
+        successCallback: function (res) {
+          if (res.code == 0) {
+            //计算金额
+            self.countTotalMoney();  //计算总金额
+          }
+        }
+      })
     } else {
       self.showMsg('请输入正确的数量');
       return false;
     }
   },
-  //获取列表数据
-  getACartInfo: function (ycartList) {
-    var self = this;
-    var postData = {
-      token: app.globalData.token,
-      rtype: self.data.rtype
-    };
-
-    app.ajax({
-      url: app.globalData.serviceUrl + 'mrentlist.htm',
-      data: postData,
-      method: 'GET',
-      successCallback: function (res) {
-        if (res.code == 0) {
-          var retList = [];
-          if (res.data.mrentlist != null && res.data.mrentlist.length > 0) {
-            for (var i = 0; i < res.data.mrentlist.length; i++) {
-              var singleObj = res.data.mrentlist[i];
-
-              for (var ii = 0; ii < ycartList.length; ii++) {
-                if (singleObj.id == ycartList[ii].id) {
-                  singleObj.selected = ycartList[ii].selected;
-                  break;
-                }
-              }
-              retList.push(singleObj);
-            }
-          }
-          self.setData({
-            imageRootPath: res.data.imageRootPath,
-            cartList: retList,
-            modalSpecShow: false,
-            isShow: retList.length > 0 ? '' : 'hide',
-            isEmpty: retList.length > 0 ? '' : 'show'
-          });
-
-          self.countTotalMoney();  //计算总金额
-        }
-      },
-      failCallback: function (res) {
-        console.log(res);
-      }
-    });
-  },
-
   //提交删除
-  deleteModal:function(e){
+  deleteModal:function(e){    
+    //获取勾选项
     var self = this;
     wx.showModal({
       title: '提示',
       content: '确定删除？',
       success: function (res) {
         if (res.confirm) {
-          var id = self.data.updId;
+          var id = e.currentTarget.dataset.index;
           var postData = {
             token: app.globalData.token,
             id: id
-          };
+          };    
+         
           app.ajax({
-            url: app.globalData.serviceUrl + 'mrentdel.htm',
+            url: app.globalData.serviceUrl + 'rent/rent_del',
             data: postData,
             method: 'POST',
             successCallback: function (res) {
-              if (res.code == 0) {
-                //删除成功，重新赋值，还原勾选状态
-                var ycartList = self.data.cartList;  //原来数据
-                self.getACartInfo(ycartList);
+              if (res.code == 0) {  
+                var cartList = self.data.cartList;     
+                var newArr = new Array();          
+                for (var i = 0; i < cartList.length; i++) {                
+                  if (Number(cartList[i]['id']) != Number(res['data'])){                  
+                    newArr.push(cartList[i]);
+                  }
+                }                 
+                self.setData({                
+                  cartList: newArr
+                });  
+                self.countTotalMoney();  //计算总金额            
               }
             },
             failCallback: function (res) {

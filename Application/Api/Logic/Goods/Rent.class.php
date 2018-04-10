@@ -30,10 +30,49 @@ class Rent {
 		}while(0);			
 		return $ret;
 	}
+	
+	public function rent_edit($data){
+		$ret = array("code"=>-1,"msg"=>'',"data"=>"");
+		do{ 		
+			$map['id']=$data['id'];
+			$st = M("rent_good")->where($map)->save($data);			
+			if(!$st){
+				$ret['code'] = 1;
+				$ret['msg'] = '更新失败';
+				$ret['data'] = $st;
+				break;
+			}
+			$ret['code'] = 0;
+			$ret['msg'] = '更新成功';
+			$ret['data'] = $st;
+		}while(0);			
+		return $ret;
+	}
+	
+	
+	public function rent_del($data){
+		$ret = array("code"=>-1,"msg"=>'',"data"=>"");
+		do{ 		
+			$map['id']=$data['id'];
+			$st = M("rent_good")->where($map)->delete();			
+			if(!$st){
+				$ret['code'] = 1;
+				$ret['msg'] = '删除失败';
+				$ret['data'] = $st;
+				break;
+			}
+			$ret['code'] = 0;
+			$ret['msg'] = '删除成功';
+			$ret['data'] = $data['id'];
+		}while(0);			
+		return $ret;
+	}
+	
+	
 	public function rent_list($data){	
 		$map['userid']=$data['userid'];
 		$st = M("rent_good a")
-		->field("a.*,b.thumb,b.goods_name,c.*")
+		->field("a.*,b.thumb,b.goods_name,c.sizename,c.price,c.kucun")
 		->join(C("DB_PREFIX")."goods b on b.id = a.goodid")
 		->join(C("DB_PREFIX")."goodssize c on c.id = a.goodsizeid")
 		->where($map)

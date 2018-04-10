@@ -51,7 +51,12 @@ class RentController extends ApiController
 	* 自动获取 userid
 	*/
 	public function rent_del(){
-		
+		$id=I("post.id","","intval");
+		$module=new \Api\Logic\Goods\Rent();
+		$data['id']=$id;
+		$data['userid']=666;
+		$result = $module->rent_del($data);
+		exit(json_encode($result));
 	}
 	
 	/*地址修改
@@ -59,7 +64,12 @@ class RentController extends ApiController
 	* 自动获取 userid
 	*/
 	public function rent_edit(){
-		
+		$id=I("get.id","","intval");
+		$module=new \Api\Logic\Goods\Rent();
+		$data['num']=$_GET['num'];
+		$data['id']=$id;
+		$result = $module->rent_edit($data);
+		exit(json_encode($result));
 	}
 	
 	
