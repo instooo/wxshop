@@ -28,13 +28,8 @@ Page({
     readySelArea:0,
 
     source:'',   //跳转来源，有可能是订单提交页面跳转而来
-    wareids:'',
-    waresizes:'',
-    rentdates:0,
-    numbers:0,
-    warenumbers:'',
-    colors: '',
-    rtype: 1
+    goodsizeids:'',    
+    numbers:0,  
   },
   //选择地址确定事件
   bindMultiPickerChange: function (e) {
@@ -87,21 +82,10 @@ Page({
       //判断是否为订单提交页面过来，地址不允许删除     
       self.setData({
         source:options.source,
-        wareids: options.wareids,
-        numbers: options.numbers,
-        waresizes: options.waresizes,
-        rentdates: options.rentdates,
-        colors: options.colors,
-        rtype: options.rtype
+        goodsizeids: options.goodsizeids,
+        numbers: options.numbers       
       });
-    } else if (options.source == 'exchange' || options.source == 'return') {
-      //判断是否为换货提交页面过来，地址不允许删除    
-      self.setData({
-        source: options.source,
-        warenumbers: options.warenumbers
-      });
-    }
-
+    } 
     self.setData({
       id: options.id,     
       isSelect: !!options.select
@@ -311,16 +295,7 @@ Page({
           //跳回订单提交页面
           if (self.data.source == 'confirm') {  
             wx.redirectTo({
-              url: '/pages/order/confirm/confirm?wareids=' + self.data.wareids + '&numbers=' + self.data.numbers + '&waresizes=' + self.data.waresizes + '&rentdates=' + self.data.rentdates + '&colors=' + self.data.colors
-               + '&rtype=' + self.data.rtype  + '&raddressId=' + addressId
-            })
-          } else if (self.data.source == 'exchange') {
-            wx.redirectTo({
-              url: '/pages/order/exchange/exchange?warenumbers=' + self.data.warenumbers + '&raddressId=' + addressId
-            })
-          } else if (self.data.source == 'return') {
-            wx.redirectTo({
-              url: '/pages/order/return/return?warenumbers=' + self.data.warenumbers + '&raddressId=' + addressId
+              url: '/pages/order/confirm/confirm?goodsizeids=' + self.data.goodsizeids + '&numbers=' + self.data.numbers + '&addressid=' + addressId
             })
           }else {
             wx.redirectTo({

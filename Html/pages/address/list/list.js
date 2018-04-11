@@ -29,17 +29,13 @@ Page({
     //  console.log("no login");
     //  return false;
     //}
+    console.log(options);
     if (options.source == 'confirm') {
       //判断是否为订单提交页面过来
       this.setData({
         source: options.source,
-        wareids: options.wareids,
+        goodsizeids: options.goodsizeids,
         numbers: options.numbers,
-        waresizes: options.waresizes,
-        rentdates: options.rentdates,
-        colors: options.colors,
-        rtype: options.rtype,
-
         isSelect: options.select,
         className: options.select ? 'show' : '',
         curid: options.curid || 0
@@ -151,9 +147,7 @@ Page({
   addAddress: function (event) {
     var self = this;
     if (self.data.source == 'confirm') {
-      var params = 'wareids=' + self.data.wareids + '&numbers=' + self.data.numbers
-        + '&waresizes=' + self.data.waresizes + '&rentdates=' + self.data.rentdates 
-        + '&colors=' + self.data.colors + '&rtype=' + self.data.rtype 
+      var params = 'goodsizeids=' + self.data.goodsizeids + '&numbers=' + self.data.numbers
         + '&source=confirm';
       wx.redirectTo({
         url: '/pages/address/edit/edit?id=-1&' + params
@@ -177,7 +171,7 @@ Page({
       var id = event.currentTarget.dataset.id;
       if (self.data.source == 'confirm') {
         wx.redirectTo({
-          url: '/pages/order/confirm/confirm?wareids=' + self.data.wareids + '&numbers=' + self.data.numbers + '&waresizes=' + self.data.waresizes + '&rentdates=' + self.data.rentdates + '&colors=' + self.data.colors + '&rtype=' + self.data.rtype + '&raddressId=' + id
+          url: '/pages/order/confirm/confirm?goodsizeids=' + self.data.goodsizeids + '&numbers=' + self.data.numbers + '&addressid=' + id
         })
       } else if (self.data.source == 'exchange') {
         wx.redirectTo({

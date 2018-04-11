@@ -196,8 +196,8 @@ Page({
       })
     } else {//跳转到订单提交页面       
       wx.redirectTo({
-        url: '/pages/order/confirm/confirm?goodid=' + goods_id + '&numbers=' + numbers + 
-        '&goods_size_id=' + goods_size_id
+        url: '/pages/order/confirm/confirm?numbers=' + numbers + 
+        '&goodsizeids=' + goods_size_id
       })
     }
   },

@@ -1,17 +1,17 @@
 <view class="order">
   <!-- 地址信息 -->
-  <view class="address-wrap" bindtap="updateAddress" wx:if="{{addressbean != null}}">
+  <view class="address-wrap" bindtap="updateAddress" wx:if="{{addressinfo != null}}">
     <view class="address-left">
       <image class="address-icon" src="/images/order/addr-icon.png"></image>
     </view>
     
     <view class="address-right">
       <view class="address-accept">
-        <span class="address-name">收货人：{{addressbean.ordername}}</span>
-        <span class="address-phone">{{addressbean.mobile}}</span>
+        <span class="address-name">收货人：{{addressinfo.ordername}}</span>
+        <span class="address-phone">{{addressinfo.phone}}</span>
       </view>
       <view class="address-info">
-        收货人地址：{{addressbean.province}}{{addressbean.city}}{{addressbean.area}}{{addressbean.detailaddress}}
+        收货人地址：{{addressinfo.province}}{{addressinfo.city}}{{addressinfo.area}}{{addressinfo.detailaddress}}
       </view>
     </view>
   </view>
@@ -24,36 +24,31 @@
   <!--订单详情-->
   <view class="order-wrap">
 
-    <view wx:for="{{warelist}}" wx:for-index="idx">
+    <view wx:for="{{goodlist}}" wx:for-index="idx">
       <view class="order-list-item-dzf-bd">
         <view class="item-left">
-          <image class="item-img" src="{{imageRootPath}}{{item.pic1}}"></image>
+          <image class="item-img" src="{{imageRootPath}}{{item.thumb}}"></image>
         </view>
         <view class="item-right">
-          <text class="item-title">{{item.name}}</text>
-          <text class="item-day" wx:if="{{rtype == 1}}">押金：¥{{item.rent_cost}}</text>
-          <text class="item-day" wx:if="{{rtype == 1}}">价格：¥{{item.price}}/月</text>
-          <text class="item-day" wx:if="{{rtype == 2}}">零售价：¥{{item.smprice}}</text>
-          <text class="item-day">新旧：{{item.level}}</text>
-          <text class="item-day">颜色：{{item.color}}</text>
-          <text class="item-day">数量：{{item.num}}个</text>
-          <text class="item-day" wx:if="{{rtype == 1}}">租赁时长：{{item.rent_date}}月</text>
-          <text class="item-price">¥{{item.total_money}}</text>
+          <text class="item-title">{{item.goods_name}}</text>
+          <text class="item-title">{{item.sizename}}</text>
+          <text class="item-day">数量：{{numbers}}个</text>        
+          <text class="item-price">单价：¥{{item.price}}</text>
         </view>
       </view>
     </view>
 
-    <view class="order-list-item-foot">
+    <!--<view class="order-list-item-foot">
       <view wx:if="{{isPoint == 0}}" class="orderno-icon" bindtap="pointChange"></view>
       <view wx:if="{{isPoint == 1}}" class="orderno-icon active" bindtap="pointChange"></view>
       <span class="left-tag" bindtap="pointChange">积分抵扣金额</span>
       <span class="right-tag item-price-red">{{userPoint}}</span>
-    </view>
+    </view>-->
 
-    <!--<view class="order-list-item-foot item-nobordertop">
+    <view class="order-list-item-foot item-nobordertop">
       <span class="left-tag">运费</span>
       <span class="right-tag">¥{{freight}}</span>
-    </view>-->
+    </view>
     
     <view class="order-list-item-foot">
       <span class="left-tag">实付金额</span>

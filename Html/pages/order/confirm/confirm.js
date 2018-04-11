@@ -6,26 +6,21 @@ Page({
    * 页面的初始数据
    */
   data: {
-    source: '',  //下单来源  pro产品详情跳转过来  cart购物车跳转过来
-    wareids: '',   //物品ID
-    rentids: '',
+    source: '',  //下单来源  pro产品详情跳转过来  cart购物车跳转过来  
     numbers: 0,   //	数量
-    waresizes: '',  //规格ID
-    rentdates: 0,   //租用月数
-    colors: '',  //购买颜色
-    rtype: 1,   //购买类型  1、我要租 2:我要买
-    addressid:'',  //地址id
+    goodsizeids: '',  //规格ID  
+    rentids:'',  
     point:0,  //积分
     remarks:'',  //备注
-    warelist: [], //产品列表
+    goodlist: [], //产品列表
     imageRootPath:'',
     totalmoney:0,   //订单总额
     freight:0,  //运费
     maxpoint:0,  //最大积分
     userPoint:0,  //用户积分
     isPoint:0,  //是否选择积分抵扣
-    addressbean:null,  //地址
-
+    addressid: '',  //地址id
+    addressinfo:null,  //地址
     payTxt:'去支付',  //控制支付状态
     payIng:false
   },
@@ -33,21 +28,20 @@ Page({
   /**
    * 生命周期函数--监听页面显示
    */
-  onLoad: function (options) {
-    this.setData({
-      wareids: options.wareids,
+  onLoad: function (options) {    
+    this.setData({     
       numbers: options.numbers,
-      waresizes: options.waresizes,
-      rentdates: options.rentdates,
-      rentids: options.rentids,
-      colors: options.colors,  //购买颜色
-      rtype: options.rtype   //购买类型
-    });
-    console.log('raddressId:' + options.raddressId + ';colors:' + options.colors + ';rtype:' + options.rtype);
-    if (typeof (options.raddressId) != "undefined") {
+      goodsizeids: options.goodsizeids,    
+    });  
+    if (options.rentids!=null){
+      this.setData({      
+        rentids: options.rentids,
+      });  
+    }  
+    if (options.addressid!=null){
       this.setData({
-        addressid: options.raddressId
-      });
+        addressid: options.addressid,
+      });  
     }
   },
 
@@ -59,30 +53,26 @@ Page({
   //获取订单提交数据
   getConfirmInfo:function(){
     var self=this;
-    console.log('addressid:' + self.data.addressid);
     var postData = {
       token: app.globalData.token,
-      sizeids: self.data.waresizes,
-      rentdates: self.data.rentdates,
+      goodsizeids: self.data.goodsizeids,
       numbers: self.data.numbers,
       addressid: self.data.addressid,
-      colors: self.data.colors,  //购买颜色
-      rtype: self.data.rtype   //购买类型
+      rentids: self.data.rentids
     };
     app.ajax({
-      url: app.globalData.serviceUrl + 'morderaffirm.htm',
+      url: app.globalData.serviceUrl + 'order/add_order',
       data: postData,
-      method: 'GET',
+      method: 'POST',
       successCallback: function (res) {
         if (res.code == 0 && res.data != null) {
           self.setData({
-            imageRootPath: res.data.imageRootPath,
-            warelist: res.data.warelist,
+            imageRootPath: res.data.rooturl,
+            goodlist: res.data.goodlist,
             totalmoney: res.data.totalmoney,   //订单总额
             freight: res.data.freight,   //运费
-            maxpoint: res.data.maxpoint,  //最大积分
-            userPoint: res.data.point,  //用户积分
-            addressbean: res.data.addressbean  //地址
+            userPoint: res.data.userinfo.point,  //用户积分
+            addressinfo: res.data.addressinfo  //地址
           });
         }else{
           self.showMsg('下单产品不存在');
@@ -125,32 +115,27 @@ Page({
       if (self.data.isPoint==1){
         point = self.data.userPoint > self.data.maxpoint ? self.data.maxpoint : self.data.userPoint;
       }
-      if (self.data.addressbean==null){
+      if (self.data.addressinfo==null){
         self.showMsg('请先填写寄货地址');
         return false;
       }
       var postData = {
-        token: app.globalData.token,
-        wareids: self.data.wareids,   //物品id
+        token: app.globalData.token,      
         numbers: self.data.numbers,   //数量
-        waresizes: self.data.waresizes,   //规格id
-        rentdates: self.data.rentdates,   //租用月数
-        addressid: self.data.addressbean.id,    //地址id
-        point: point,    //积分
-        colors: self.data.colors,  //购买颜色
-        rtype: self.data.rtype,   //购买类型
+        goodsizeids: self.data.goodsizeids,   //规格id      
+        addressid: self.data.addressinfo.id,    //地址id
+        point: point,    //积分      
         remarks: self.data.remarks   //备注
       };
       if (self.data.rentids) {
         postData.rentids = self.data.rentids
       }
-
       self.lockPayFun();  //提示支付中，锁定支付状态
 
       app.ajax({
-        url: app.globalData.serviceUrl + 'mordersub.htm',
+        url: app.globalData.serviceUrl + 'order/add_order_do',
         data: postData,
-        method: 'GET',
+        method: 'POST',
         successCallback: function (res) {
           if (res.code == 0 && res.data != null) {
             //实现微信支付
@@ -247,10 +232,8 @@ Page({
   //添加收货地址
   addAddress:function(){
     var self=this;
-    var params = 'wareids=' + self.data.wareids + '&numbers=' + self.data.numbers 
-      + '&waresizes=' + self.data.waresizes + '&rentdates=' + self.data.rentdates 
-      + '&colors=' + self.data.colors + '&rtype=' + self.data.rtype 
-      +'&source=confirm&select=true';
+    var params = 'goodsizeids=' + self.data.goodsizeids + '&numbers=' + self.data.numbers 
+      + '&source=confirm&select=true';
     wx.redirectTo({
       url: '/pages/address/list/list?' + params
     })
@@ -259,11 +242,8 @@ Page({
   //修改地址
   updateAddress: function () {
     var self = this;
-    var addressid = self.data.addressbean.id;
-    console.log(addressid);
-    var params = 'wareids=' + self.data.wareids + '&numbers=' + self.data.numbers
-      + '&waresizes=' + self.data.waresizes + '&rentdates=' + self.data.rentdates 
-      + '&colors=' + self.data.colors + '&rtype=' + self.data.rtype 
+    var addressid = self.data.addressinfo.id;    
+    var params = 'goodsizeids=' + self.data.goodsizeids + '&numbers=' + self.data.numbers
       + '&source=confirm&select=true&curid=' + addressid;
     wx.redirectTo({
       url: '/pages/address/list/list?' + params
