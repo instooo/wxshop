@@ -57,8 +57,6 @@ Page({
 
     var col = e.detail.column;
     var val = e.detail.value;
-    console.log(col);
-    console.log(val);
     //重新加载地市
     if (col == 0) {
       var code = self.data.areaArray[0][val].code;

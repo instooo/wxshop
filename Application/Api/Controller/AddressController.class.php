@@ -41,6 +41,10 @@ class AddressController extends ApiController
 	*/
 	public function add_address(){
 		$data = $_POST;
+		if($data['isdefault']==1){
+			$map['member_id']=666;
+			$aa = M('address')->where($map)->setField('isdefault',0);			
+		}
 		$data['member_id']=666;
 		$data['addtime']=time();		
 		$result = M('address')->add($data);
@@ -58,6 +62,10 @@ class AddressController extends ApiController
 	*/
 	public function address_edit(){
 		$data = $_POST;
+		if($data['isdefault']==1){
+			$map['member_id']=666;
+			$aa = M('address')->where($map)->setField('isdefault',0);			
+		}
 		$map['id']=$_POST['id'];
 		$map['member_id']=666;
 		$result = M('address')->where($map)->save($data);
