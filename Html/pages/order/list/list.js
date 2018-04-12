@@ -22,10 +22,9 @@ Page({
     page:1,
     status:0,
     orderlist:[],
-
     payTxt: '去支付',  //控制支付状态
     payIng: false,
-    isEmpty: '',   //是否显示空
+    isEmpty: 'show',   //是否显示空
     isShow: 'show', //是否显示数据 
 
     isZyzbtnStatus:false,  //显示租用中操作按钮
@@ -33,8 +32,6 @@ Page({
     operIdx: 1,
     modalOperShow: false,
     modalSpecShow: false,
-    rentlist:[],
-
     modalWlShow:false,
     wlorderno:'',
     wlnoArr:[]
@@ -49,16 +46,14 @@ Page({
   },
 
   getOrder:function(){
-    if (!app.globalData.token) {
-      return false;
-    }
-
+    //if (!app.globalData.token) {
+    //  return false;
+    //}
     var self = this;
     var postData = {
       token: app.globalData.token,
       page: self.data.page
     };
-
     if(self.data.status!=0){
       postData.status = self.data.status;
     }
@@ -71,7 +66,7 @@ Page({
 
     //获取首页数据    
     app.ajax({
-      url: app.globalData.serviceUrl + 'morderlist.htm',
+      url: app.globalData.serviceUrl + 'order/order_list',
       data: postData,
       method: 'GET',
       successCallback: function (res) {

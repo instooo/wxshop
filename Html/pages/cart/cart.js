@@ -232,27 +232,14 @@ Page({
   //进行下单
   gotoConfirm:function(){
     //获取勾选项
-    var self=this;
-
-    var wareids = [];  //下单物品id
-    var waresizes = [];  //下单规格id
-    var rentdates = [];   //下单租赁月数
-    var numbers = [];   //下单租赁数量
-    var rentids = [];
-    var colors = [];
+    var self=this;    
+    var rentids = [];    
     var cartList = self.data.cartList;
     var selNums = 0;
-
     for (var i = 0; i < cartList.length; i++) {
       if (cartList[i].selected) {
         var selCart = cartList[i];
-
-        wareids.push(selCart.wareid);
-        waresizes.push(selCart.sizeid);
-        rentdates.push(selCart.rent_date);
-        numbers.push(selCart.number);
-        rentids.push(selCart.id);
-        colors.push(selCart.color);
+        rentids.push(selCart.id);      
         selNums = selNums + 1;
       }
     }
@@ -262,7 +249,7 @@ Page({
     }
     //跳转到订单提交页面 
     wx.navigateTo({
-      url: '/pages/order/confirm/confirm?wareids=' + wareids.join(",") + '&numbers=' + numbers.join(",") + '&waresizes=' + waresizes.join(",") + '&rentdates=' + rentdates.join(",") + '&rentids=' + rentids.join(",") + '&colors=' + colors.join(",") + '&rtype=' + self.data.rtype
+      url: '/pages/order/confirm/confirm?rentids=' + rentids.join(",")
     })
   },
 

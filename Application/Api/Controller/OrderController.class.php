@@ -16,7 +16,13 @@ class OrderController extends ApiController
 	* 接受用户ID，自动筛选大于15天的订单
 	*/
 	public function order_list(){
-		
+		//$map['status']=$_REQUEST['status'];
+		$map['status']=1;
+		$map['page']=$_REQUEST['page'];
+		$map['userid']=666;
+		$module=new \Api\Logic\Order\Order();	
+		$result = $module->order_list($map);
+		print_r($result);
 	}
 	
 	/*订单详情页面
