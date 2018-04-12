@@ -52,8 +52,13 @@ class Rent {
 	
 	public function rent_del($data){
 		$ret = array("code"=>-1,"msg"=>'',"data"=>"");
-		do{ 		
-			$map['id']=$data['id'];
+		do{ 	
+			if(is_array($data['id'])){
+				$map['id']=array("in",$data['id']);
+			}else{
+				$map['id']=$data['id'];
+			}
+			
 			$st = M("rent_good")->where($map)->delete();			
 			if(!$st){
 				$ret['code'] = 1;

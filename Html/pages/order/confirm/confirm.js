@@ -29,14 +29,20 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onLoad: function (options) {    
-    this.setData({     
-      numbers: options.numbers,
-      goodsizeids: options.goodsizeids,    
-    });  
     if (options.rentids!=null){
       this.setData({      
         rentids: options.rentids,
       });  
+    }  
+    if (options.numbers != null) {
+      this.setData({
+        numbers: options.numbers,
+      });
+    }  
+    if (options.goodsizeids != null) {
+      this.setData({
+        goodsizeids: options.goodsizeids,
+      });
     }  
     if (options.addressid!=null){
       this.setData({
@@ -174,20 +180,20 @@ Page({
       token: app.globalData.token,
       id: id
     }
-    var url = app.globalData.serviceUrl + 'morderwxpay.htm'
+    var url = app.globalData.serviceUrl + 'Pay/wxpay'
     wx.showLoading({ title: '正在请求支付', mask: true })
     app.ajax({
       url,
       data: postData,
-      method: 'GET',
+      method: 'POST',
       successCallback: function (res) {
         wx.hideLoading()
         
-        var timeStamp = res.timeStamp;
-        var nonceStr = res.nonceStr;
-        var pkg = res.package;
-        var signType = 'MD5';
-        var paySign = res.paySign;
+        var timeStamp = res.data.timeStamp;
+        var nonceStr = res.data.nonceStr;
+        var pkg = res.data.package;
+        var signType = res.data.signType;
+        var paySign = res.data.paySign;
 
         wx.requestPayment({
            'timeStamp': timeStamp,

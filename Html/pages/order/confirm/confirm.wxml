@@ -32,7 +32,7 @@
         <view class="item-right">
           <text class="item-title">{{item.goods_name}}</text>
           <text class="item-title">{{item.sizename}}</text>
-          <text class="item-day">数量：{{numbers}}个</text>        
+          <text class="item-day">数量：{{item.num}}个</text>        
           <text class="item-price">单价：¥{{item.price}}</text>
         </view>
       </view>
