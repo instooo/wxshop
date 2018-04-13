@@ -39,15 +39,38 @@ class Order {
 		$pagestart = ($data['page']-1)*10;
 		$offset =10;
 		$map['a.userid']=$data['userid'];
-		$map['a.status']=$data['status'];
+		if($data['status']){
+			if($data['status']==2){				
+				$map['a.status']=array("in",array(2,3,5));
+			}else{
+				$map['a.status']=$data['status'];
+			}
+			
+		}
 		$st = M("order a")		
+		->field("a.id,a.orderno,a.total_money,a.transportation_cost,a.status,a.createtime,b.num,b.price,c.goods_name,c.thumb,d.sizename,d.id as sizeid")
 		->join(C("DB_PREFIX")."order_ware b on a.orderno = b.orderno")
 		->join(C("DB_PREFIX")."goods c on b.goodid = c.id")
 		->join(C("DB_PREFIX")."goodssize d on b.goodsizeid = d.id")
 		->where($map)
 		->limit($pagestart,$offset)
-		->select();	
-		print_R()
+		->select();			
 		return $st;
+	}
+	public function order_info($data){	
+		$map['orderno']=$data['orderinfo'];
+		$map['userid']=$data['userid'];	
+		$result = M("order")->where($map)->find();		
+		return $result;
+	}
+	public function order_ware_list($data){
+		$map['orderno']=$data['orderno'];	
+		$result = M("order_ware b")
+		->field("b.num,b.price,b.goodid,c.goods_name,c.thumb,d.sizename,d.id as sizeid")
+		->join(C("DB_PREFIX")."goods c on b.goodid = c.id")
+		->join(C("DB_PREFIX")."goodssize d on b.goodsizeid = d.id")
+		->where($map)
+		->select();		
+		return $result;
 	}
 }

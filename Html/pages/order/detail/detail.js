@@ -1,6 +1,5 @@
 var app = getApp();
 Page({
-
   /**
    * 页面的初始数据
    */
@@ -32,21 +31,20 @@ Page({
 
   getOrderDetail: function(options) {
     var self = this;
-    var id = options.id;
-    console.log(id);
+    var id = options.id;    
     var postData = {
       token: app.globalData.token,
       id: id
     };
     app.ajax({
-      url: app.globalData.serviceUrl + 'morderdetail.htm',
+      url: app.globalData.serviceUrl + 'order/order_detail',
       data: postData,
       method: 'GET',
       successCallback: function (res) {
-        if(res.code==0 && res.data.orderbean!=null){
+        if (res.code == 0 && res.data.orderinfo!=null){
           self.setData({
-            order: res.data.orderbean,
-            imageRootPath: res.data.imageRootPath
+            order: res.data.orderinfo,
+            imageRootPath: res.data.rooturl
           });
         }
       },
@@ -55,15 +53,6 @@ Page({
       }
     });
   },
-
-  //评价
-  pjOrder: function (event) {
-    var id = event.currentTarget.dataset.id;
-    wx.navigateTo({
-      url: '/pages/comment/edit/edit?id=' + id
-    })
-  },
-  
   //提示支付中，锁定支付状态
   lockPayFun: function () {
     var self = this;
@@ -93,7 +82,7 @@ Page({
         token: app.globalData.token,
         id: id
       }
-      var url = app.globalData.serviceUrl + 'morderwxpay.htm'
+      var url = app.globalData.serviceUrl + 'Pay/wxpay'
       wx.showLoading({ title: '正在请求支付', mask: true })
       app.ajax({
         url,
@@ -163,7 +152,7 @@ Page({
             id: id
           };
           app.ajax({
-            url: app.globalData.serviceUrl + 'mordercancel.htm',
+            url: app.globalData.serviceUrl + 'order/order_cancel',
             data: postData,
             method: 'POST',
             successCallback: function (res) {
@@ -193,7 +182,7 @@ Page({
       id: id
     };
     app.ajax({
-      url: app.globalData.serviceUrl + 'mordershouhuo.htm',
+      url: app.globalData.serviceUrl + 'order/order_shouhuo',
       data: postData,
       method: 'POST',
       successCallback: function (res) {
@@ -211,44 +200,6 @@ Page({
       }
     });
   },
-
-  //查看物流
-  lookLogistics: function (event) {
-    var num = event.currentTarget.dataset.num;
-    var orderno = event.currentTarget.dataset.orderno;
-    console.log('orderno:' + orderno + ';num=' + num);
-    var wlnoArr = [];
-    if (num != null && num != '') {
-      wlnoArr = num.split(',');
-    }
-    this.setData({
-      modalWlShow: true,
-      wlorderno: orderno,
-      wlnoArr: wlnoArr
-    });
-  },
-
-  //复制
-  copywxno: function (event) {
-    var self = this;
-    var wxno = event.currentTarget.dataset.wxno;
-    console.log("wxno:" + wxno);
-    wx.setClipboardData({
-      data: wxno,
-      success: function (res) {
-        self.showMsg('复制成功');
-      },
-      fail: function (res) {
-        self.showMsg('复制失败');
-      }
-    })
-  },
-
-  closeWlModal: function () {
-    this.setData({
-      modalWlShow: false
-    });
-  },
   
   //商品详情
   productInfo: function (event) {
@@ -260,9 +211,7 @@ Page({
 
   //返回首页
   gotoIndex: function () {
-    wx.switchTab({
-      url: '/pages/index/index'
-    })
+    wx.navigateBack();   
   },
 
   showMsg: function (msg) {

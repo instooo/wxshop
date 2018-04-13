@@ -15,14 +15,36 @@ class OrderController extends ApiController
 	/*订单列表
 	* 接受用户ID，自动筛选大于15天的订单
 	*/
-	public function order_list(){
-		//$map['status']=$_REQUEST['status'];
-		$map['status']=1;
+	public function order_list(){		
+		$map['status']=$_REQUEST['status'];	
 		$map['page']=$_REQUEST['page'];
 		$map['userid']=666;
 		$module=new \Api\Logic\Order\Order();	
-		$result = $module->order_list($map);
-		print_r($result);
+		$orderlist = $module->order_list($map);		
+		$tmp=array();
+		$warelist=array();
+		foreach($orderlist as $key=>$val){
+			$tmp[$val['orderno']]['id']=$val['id'];
+			$tmp[$val['orderno']]['orderno']=$val['orderno'];
+			$tmp[$val['orderno']]['total_money']=$val['total_money'];
+			$tmp[$val['orderno']]['transportation_cost']=$val['transportation_cost'];
+			$tmp[$val['orderno']]['status']=$val['status'];
+			$tmp[$val['orderno']]['createtime']=$val['createtime'];
+			$warelist['num']=$val['num'];
+			$warelist['price']=$val['price'];
+			$warelist['goods_name']=$val['goods_name'];
+			$warelist['thumb']=$val['thumb'];
+			$warelist['sizename']=$val['sizename'];	
+			$warelist['sizeid']=$val['sizeid'];				
+			$tmp[$val['orderno']]['warelist'][]=$warelist;
+		}		
+		$arr =array();
+		foreach($tmp as $val){
+			$arr[]=$val;
+		}
+		$result['orderlist']=$arr;
+		$result["rooturl"]="http://www.wxshop.me";		
+		Response::apiReturn(0,"success",$result);	
 	}
 	
 	/*订单详情页面
@@ -30,7 +52,15 @@ class OrderController extends ApiController
 	* 自动获取 userid
 	*/
 	public function order_detail(){
-		
+		$map['orderinfo']=I("get.id",'','htmlspecialchars');
+		$map['userid']=666;
+		$module=new \Api\Logic\Order\Order();	
+		$orderlist = $module->order_info($map);			
+		$result['orderinfo'] = $orderlist;
+		$mapware["orderno"]=$orderlist['orderno'];		
+		$result['orderinfo']['orderwarelist']=$module->order_ware_list($mapware);	
+		$result["rooturl"]="http://www.wxshop.me";				
+		Response::apiReturn(0,"success",$result);	
 	}
 	/*提交订单确认页面
 	* 接收参数 goodid,goodsizeid,num,addressid
@@ -106,6 +136,7 @@ class OrderController extends ApiController
 			if($data['goodsizeids']){
 				$sizemap['a.id']=$data['goodsizeids'];
 				$result = M('goodssize a')
+				->field("a.id,a.sizename,a.goods_id,b.shop_id,b.good_type_id,b.goods_name,b.thumb,b.label_id,b.sort,a.price")
 				->join(C("DB_PREFIX")."goods b on b.id=a.goods_id")
 				->where($sizemap)->find();				
 				if(!$result){
@@ -234,6 +265,17 @@ class OrderController extends ApiController
 	* 自动获取 userid
 	*/
 	public function order_cancel(){
+		$map['id']=I("post.id",'','htmlspecialchars');
+		$map['userid']=666;
+		$info = M("order")->where($map)->find();
+		$result = M("order")->where($map)->delete();
+		if($result){
+			$mapa["orderno"] = $info["orderno"];
+			$resulta = M("order_ware")->where($mapa)->delete();
+			Response::apiReturn(0,"success",$resulta);	
+		}else{
+			Response::apiReturn(1,"fail");	
+		}
 		
 	}
 	
@@ -242,7 +284,14 @@ class OrderController extends ApiController
 	* 自动获取 userid
 	*/
 	public function order_shouhuo(){
-		
+		$map['id']=I("post.id",'','htmlspecialchars');
+		$map['userid']=666;
+		$result = M("order")->where($map)->setField("status",4);
+		if($result){
+			Response::apiReturn(0,"收货成功",$result);	
+		}else{
+			Response::apiReturn(1,"fail");	
+		}
 	}
 	
 	/**

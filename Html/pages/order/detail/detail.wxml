@@ -1,4 +1,13 @@
+<view class="tips" bindtap="gotoIndex" wx:if="{{order.status == 1}}">
+  <view class="tips-top">
+     等待买家付款
+  </view>
+  <view class="tips-bottom">
+     23小时57分33秒 后自动取消订单
+  </view>
+</view>
 <view class="order">
+
   <!--  地址信息 -->
   <view class="address-wrap">
     <view class="address-left">
@@ -8,19 +17,51 @@
     <view class="address-right">
       <view class="address-accept">
         <span class="address-name">收货人：{{order.ordername}}</span>
-        <span class="address-phone">{{order.mobile}}</span>
+        <span class="address-phone">{{order.phone}}</span>
       </view>
       <view class="address-info">
         收货人地址：{{order.province}}{{order.city}}{{order.country}}{{order.detailaddress}}
-      </view>
-    </view>
+      </view>    
+    </view>      
+  </view>
+  <view class="borderImage" style=" background: -.13rem url(../../../images/address.png) repeat-x;">
   </view>
   <!--订单详情-->
   <view class="order-wrap">
     <view class="order-list-item-dzf-head"> 
       <span class="orderno-tag">订单号:</span>
-      <span class="orderno-imp">{{order.orderno}}</span>
-      <span class="money">
+      <span class="orderno-imp">{{order.orderno}}</span>      
+    </view>
+
+    <view wx:for="{{order.orderwarelist}}" wx:for-index="idx">
+      <navigator url="/pages/product/info/info?id={{item.goodid}}">
+        <view class="order-list-item-dzf-bd">
+          <view class="item-left">
+            <image class="item-img" src="{{imageRootPath}}{{item.thumb}}"></image>
+          </view>
+          <view class="item-right">
+            <text class="item-title">{{item.goods_name}}({{item.sizename}})</text>
+            <text class="item-day">数量：{{item.num}}个</text>            
+            <text class="item-price" >¥{{item.price}}</text>
+          </view>
+        </view>
+      </navigator>
+    </view>
+
+    <!--<view class="order-list-item-foot">
+      <span class="left-tag">含运费</span>
+      <span class="right-tag">¥{{order.transportation_cost}}</span>
+    </view>-->
+    <view class="order-list-item-foot">
+      <span class="left-tag">积分抵扣金额</span>
+      <span class="right-tag">¥{{order.point_cost}}</span>
+    </view>
+    <view class="order-list-item-foot">
+      <span class="left-tag">订单应付金额</span>
+      <span class="right-tag item-price-red">¥{{order.total_money}}</span>
+    </view> 
+    <view class="order-list-item-foot" style="text-align:right;">
+        <span class="money">
         <view class="order-item-sy-status-wzf" wx:if="{{order.status == 1}}">
           (未支付)
         </view>
@@ -41,43 +82,8 @@
         </view>
       </span>
     </view>
-
-    <view wx:for="{{order.orderwarelist}}" wx:for-index="idx">
-      <navigator url="/pages/product/info/info?id={{item.wareid}}">
-        <view class="order-list-item-dzf-bd">
-          <view class="item-left">
-            <image class="item-img" src="{{imageRootPath}}{{item.pic}}"></image>
-          </view>
-          <view class="item-right">
-            <text class="item-title">{{item.warename}}</text>
-            <text class="item-day">数量：{{item.amount}}个</text>
-            <text class="item-day" wx:if="{{order.order_type == 0}}">租赁时长：{{item.rent_date}}月</text>
-            <text class="item-day">新旧：{{item.level}}</text>
-            <text class="item-day">颜色：{{item.color}}</text>
-            <text class="item-day" wx:if="{{order.order_type == 2}}">零售价：¥{{item.smprice}}</text>
-            <text class="item-day" wx:if="{{order.order_type == 0}}">租金：¥{{item.rent_cost}}</text>
-            <text class="item-day" wx:if="{{order.order_type == 0}}">押金：¥{{item.ya_cost}}</text>
-            <text class="item-price" wx:if="{{order.order_type == 0}}">¥{{item.price}}</text>
-          </view>
-        </view>
-      </navigator>
-    </view>
-
-    <!--<view class="order-list-item-foot">
-      <span class="left-tag">含运费</span>
-      <span class="right-tag">¥{{order.transportation_cost}}</span>
-    </view>-->
-    <view class="order-list-item-foot">
-      <span class="left-tag">积分抵扣金额</span>
-      <span class="right-tag">¥{{order.point_cost}}</span>
-    </view>
-    <view class="order-list-item-foot">
-      <span class="left-tag">订单应付金额</span>
-      <span class="right-tag item-price-red">¥{{order.total_money}}</span>
-    </view>
-
     <view class="order-list-item-all-foot" wx:if="{{order.status == 1}}">
-      <button class="all-btn-com btn-zf" data-id="{{order.id}}" bindtap="payOrder">
+      <button class="all-btn-com btn-zf" data-id="{{order.orderno}}" bindtap="payOrder">
         {{payTxt}}
       </button>
       <button class="all-btn-com btn-qx" data-id="{{order.id}}" bindtap="cancelOrder">
@@ -88,42 +94,6 @@
       <button class="all-btn-com btn-zf" data-id="{{order.id}}" bindtap="shOrder">
         确认收货
       </button>
-      <button class="all-btn-com btn-qx" data-num="{{order.sendexpressnumber}}" data-orderno="{{order.orderno}}" catchtap="lookLogistics">
-        查看物流
-      </button>
-    </view>
-    <!--  <view class="order-list-item-all-foot" wx:if="{{order.status == 4}}">
-      <button class="all-btn-com btn-zf" data-id="{{order.id}}" catchtap="pjOrder">
-        评价
-      </button>
-    </view>  -->
-  </view>
-
-</view>
-
-<view class="order-list-item-dzf-index" bindtap="gotoIndex">
-  返回首页
-</view>
-
-<!-- 物流信息弹窗 -->
-<view hidden="{{!modalWlShow}}" class="modal-spec modal-wrap vertical-center">
-  <view class="modal modal-width">
-    <view class="modal-close" bindtap="closeWlModal" >
-      <image class="modal-close-img" src="/images/product/modal_close.png" mode="widthFix"></image>
-    </view>
-    <view class="modal-header">
-      <view class="modal-header-item">
-        订单号：{{wlorderno}}
-      </view>
-    </view>
-    <view class="modal-body modal-body-wl">
-      <view class="modal-body-wl-item" wx:for="{{wlnoArr}}" wx:for-item="wxno">
-        <text class="modal-body-wl-item-txt">物流单号：{{wxno}}</text>
-        <button class="modal-body-wl-item-btn" data-wxno="{{wxno}}" bindtap="copywxno">
-          复制
-        </button>
-      </view>
     </view>
   </view>
 </view>
-<!-- /物流信息弹窗 -->
