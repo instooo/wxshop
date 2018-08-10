@@ -1,0 +1,6 @@
+<!--pages/authorize/authorize.wxml-->
+<view class='top'>
+  <image src='' class='gstx'></image>
+</view>
+<text class='ts'>为了更好的体验，此小程序需要获取您的昵称、头像等基本信息授权</text>
+ <button open-type="getUserInfo"  bindgetuserinfo="getUserInfo" class='sqbut'>确认授权</button> 

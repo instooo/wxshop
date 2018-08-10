@@ -1,0 +1,17 @@
+<!--pages/my/my.wxml-->
+
+
+  <view class='wdxx'>
+    <image src='{{myInfo.avatarurl}}' class='tx'></image>
+    <text class='nc'>{{myInfo.nickname}}</text>
+    <view class='dj'>
+      <image src='../../images/vip_icon.png' class='viptb'></image>
+      <!--<text class='vipdj'>VIP {{vipdj}}</text>
+      <text class='jy'>{{jyz}}经验</text>-->
+    </view>
+  </view>
+
+  <view class='hdjl'>
+    <image src='../../images/wdxz1.png' class='cz jl' mode="widthFix"></image>
+    <image src='../../images/wdxz2.png' class='cz hd' mode="widthFix"></image>
+  </view>

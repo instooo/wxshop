@@ -1,0 +1,47 @@
+/* pages/my/my.wxss */
+.wdxx{
+  text-align: center;
+  padding: 30rpx 0;
+  border-bottom: 1rpx solid #e5e5e5;
+  font-size: 0;
+}
+.wdxx .tx{
+  width: 114rpx;
+  height: 114rpx;
+  border: 1px solid #f89b12;
+  border-radius: 50%;
+  display: block;
+  margin: 0 auto
+}
+.wdxx .nc{
+  font-size: 28rpx;
+  line-height: 45rpx;
+}
+.wdxx .dj{
+  line-height: 50rpx;
+}
+.wdxx .dj .viptb{
+  width: 31rpx;
+  height: 27rpx;
+  vertical-align: -1rpx;
+}
+.wdxx .dj .vipdj{
+  font-size: 24rpx;
+  color: #f89b12;
+  font-style: italic;
+}
+.wdxx .dj .jy{
+  font-size: 18rpx;
+  color: #f89b12;
+  margin-left: 20rpx;
+  vertical-align: 2rpx;
+}
+.hdjl{
+  padding: 25rpx;
+  font-size: 0;
+}
+.hdjl .cz{
+  width: 100%;
+  display: block;
+  margin: 25rpx auto;
+}

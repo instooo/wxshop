@@ -1,0 +1,40 @@
+{
+  "pages": [   
+    "pages/index/index", 
+    "pages/hd/hd",
+    "pages/my/my",    
+    "pages/authorize/authorize"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "7477小游戏盒子",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "color": "#414141",
+    "backgroundColor": "#ffffff",
+    "selectedColor": "#ff4965",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "游戏库",
+        "iconPath": "images/db_icon1.png",
+        "selectedIconPath": "images/db_icon1_h.png"
+      },
+      {
+        "pagePath": "pages/hd/hd",
+        "text": "活动",
+        "iconPath": "images/db_icon2.png",
+        "selectedIconPath": "images/db_icon2_h.png"
+      },
+      {
+        "pagePath": "pages/my/my",
+        "text": "我的",
+        "iconPath": "images/db_icon3.png",
+        "selectedIconPath": "images/db_icon3_h.png"
+      }
+    ]
+  }
+}

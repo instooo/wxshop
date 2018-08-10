@@ -1,0 +1,50 @@
+<!--pages/index/index.wxml-->
+<view class='banner'>
+  <swiper class='gdbanner' autoplay='true' interval='3000'>
+    <block wx:for='{{banner_list}}' wx:key='*this'>
+      <swiper-item>
+        <image src='{{imageRootPath}}{{item.thumb}}' class='bn1'></image>
+      </swiper-item>
+    </block>
+  </swiper>
+</view>
+<view class='rmyx'>
+  <view class='bt'>
+    <image src='../../images/bt_icon1.png' class='bt_logo'></image>
+    <text class='btnz'>热门游戏</text>
+  </view>
+  <view class='yxnr'>
+    <view class='yx' wx:for='{{game_hot_list}}' wx:key='*this'>
+      <image src='{{imageRootPath}}{{item.logo}}' class='yxlogo'></image>
+      <text class='yxm'>{{item.name}}</text>
+      <text class='dswr'><text class='sl'>{{item.online_num}}</text>万人在玩</text>
+      <navigator class='kw' target="miniProgram" open-type="navigate" app-id="{{item.appid}}" version="release" binderror="binderror">开 玩</navigator>
+    </view>
+  </view>
+</view>
+<scroll-view  class='zxsx'>
+  <view class='bt'>
+    <image src='../../images/bt_icon2.png' class='bt_logo'></image>
+    <text class='btnz'>最新上线</text>
+  </view>
+  <view  class='zjxsyx' wx:for='{{game_new_list}}' wx:key='*this'>
+    <image src='{{imageRootPath}}{{item.logo}}' class='yxlogo'></image>
+    <view class='yxjj'>
+      <view class='yxbt'>
+        <text class='yxm'>{{item.name}}</text>
+        <image src='{{item.bq[key]}}' wx:for='{{item.bq}}' wx:key='*this' wx:for-index='key' class='bq'></image>
+      </view>
+      <text class='dswr'><text class='sl'>{{item.online_num}}</text>万人在玩</text>
+      <text class='yxsm'>{{item.name}}</text>
+    </view>
+    <navigator class='kw' target="miniProgram" open-type="navigate" app-id="{{item.appid}}" version="release" binderror="binderror">立即开启</navigator>
+  </view>
+</scroll-view>
+<view class='shjz' wx:if="{{loading}}">
+  <image src='../../images/sljz.png' class='sh_ts'></image>
+  <text class='ts'>加载中</text>
+</view>
+<view class='shjz' wx:if="{{noData}}">
+  <image src='../../images/sljz.png' class='sh_ts'></image>
+  <text class='ts'>没有更多数据了</text>
+</view>

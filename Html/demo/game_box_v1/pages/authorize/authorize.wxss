@@ -1,0 +1,30 @@
+/* pages/authorize/authorize.wxss */
+.top{
+  height: 350rpx;
+  background: #fb8f22;
+  overflow: hidden;
+}
+.top .gstx{
+  width: 150rpx;
+  height: 150rpx;
+  border-radius: 50%;
+  background: #fff;
+  display: block;
+  margin: 140rpx auto 0;
+}
+.ts{
+  font-size: 24rpx;
+  color: #666;
+  width: 400rpx;
+  display: block;
+  text-align: center;
+  margin: 60rpx auto 0;
+  line-height: 35rpx;
+}
+.sqbut{
+  width: 350rpx;
+  color: #fff;
+  background: #fb8f22;
+  font-size: 36rpx;
+  margin-top: 120rpx;
+}

@@ -1,0 +1,7 @@
+<!--pages/hd/hd.wxml-->
+<view class='hd' wx:for='{{hd}}' wx:key='*this'>
+  <text class='bt'>{{item.hdbt}}</text>
+  <image src='{{item.hdsrc}}' class='hdtp'></image>
+  <text class='hdsm'>{{item.hdsx}}<text class='hdrq'>{{item.hdrq}}</text></text>
+
+</view>
