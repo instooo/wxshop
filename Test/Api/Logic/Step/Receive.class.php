@@ -53,6 +53,7 @@ class Receive {
         if($uid==$help_uid){
             return array('code'=>22,'msg'=>'自己不能赠送给自己');
         }
+        \Api\Logic\Log\FriendLog::doubleAdd($uid,$help_uid);
         //判断此code，是否当天赠送过步数
         $hasSendStep = \Api\Logic\Log\StepGetLog::getStepInfoByuid($uid,$help_uid);
         if($hasSendStep['code']==1){//已赠送过步数

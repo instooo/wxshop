@@ -82,6 +82,7 @@ class Invitexcx {
         if($code!==0){
             $invite_code_info = self::checkInviteCode($code);
             if($invite_code_info['code']==1){
+                \Api\Logic\Log\FriendLog::doubleAdd($uid,$invite_code_info['data']['uid']);
                 $pidinfo = M('user_invite')->where(array('uid'=>$invite_code_info['data']['uid']))->find();
                 if($pidinfo){
                     $addinvitedata['t_uid']=$pidinfo['p_uid'];
