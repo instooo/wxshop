@@ -144,8 +144,8 @@ class Account {
      */
     public function getFriendInfo($uid){
         $map = array();
-        $map['a.p_uid'] = $uid;
-        $list = M('user_invite a')
+        $map['a.friend_uid'] = $uid;
+        $list = M('user_friend a')
             ->field('a.uid,b.point,b.money,c.nickname,c.gender,c.avatarurl')
             ->join('run_user_property b on a.uid=b.uid')
             ->join('run_user c on a.uid=c.uid')

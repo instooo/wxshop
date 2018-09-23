@@ -15,10 +15,10 @@ class FriendLog {
     public static function doubleAdd($uid,$helpuid){
         $resulta = self::checkFriend($uid,$helpuid);
         $resultb = self::checkFriend($helpuid,$uid);
-        if($resulta['code']==1){
+        if($resulta['code']!=1){
             self::addFriendLog($uid,$helpuid);
         }
-        if($resultb['code']==1){
+        if($resultb['code']!=1){
             self::addFriendLog($helpuid,$uid);
         }
 
