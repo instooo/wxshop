@@ -162,8 +162,8 @@ class Account {
      * 获得排行榜
      */
     public function getPaihang($uid){
-        $map['a.p_uid'] = $uid;
-        $list = M('user_invite a')->where($map)->select();
+        $map['a.friend_uid'] = $uid;
+        $list = M('user_friend a')->where($map)->select();
         $uidarr=array_column($list,'uid');
         $uidarr[]=$uid;
         $map1['a.uid']=array('in',$uidarr);
