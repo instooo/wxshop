@@ -41,7 +41,7 @@ class MoneyGetLog {
                 $result =self::findMoneyHelpLog($uid,"share",$invite_code_info['data']['uid']);
                 if($result['code']!=1){
                     self::addExchange($invite_code_info['data']['uid'],$money,0,"share","分享获得",0,$uid);
-                    \Api\Logic\User\Account::UpdatePropertyMoney($uid,0,1);
+                    \Api\Logic\User\Account::UpdatePropertyMoney($invite_code_info['data']['uid'],0,1);
                 }
             }
 

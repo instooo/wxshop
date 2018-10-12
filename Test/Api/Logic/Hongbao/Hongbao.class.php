@@ -158,7 +158,7 @@ class Hongbao {
             return $result;
         }
         //更新用户财富
-        $updateProperty = \Api\Logic\User\Account::UpdatePropertyMoney($uid,$money);
+        $updateProperty = \Api\Logic\User\Account::UpdatePropertyMoney($uid,$money,1);
         if($updateProperty['code']!=1){
             return $updateProperty;
         }
