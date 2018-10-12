@@ -50,4 +50,29 @@ class StepExchangeLog {
         return array('code'=>1,'msg'=>'success','data'=>$result);
     }
 
+    //获得当天走的步数
+    public function getTodayUseStep($uid,$type){
+        $map['uid'] = $uid;
+        $map['type'] = $type;
+        $map['date'] = date('Ymd',time());
+        $result = M('user_step_exchange')->where($map)->select();
+        $sum=0;
+        foreach($result as $val){
+            $sum+=$val['step'];
+        }
+        return array('code'=>1,'msg'=>'success','data'=>array('num'=>$sum));
+    }
+
+    //获得走的天数
+    public function getChangezhenDay($uid,$type){
+        $map['uid'] = $uid;
+        $map['type'] = $type;
+        $result = M('user_step_exchange')->where($map)->group('date')->select();
+        $sum=0;
+        foreach($result as $val){
+            $sum+=1;
+        }
+        return array('code'=>1,'msg'=>'success','data'=>array('num'=>$sum));
+    }
+
 }

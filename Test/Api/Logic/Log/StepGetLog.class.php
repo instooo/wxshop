@@ -67,6 +67,14 @@ class StepGetLog {
         if(!$day){
             $day=date('Ymd',time());
         }
+        //获得自己的步数
+        $mapa['a.day']=$day;
+        $mapa['a.uid']=$uid;
+        $resultaa = M('user_step a')
+            ->field("a.uid,a.step,b.nickname,b.avatarurl")
+            ->join('run_user b on a.uid=b.uid')
+            ->where($mapa)
+            ->find();					
         $map['a.date']=$day;
         $map['a.uid']=$uid;
         $result = M('user_step_get_log a')
@@ -74,17 +82,16 @@ class StepGetLog {
             ->join('run_user b on a.help_uid=b.uid')
             ->where($map)
             ->select();
-        foreach ($result as $key=>$val){
-            if($val['tag']=="jinbiyu"){
-                $result[$key]['gamename'] ="金钱雨";
-            }else if($val['tag']=="quanji"){
-                $result[$key]['gamename'] ="我是拳击手";
-            }
-        }
-        if(!$result){
-            return array('code'=>22,'msg'=>'无记录');
-        }
-        return array('code'=>1,'msg'=>'success','data'=>$result);
+        $redata=$result;
+        $num = count($result);
+        $redata[$num]['uid']=$resultaa['uid'];
+        $redata[$num]['type']="ownrun";
+        $redata[$num]['step']=$resultaa['step'];
+        $redata[$num]['help_uid']=$resultaa['uid'];
+        $redata[$num]['nickname']=$resultaa['nickname'];
+        $redata[$num]['avatarurl']=$resultaa['avatarurl'];
+		$redata[$num]['addtime']=time();
+        return array('code'=>1,'msg'=>'success','data'=>$redata);
     }
     /*
      * 消耗列表
@@ -95,6 +102,7 @@ class StepGetLog {
         }
         $map['a.date']=$day;
         $map['a.uid']=$uid;
+        $map['a.tag']=array('in',array('jinbiyu','quanji'));
         $result = M('user_step_exchange a')
             ->where($map)
             ->select();

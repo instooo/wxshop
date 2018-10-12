@@ -23,4 +23,9 @@ class HongbaoController extends CommonController {
         $api = new \Api\Api\Hongbao\Hongbao();
         $this->ajaxReturn($api->getHongbao(), 'JSON');
     }
+    //生成捡的红包
+    public function getDiaohongbao(){
+        $api = new \Api\Api\Hongbao\Hongbao();
+        $this->ajaxReturn($api->getDiaohongbao(), 'JSON');
+    }
 }

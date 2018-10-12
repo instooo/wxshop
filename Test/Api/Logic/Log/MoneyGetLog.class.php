@@ -38,9 +38,10 @@ class MoneyGetLog {
             $invite_code_info = \Api\Logic\User\Invitexcx::checkInviteCode($code);
             if($invite_code_info['code']==1){
                 //查找是否已经赠送过
-                $result =self::findMoneyHelpLog($uid,"share",$help_uid);
+                $result =self::findMoneyHelpLog($uid,"share",$invite_code_info['data']['uid']);
                 if($result['code']!=1){
-                    self::addExchange($invite_code_info['data']['uid'],$money,0,"share","分享获得红包",0,$uid);
+                    self::addExchange($invite_code_info['data']['uid'],$money,0,"share","分享获得",0,$uid);
+                    \Api\Logic\User\Account::UpdatePropertyMoney($uid,0,1);
                 }
             }
 
@@ -83,6 +84,19 @@ class MoneyGetLog {
             return array('code'=>-1,'msg'=>'fail');
         }
         return array('code'=>1,'msg'=>'success','data'=>$loginfo);
+    }
+
+    //查找当天是否领取过
+    public static function findMoneyLogToday($uid,$type){
+        $map['uid'] = $uid;
+        $map['event_type']=$type;//新人注册
+        $map['date']=date('Ymd',time());
+        $codeInfo = M('user_money_get_log')->where($map)->select();
+        if ($codeInfo) {
+            return array('code'=>1,'msg'=>'success','data'=>$codeInfo);
+        }else{
+            return array('code'=>-1,'msg'=>'fail');
+        }
     }
 
     /**

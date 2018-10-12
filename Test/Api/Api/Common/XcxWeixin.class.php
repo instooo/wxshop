@@ -31,8 +31,8 @@ class XcxWeixin extends Base {
         //url
         $url = "https://api.weixin.qq.com/sns/jscode2session";
         $params = array(
-            'appid'	=>	"wx0ae48f77d3d0e680",
-            'secret'=>'085d0ad337a91204e9e7901aa46cad6f',
+            'appid'	=>	C('WX_APPID'),
+            'secret'=>  C('WX_APP_SECRET'),
             'js_code'=>$this->request['code'],
             'grant_type'=>'authorization_code'
         );
@@ -112,8 +112,8 @@ class XcxWeixin extends Base {
             //url
             $url = "https://api.weixin.qq.com/sns/jscode2session";
             $params = array(
-                'appid'	=>	"wx0ae48f77d3d0e680",
-                'secret'=>'085d0ad337a91204e9e7901aa46cad6f',
+                'appid'	=>	C('WX_APPID'),
+                'secret'=>C('WX_APP_SECRET'),
                 'js_code'=>$this->request['code'],
                 'grant_type'=>'authorization_code'
             );

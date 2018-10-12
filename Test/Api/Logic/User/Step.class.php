@@ -51,7 +51,7 @@ class Step {
                     $flag=false;
                 }
             }
-            $result['step'] = $flag?$result['step']:intval($result['step']/4);
+            $result['step'] = $flag?$result['step']:intval($result['step'])/4;
             return array('code'=>1,'msg'=>'success','data'=>$result);
         }else{
             $data['uid']=$uid;

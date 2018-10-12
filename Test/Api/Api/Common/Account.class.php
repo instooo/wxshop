@@ -32,8 +32,15 @@ class Account extends Base {
             $uid = $destoken['data']['uid'];
             //找找运动步数
             $stepinfo = \Api\Logic\User\Step::getStepInfo($uid);
+            //查找是否有特权
+            $userprivilegeinfo = \Api\Logic\Log\UserPrivilegeLog::hasPrivilege($uid);
             //查找基本昵称信息和财富信息
             $userinfo = \Api\Logic\User\Account::getUserinfo($uid);
+            $userinfo['data']['tequan'] = 0;
+            if($userprivilegeinfo['code']==1){
+                $userinfo['data']['tequan'] = 1;
+                $userinfo['data']['left_time'] = round(($userprivilegeinfo['data']['endtime']-time())/3600);
+            }
             $userinfo['data']['step'] = $stepinfo['data']['step'];
             $userinfo['data']['left_step'] = $stepinfo['data']['left_step'];
             $userinfo['data']['use_step'] = $stepinfo['data']['use_step'];

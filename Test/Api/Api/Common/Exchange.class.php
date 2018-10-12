@@ -46,11 +46,23 @@ class Exchange extends Base {
                     $resultinfo= \Api\Logic\Step\Exchange::exchangeMoney($uid,$step,$tag);
                     break;
                 case 'point'://步数兑换积分，积分用于购买
-                    $resultinfo= \Api\Logic\Step\Exchange::exchangePoint($uid,$step,$tag);
+                    $flag=$this->request['flag'];
+                    if($flag=='fail'){
+                        $flag=false;
+                    }else{
+                        $flag=true;
+                    }
+                    $resultinfo= \Api\Logic\Step\Exchange::exchangePoint($uid,$step,$tag,$flag);
                     break;
-                case 'tools'://步数兑换工具
+                case 'tools'://步数兑换
                     $resultinfo= \Api\Logic\Step\Exchange::exchangeTools($uid,$step,$tag);
                     break;
+                case 'distance':
+                    $line_id = $this->request['line_id'];
+                    if (!$line_id) {
+                        return array('code'=>20,'msg'=>'line_id缺失');
+                    }
+                    $resultinfo = \Api\Logic\Step\Exchange::exchangeDistance($uid,$step,$tag,$line_id);
             }
             return $resultinfo;
         }

@@ -46,7 +46,7 @@ class Account {
         if($result['code']!=1){
             return $result;
         }
-        $returndata = array('unioid'=>$unioid, 'uid'=>$uid, 'time'=>$time);
+        $returndata = array('unioid'=>$unioid, 'uid'=>$uid, 'time'=>$time,"userinfo"=>$result['data']);
         return array('code'=>1,'msg'=>'success','data'=>$returndata);
     }
 
@@ -90,6 +90,9 @@ class Account {
 
             //添加红包信息
             \Api\Logic\Log\MoneyGetLog::addInviteExchange($uid,$userinfo['invite_xcx_code']);
+
+            //给别人添加特权信息
+            \Api\Logic\Log\UserPrivilegeLog::savePrivilege($uid,$userinfo['invite_xcx_code']);
 
             //邀请逻辑结束
             $data['uid']=$uid;
@@ -146,9 +149,10 @@ class Account {
         $map = array();
         $map['a.friend_uid'] = $uid;
         $list = M('user_friend a')
-            ->field('a.uid,b.point,b.money,c.nickname,c.gender,c.avatarurl')
+            ->field('a.uid,b.point,b.money,c.nickname,c.gender,c.avatarurl,b.hongbaonum')
             ->join('run_user_property b on a.uid=b.uid')
             ->join('run_user c on a.uid=c.uid')
+            ->order('b.hongbaonum desc')
             ->where($map)
             ->select();
         if (!$list) {
@@ -168,10 +172,10 @@ class Account {
         $uidarr[]=$uid;
         $map1['a.uid']=array('in',$uidarr);
         $list = M('user a')
-            ->field('a.uid,b.point,b.money,a.nickname,a.gender,a.avatarurl')
+            ->field('a.uid,b.point,b.money,a.nickname,a.gender,a.avatarurl,b.hongbaonum')
             ->join('run_user_property b on a.uid=b.uid')
             ->where($map1)
-            ->order('b.point desc')
+            ->order('b.hongbaonum desc')
             ->select();
         $data['list'] = $list;
         return array('code'=>1,'msg'=>'success','data'=>$data);
@@ -197,18 +201,20 @@ class Account {
     /**
      * 更新财富信息
      */
-    public static function UpdatePropertyMoney($uid,$money){
+    public static function UpdatePropertyMoney($uid,$money,$hongbaonum=0){
         $map['uid']=$uid;
         $properyinfo = M('user_property')->where($map)->find();
         if(!$properyinfo){
             return array('code'=>22,'msg'=>'财富信息不存在');
         }
         $data['money']=$money+$properyinfo['money'];
+        $data['hongbaonum']=$hongbaonum+$properyinfo['hongbaonum'];
         $res = M('user_property')->where($map)->save($data);
         if ($res==false) {
             return array('code'=>22,'msg'=>'财富信息更新失败');
         }
         $properyinfo['money']=$data['money'];
+        $properyinfo['hongbaonum']=$data['hongbaonum'];
         return array('code'=>1,'msg'=>'success','data'=>$properyinfo);
     }
 

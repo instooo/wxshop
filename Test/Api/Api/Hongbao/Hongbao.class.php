@@ -78,6 +78,22 @@ class Hongbao extends Base {
             return $resultinfo;
         }
     }
+
+    public function getDiaohongbao(){
+        $token = $this->request['token'];
+        if (!$token) {
+            return array('code'=>20,'msg'=>'token缺失');
+        }
+        $destoken= \Api\Logic\User\Account::decryptToken( $token);
+        if($destoken['code']!=1){
+            return $destoken;
+        }else{
+            $uid = $destoken['data']['uid'];
+            $resultinfo= \Api\Logic\Hongbao\Hongbao::getDiaohongbao($uid);
+            return $resultinfo;
+        }
+    }
+
     /**
      * 获取红包
      * @token 用户信息

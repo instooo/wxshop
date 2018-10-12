@@ -86,6 +86,20 @@ class UserController extends CommonController {
         $api = new \Api\Api\Log\Point();
         $this->ajaxReturn($api->getPointLog(), 'JSON');
     }
-   
+    /**
+     * 签到接口
+     */
+    public function sign() {
+        $api = new \Api\Api\User\Sign();
+        $this->ajaxReturn($api->sign(), 'JSON');
+    }
+
+    /*
+         * 金币获得列表
+         */
+    public function tixianlog(){
+        $api = new \Api\Api\Log\Tixian();
+        $this->ajaxReturn($api->tixianlog(), 'JSON');
+    }
 
 }

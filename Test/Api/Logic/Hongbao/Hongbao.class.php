@@ -42,13 +42,14 @@ class Hongbao {
                 ->field('a.*,b.nickname,b.avatarurl')
                 ->join('run_user b on a.help_uid=b.uid')
                 ->where($map)
+				->order('a.id desc')
                 ->select();
             if ($list) {
                 $summoney=0;
                 foreach ($list as $key=>$val){
-					if($val['status']==1){
-						 $summoney +=$val['money'];
-					}
+                    if($val['status']==1){
+                        $summoney +=$val['money'];
+                    }
                 }
                 return array('code'=>1,'msg'=>'success','data'=>array('list'=>$list,"summoney"=>$summoney));
             }else{
@@ -80,18 +81,58 @@ class Hongbao {
         if($loginfo['data']['status']==1){
             return array('code'=>-3,'msg'=>'红包已领取过');
         }
+        //判断是否特权红包
+        if($loginfo['data']['status']==-1 && $loginfo['data']['event_type']=="jian"){
+            $tequan = \Api\Logic\Log\UserPrivilegeLog::hasPrivilege($uid);
+            if($tequan['code']!=1){
+                return $tequan;
+            }
+        }
         //修改日志状态
         $result =\Api\Logic\Log\MoneyGetLog::updateMoneyGetLog($uid,$hbid);
         if($result['code']!=1){
             return $result;
         }
         //更新用户财富
-        $updateProperty = \Api\Logic\User\Account::UpdatePropertyMoney($uid,$loginfo['data']['money']);
+        $updateProperty = \Api\Logic\User\Account::UpdatePropertyMoney($uid,$loginfo['data']['money'],0);
         if($updateProperty['code']!=1){
             return $updateProperty;
         }
-        return array('code'=>1,'msg'=>'领取红包成功','data'=>array('money'=>$loginfo['money']));
+        return array('code'=>1,'msg'=>'领取红包成功','data'=>array('money'=>$loginfo['data']['money']));
 
+    }
+
+    /**
+     * 领取红包操作
+     * @param $uid 登录者UID
+     * @param $hbid 领取红包的ID
+     * @return array
+     */
+
+    public function getDiaohongbao($uid){
+        if(!$uid){
+            return array('code'=>-2,'msg'=>'uid错误');
+        }
+        $money=0.01;
+        //判断是否有特权
+        $tequan = \Api\Logic\Log\UserPrivilegeLog::hasPrivilege($uid);
+        $loginfo = \Api\Logic\Log\MoneyGetLog::findMoneyLogToday($uid,"jian");
+        $nowcount = ($loginfo['code']!=1)?0:count($loginfo['data']);
+        if($tequan['code']!=1){
+            //添加红包记录
+            \Api\Logic\Log\MoneyGetLog::addExchange($uid,$money,0,"jian","行走红包",-1,$uid);
+            return $tequan;
+        }
+        if($nowcount<5){//添加新的红包
+            \Api\Logic\Log\MoneyGetLog::addExchange($uid,$money,0,"jian","行走红包",1,$uid);
+            $updateProperty =\Api\Logic\User\Account::UpdatePropertyMoney($uid,$money,1);
+            if($updateProperty['code']!=1){
+                return $updateProperty;
+            }
+            return array('code'=>1,'msg'=>'领取红包成功','data'=>array('money'=>$money));
+        }else{
+            return array('code'=>-1,'msg'=>'已领取过');
+        }
     }
 
     /**
